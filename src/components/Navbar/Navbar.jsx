@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
-import { navItems } from "../../../utils/navItems";
 
+const navItems = [
+  { name: "Home", path: "#home" },
+  { name: "About", path: "#about" },
+  { name: "SDGs", path: "#sdgs" },
+  { name: "Initiatives", path: "#initiatives" },
+  { name: "Contact", path: "#contact" },
+];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,7 +44,7 @@ export default function Navbar() {
             src="src/assets/logo.jpg"
             alt="SDO Alangilan Logo"
           />
-          <p className="text-[#1B5E20] font-bold text-md sm:text-lg md:xl tracking-wide shrink-0">
+          <p className="text-[#1B5E20] font-bold text-xl tracking-wide shrink-0">
             Sustainable Development Office
           </p>
         </div>
