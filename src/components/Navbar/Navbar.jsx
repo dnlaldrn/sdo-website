@@ -12,7 +12,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="w-full bg-[#f4f8fa] border-b border-gray-100 font-sans">
+    <nav className="w-full bg-[#F1F8E9] border-b border-gray-100 font-sans">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         {/* Logo / Brand Name */}
         <div className="flex gap-2 items-center">
@@ -34,7 +34,7 @@ export default function Navbar() {
               className="relative py-2 text-sm font-medium transition-colors duration-200 text-gray-600 hover:text-[#004d1a]"
             >
               {item.name}
-                  {({ isActive }) => (
+              {({ isActive }) => (
                 <>
                   {item.name}
                   {/* Active Underline Effect */}
@@ -44,7 +44,6 @@ export default function Navbar() {
                 </>
               )}
             </a>
-            
           ))}
         </div>
 
