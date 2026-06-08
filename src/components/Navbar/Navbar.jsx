@@ -12,7 +12,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="w-full bg-[#F1F8E9] border-b border-gray-100 font-sans">
+    <nav className="w-full bg-[#F1F8E9] border-b border-gray-100 font-sans #8BC34A">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         {/* Logo / Brand Name */}
         <div className="flex gap-2 items-center">
