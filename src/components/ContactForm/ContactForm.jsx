@@ -71,6 +71,7 @@ const ContactForm = () => {
             >
               Full Name
             </label>
+            
             <input
               type="text"
               id="name"
