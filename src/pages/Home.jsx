@@ -1,23 +1,18 @@
-import heroimage from "../assets/heroimage.jpg";
+
 
 export default function HomeHero() {
   return (
     <section
       id="home"
-      className="w-full px-6 flex items-center justify-center  "
+      className="w-full px-6 flex items-center justify-center "
+
     >
       <div className="max-w-7xl  mx-auto flex flex-col items-center text-center ">
         {/* Central Rounded Logo/Badge Container */}
-        <div className="w-100 h-50 bg-white rounded-2xl shadow-md flex items-center justify-center mb-10 transition-transform duration-300 hover:scale-105">
-          <img
-            src={heroimage}
-            alt="SDO Alangilan Sustainable Development Logo"
-            className="w-full h-full object-contain"
-          />
-        </div>
+        
 
         {/* Main Header Title */}
-        <h1 className="text-[#004d1a] font-bold text-3xl sm:text-4xl md:text-5xl tracking-tight leading-tight max-w-3xl mb-6">
+        <h1 className="text-[#004d1a] font-bold text-3xl sm:text-4xl md:text-5xl tracking-tight leading-tight max-w-3xl mb-6 mt-10">
           Sustainable Development Office - Alangilan <br />
           <span className="text-xl md:text-3xl text-red-700">
             PEOPLE . PLANET . PURPOSE
@@ -51,7 +46,7 @@ export default function HomeHero() {
         {/* Animated Chevron Down Indicator */}
         <a
           href="#about"
-          className="text-[#004d1a]/60 animate-bounce cursor-pointer hover:text-[#004d1a] transition-colors"
+          className="text-[#004d1a]/60 animate-bounce cursor-pointer hover:text-[#004d1a] transition-colors mb-20"
         >
           <svg
             className="w-6 h-6"
