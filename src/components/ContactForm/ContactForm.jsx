@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -27,7 +27,7 @@ const ContactForm = () => {
       await new Promise((resolve) => setTimeout(resolve, 1200));
       setSubmitStatus('success');
       setFormData({ name: '', email: '', message: '' }); // Reset form on success
-    } catch (error) {
+    } catch {
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
