@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("#home");
 
   const navItems = [
     { name: "Home", path: "#home" },
@@ -11,6 +12,28 @@ export default function Navbar() {
     { name: "Contact", path: "#contact" },
   ];
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 120; // Offset for header height
+      let currentSection = "#home";
+
+      for (const item of navItems) {
+        const el = document.getElementById(item.path.substring(1));
+        if (el) {
+          const offsetTop = el.offsetTop;
+          if (scrollPosition >= offsetTop) {
+            currentSection = item.path;
+          }
+        }
+      }
+      setActiveSection(currentSection);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <nav className="w-full bg-[#F1F8E9] border-b border-gray-100 font-sans #8BC34A">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -18,8 +41,9 @@ export default function Navbar() {
         <div className="flex gap-2 items-center">
           <img
             className="h-10 w-10 rounded-[50%]"
-            src="src\assets\logo.jpg"
-          ></img>
+            src="src/assets/logo.jpg"
+            alt="SDO Alangilan Logo"
+          />
           <p className="text-[#1B5E20] font-bold text-xl tracking-wide shrink-0">
             SDO Alangilan
           </p>
@@ -31,17 +55,15 @@ export default function Navbar() {
             <a
               key={item.name}
               href={item.path}
-              className="relative py-2 text-sm font-medium transition-colors duration-200 text-gray-600 hover:text-[#004d1a]"
+              className={`relative py-2 text-sm font-medium transition-colors duration-200 ${
+                activeSection === item.path
+                  ? "text-[#1B5E20] font-semibold"
+                  : "text-gray-600 hover:text-[#004d1a]"
+              }`}
             >
               {item.name}
-              {({ isActive }) => (
-                <>
-                  {item.name}
-                  {/* Active Underline Effect */}
-                  {isActive && (
-                    <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#1B5E20] rounded-full" />
-                  )}
-                </>
+              {activeSection === item.path && (
+                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#1B5E20] rounded-full" />
               )}
             </a>
           ))}
