@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 
+const navItems = [
+  { name: "Home", path: "#home" },
+  { name: "About", path: "#about" },
+  { name: "SDGs", path: "#sdgs" },
+  { name: "Initiatives", path: "#initiatives" },
+  { name: "Contact", path: "#contact" },
+];
+
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("#home");
-
-  const navItems = [
-    { name: "Home", path: "#home" },
-    { name: "About", path: "#about" },
-    { name: "SDGs", path: "#sdgs" },
-    { name: "Initiatives", path: "#initiatives" },
-    { name: "Contact", path: "#contact" },
-  ];
 
   useEffect(() => {
     const handleScroll = () => {
