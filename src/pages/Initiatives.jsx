@@ -7,6 +7,20 @@ export default function Initiatives() {
         "Complete eco-friendly activities through GreenQuest and redeem your points with GreenRewards.",
       badgeColor: "#263238",
     },
+    {
+      category: "Energy Conservation",
+      title: "EcoCampus Audit",
+      description:
+        "Conduct energy audits and track the carbon footprint across our campus buildings to drive reduction policies.",
+      badgeColor: "#3F7E44",
+    },
+    {
+      category: "Quality Education",
+      title: "Sage Seminars",
+      description:
+        "Join interactive workshops and seminars discussing sustainable agriculture and clean energy policies.",
+      badgeColor: "#C5192D",
+    },
   ];
   return (
     <div id="initiatives" className="bg-[#F1F8E9] min-h-auto p-6 font-sans ">
@@ -30,21 +44,22 @@ export default function Initiatives() {
 
         {/* Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 ">
-          {acts.map((acts) => (
-            <div key={acts.id} className="flex flex-col">
+          {acts.map((act) => (
+            <div key={act.title} className="flex flex-col">
               {/* Graphic Card container */}
-              <div className="relative bg-[#8BC34A] rounded-2xl overflow-hidden shadow-sm p-6 mb-5 flex items-center justify-center min-h-55">
-                <div className="w-full flex justify-center items-center">
-                  <p>GreenQuest Image</p>
+              <div className="relative bg-[#8BC34A] rounded-2xl overflow-hidden shadow-sm p-6 mb-5 flex items-center justify-center min-h-[220px]">
+                <div className="w-full flex flex-col justify-center items-center text-center text-[#1E3A8A] font-bold">
+                  <span className="text-xs uppercase tracking-widest text-[#064e3b]/70 mb-1">{act.category}</span>
+                  <p className="text-2xl text-[#064e3b]">{act.title}</p>
                 </div>
               </div>
 
               {/* Text Info */}
-              <h3 className="text-[#1e3a8a] text-xl font-bold mb-2 transition-colors hover:text-[#064e3b] cursor-pointer">
-                {acts.title}
+              <h3 className="text-[#1E3A8A] text-xl font-bold mb-2 transition-colors hover:text-[#064e3b] cursor-pointer">
+                {act.title}
               </h3>
               <p className="text-gray-500 text-sm leading-relaxed">
-                {acts.description}
+                {act.description}
               </p>
             </div>
           ))}
