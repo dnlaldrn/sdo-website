@@ -1,1 +1,46 @@
 @import "tailwindcss";
+
+@theme {
+  /* Premium Sustainability theme colors */
+  --color-primary: #1b5e20;
+  --color-primary-dark: #003311;
+  --color-primary-light: #f1f8e9;
+  --color-primary-accent: #8bc34a;
+  
+  --color-emerald-deep: #004d1a;
+  --color-emerald-light: #ecfdf5;
+  --color-sage: #a3e635;
+  
+  --color-sdg-red: #E5243B;
+  --color-sdg-orange: #DDA63A;
+  --color-sdg-green: #4C9F38;
+  --color-sdg-crimson: #C5192D;
+  --color-sdg-rose: #FF3A21;
+  --color-sdg-blue: #26BDE2;
+  --color-sdg-yellow: #FCC30B;
+  --color-sdg-burgundy: #A21942;
+  --color-sdg-forest: #3F7E44;
+  --color-sdg-navy: #19486A;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Scrollbar customization for a premium look */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f8e9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #8bc34a;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1b5e20;
+}
