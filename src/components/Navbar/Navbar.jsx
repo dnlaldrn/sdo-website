@@ -45,7 +45,7 @@ export default function Navbar() {
             alt="SDO Alangilan Logo"
           />
           <p className="text-[#1B5E20] font-bold text-xl tracking-wide shrink-0">
-            SDO Alangilan
+            Sustainable Development Office
           </p>
         </div>
 

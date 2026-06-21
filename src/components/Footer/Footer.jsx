@@ -23,7 +23,7 @@ export default function Footer() {
               alt="SDO Alangilan Logo"
             />
             <h2 className="text-[#1B5E20] font-bold text-xl tracking-wide">
-              SDO Alangilan
+              Sustainable Development Office
             </h2>
           </div>
           <div className="text-sm text-gray-500 leading-relaxed font-light">
