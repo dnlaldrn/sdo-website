@@ -10,7 +10,7 @@ const ContactForm = () => {
   const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error' | null
 
   const handleChange = (e) => {
-    const { name, value } = e.value;
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value
@@ -35,8 +35,7 @@ const ContactForm = () => {
   };
 
   return (
-    <div className="bg-[#f4f9fc] min-h-screen flex items-center justify-center p-6 font-sans">
-      <div className="w-full max-w-lg bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-10">
+    <div className="w-full max-w-lg bg-white rounded-2xl p-8 md:p-10 font-sans">
         
         {/* Form Header */}
         <div className="mb-8">
@@ -146,7 +145,6 @@ const ContactForm = () => {
 
         </form>
       </div>
-    </div>
   );
 };
 
