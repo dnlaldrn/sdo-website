@@ -19,9 +19,9 @@ export default function Footer() {
           <div className="flex items-center gap-2">
             <img
               className="h-10 w-10 rounded-[50%]"
-              src="src\assets\logo.jpg"
               src={logo}
-            ></img>
+              alt="SDO Alangilan Logo"
+            />
             <h2 className="text-[#1B5E20] font-bold text-xl tracking-wide">
               SDO Alangilan
             </h2>
