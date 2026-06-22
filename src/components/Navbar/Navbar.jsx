@@ -71,9 +71,9 @@ export default function Navbar() {
 
         {/* Call to Action Button */}
         <div className="hidden md:block">
-          <button className="bg-[#1B5E20] hover:bg-[#003311] text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors duration-200">
+          <a href="#contact" className="bg-[#1B5E20] hover:bg-[#003311] text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors duration-200">
             Get Involved
-          </button>
+          </a>
         </div>
 
         {/* Mobile Menu Button */}
