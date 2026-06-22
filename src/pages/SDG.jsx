@@ -180,7 +180,7 @@ export default function SDG() {
           {sdgGoals.map((goal) => (
             <div
               key={goal.number}
-              className="relative overflow-hidden aspect-square rounded-xl shadow-sm border border-gray-100/50 group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+              className="relative overflow-hidden aspect-[3/4] rounded-xl shadow-sm border border-gray-100/50 group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
             >
               {/* Official UN Image Front Cover */}
               <img
@@ -228,7 +228,7 @@ export default function SDG() {
                     </div>
                   </div>
                   
-                  <button className="w-full bg-transparent border border-white/40 hover:border-white text-white font-semibold text-[9px] sm:text-[10px] py-1.5 sm:py-2 rounded transition-all uppercase tracking-wider text-center cursor-pointer">
+                  <button className="w-full bg-transparent border border-white/40 hover:border-white text-white font-semibold text-[9px] sm:text-[10px] py-1.5 rounded transition-all uppercase tracking-wider text-center cursor-pointer">
                     More info
                   </button>
                 </div>
