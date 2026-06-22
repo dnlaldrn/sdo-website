@@ -27,7 +27,7 @@ export default function Contact() {
             </button>
 
             {/* Dark Green Outlined Custom Button */}
-            <button className="w-full sm:w-auto bg-transparent hover:bg-black/10 border border-white/20 hover:border-white/40 text-white font-medium text-sm px-6 py-3.5 rounded-xl transition-all duration-200">
+            <button onClick={() => setIsOpen(!isOpen)}className="w-full sm:w-auto bg-transparent hover:bg-black/10 border border-white/20 hover:border-white/40 text-white font-medium text-sm px-6 py-3.5 rounded-xl transition-all duration-200">
               Partner With Us
             </button>
            {isOpen && (
