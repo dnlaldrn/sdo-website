@@ -1,12 +1,6 @@
 import { useState, useEffect } from "react";
+import { navItems } from "../../../utils/navItems";
 
-const navItems = [
-  { name: "Home", path: "#home" },
-  { name: "About", path: "#about" },
-  { name: "SDGs", path: "#sdgs" },
-  { name: "Initiatives", path: "#initiatives" },
-  { name: "Contact", path: "#contact" },
-];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
