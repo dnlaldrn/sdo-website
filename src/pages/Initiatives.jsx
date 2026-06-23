@@ -1,31 +1,65 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { acts } from "../../utils/initiativesData";
-
 
 export default function Initiatives() {
   const scrollContainerRef = useRef(null);
   const [isInteracting, setIsInteracting] = useState(false);
+  const interactionTimeoutRef = useRef(null);
 
+  // Unified functions to manage interaction state and timeouts globally
+  const startInteraction = useCallback(() => {
+    setIsInteracting(true);
+    if (interactionTimeoutRef.current) {
+      clearTimeout(interactionTimeoutRef.current);
+      interactionTimeoutRef.current = null;
+    }
+  }, []);
+
+  const endInteraction = useCallback(() => {
+    if (interactionTimeoutRef.current) {
+      clearTimeout(interactionTimeoutRef.current);
+    }
+    interactionTimeoutRef.current = setTimeout(() => {
+      setIsInteracting(false);
+      interactionTimeoutRef.current = null;
+    }, 2500);
+  }, []);
+
+  // 1. Center the scroll container ONCE on initial mount after DOM layout completes
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
 
-    // Position container initially in the middle third
-    const cardWidth = container.scrollWidth / 3;
-    container.scrollLeft = cardWidth;
+    const timer = setTimeout(() => {
+      const cardWidth = container.scrollWidth / 3;
+      if (cardWidth > 0) {
+        container.scrollLeft = cardWidth;
+      }
+    }, 150); // Small timeout to ensure browser layout is fully painted
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // 2. Animation loop: Only scrolls when the user is not actively interacting
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
 
     let animationFrameId;
     const speed = 0.8; // Scroll speed in pixels per frame
 
     const scrollLoop = () => {
       if (!isInteracting) {
-        container.scrollLeft += speed;
+        const cardWidth = container.scrollWidth / 3;
+        if (cardWidth > 0) {
+          container.scrollLeft += speed;
 
-        // Loop boundaries check
-        if (container.scrollLeft >= cardWidth * 2) {
-          container.scrollLeft -= cardWidth;
-        } else if (container.scrollLeft <= cardWidth / 2) {
-          container.scrollLeft += cardWidth;
+          // Infinite wrap boundaries check
+          if (container.scrollLeft >= cardWidth * 2) {
+            container.scrollLeft -= cardWidth;
+          } else if (container.scrollLeft <= cardWidth / 2) {
+            container.scrollLeft += cardWidth;
+          }
         }
       }
       animationFrameId = requestAnimationFrame(scrollLoop);
@@ -36,26 +70,14 @@ export default function Initiatives() {
     return () => cancelAnimationFrame(animationFrameId);
   }, [isInteracting]);
 
+  // 3. User interaction listener (mouse drag, wheel, touch swipe)
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
 
-    let interactionTimeout;
     let isDown = false;
     let startX;
     let scrollLeftVal;
-
-    const startInteraction = () => {
-      setIsInteracting(true);
-      clearTimeout(interactionTimeout);
-    };
-
-    const endInteraction = () => {
-      clearTimeout(interactionTimeout);
-      interactionTimeout = setTimeout(() => {
-        setIsInteracting(false);
-      }, 2500);
-    };
 
     const handleScroll = () => {
       const cardWidth = container.scrollWidth / 3;
@@ -68,63 +90,79 @@ export default function Initiatives() {
       }
     };
 
-    // Trackpad horizontal scrolling / Wheel event
     const handleWheel = () => {
       startInteraction();
       endInteraction();
     };
 
-    // Mouse drag scrolling handlers
+    // Document-level mouse dragging to avoid getting stuck when releasing mouse outside the element
+    const handleMouseMove = (e) => {
+      if (!isDown) return;
+      const x = e.pageX - container.offsetLeft;
+      const walk = (x - startX) * 1.5; // Drag sensitivity
+      container.scrollLeft = scrollLeftVal - walk;
+    };
+
+    const handleMouseUp = () => {
+      if (!isDown) return;
+      isDown = false;
+      endInteraction();
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+
     const handleMouseDown = (e) => {
+      if (e.button !== 0) return; // Only drag with left click!
       isDown = true;
       startX = e.pageX - container.offsetLeft;
       scrollLeftVal = container.scrollLeft;
       startInteraction();
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
     };
 
-    const handleMouseUp = () => {
-      isDown = false;
-      endInteraction();
-    };
-
-    const handleMouseMove = (e) => {
-      if (!isDown) return;
+    // Prevent default browser image/text dragging behavior which interferes with our custom drag
+    const handleDragStart = (e) => {
       e.preventDefault();
-      const x = e.pageX - container.offsetLeft;
-      const walk = (x - startX) * 1.5; // Drag sensitivity modifier
-      container.scrollLeft = scrollLeftVal - walk;
+    };
+
+    // Cancel dragging if the window loses focus
+    const handleCancelDrag = () => {
+      if (isDown) {
+        handleMouseUp();
+      }
     };
 
     container.addEventListener("scroll", handleScroll);
     container.addEventListener("touchstart", startInteraction, { passive: true });
     container.addEventListener("touchend", endInteraction, { passive: true });
+    container.addEventListener("touchcancel", endInteraction, { passive: true });
     container.addEventListener("mousedown", handleMouseDown);
-    container.addEventListener("mouseup", handleMouseUp);
-    container.addEventListener("mouseleave", handleMouseUp);
-    container.addEventListener("mousemove", handleMouseMove);
     container.addEventListener("wheel", handleWheel, { passive: true });
+    container.addEventListener("dragstart", handleDragStart);
+    window.addEventListener("blur", handleCancelDrag);
 
     return () => {
       container.removeEventListener("scroll", handleScroll);
       container.removeEventListener("touchstart", startInteraction);
       container.removeEventListener("touchend", endInteraction);
+      container.removeEventListener("touchcancel", endInteraction);
       container.removeEventListener("mousedown", handleMouseDown);
-      container.removeEventListener("mouseup", handleMouseUp);
-      container.removeEventListener("mouseleave", handleMouseUp);
-      container.removeEventListener("mousemove", handleMouseMove);
       container.removeEventListener("wheel", handleWheel);
-      clearTimeout(interactionTimeout);
+      container.removeEventListener("dragstart", handleDragStart);
+      window.removeEventListener("blur", handleCancelDrag);
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
     };
-  }, []);
+  }, [startInteraction, endInteraction]);
 
-  // Keyboard navigation listener (< > or ArrowLeft ArrowRight)
+  // 4. Keyboard arrow navigation listener (< > or ArrowLeft ArrowRight)
   useEffect(() => {
     const container = scrollContainerRef.current;
 
     const handleKeyDown = (e) => {
       if (!container) return;
 
-      // Ignore if user is currently typing in input elements
       if (
         document.activeElement.tagName === "INPUT" ||
         document.activeElement.tagName === "TEXTAREA"
@@ -134,19 +172,32 @@ export default function Initiatives() {
 
       const scrollAmount = 360; // Card width + gap spacing
 
-      if (e.key === "ArrowRight" || e.key === "." || e.key === ">") {
-        setIsInteracting(true);
-        container.scrollBy({ left: scrollAmount, behavior: "smooth" });
-        setTimeout(() => setIsInteracting(false), 3000);
-      } else if (e.key === "ArrowLeft" || e.key === "," || e.key === "<") {
-        setIsInteracting(true);
-        container.scrollBy({ left: -scrollAmount, behavior: "smooth" });
-        setTimeout(() => setIsInteracting(false), 3000);
+      if (
+        e.key === "ArrowRight" || e.key === "." || e.key === ">" ||
+        e.key === "ArrowLeft" || e.key === "," || e.key === "<"
+      ) {
+        startInteraction();
+
+        const direction = (e.key === "ArrowRight" || e.key === "." || e.key === ">") ? 1 : -1;
+        container.scrollBy({ left: scrollAmount * direction, behavior: "smooth" });
+
+        endInteraction();
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [startInteraction, endInteraction]);
+
+  // 5. Global cleanup on unmount to prevent leaks
+  useEffect(() => {
+    return () => {
+      if (interactionTimeoutRef.current) {
+        clearTimeout(interactionTimeoutRef.current);
+      }
+    };
   }, []);
 
   return (
