@@ -28,6 +28,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 60px;
 }
 
 /* Scrollbar customization for a premium look */

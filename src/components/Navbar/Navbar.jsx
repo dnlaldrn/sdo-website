@@ -45,7 +45,7 @@ export default function Navbar() {
   return (
     <>
       {/* Top Header Navbar */}
-      <nav className={`sticky top-0 z-40 w-full transition-all duration-500 ease-in-out ${
+      <nav className={`fixed top-0 left-0 right-0 z-40 w-full transition-all duration-500 ease-in-out ${
         isScrolled
           ? "translate-y-0 opacity-100 bg-[#F1F8E9]/80 backdrop-blur-md border-b border-gray-100 shadow-sm"
           : "-translate-y-full opacity-0 pointer-events-none"
