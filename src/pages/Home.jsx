@@ -1,5 +1,7 @@
 
 
+import logo from "../assets/logo.jpg";
+
 export default function HomeHero() {
   return (
     <section
@@ -9,10 +11,22 @@ export default function HomeHero() {
       <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
         {/* Left Column: Branding, Typography & Action Buttons */}
         <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left">
-          {/* Tagline Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-50 border border-red-200/50 text-red-700 text-xs font-bold uppercase tracking-wider mb-6 shadow-sm select-none">
-            <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
-            People • Planet • Purpose
+          {/* Brand Logo & Tagline Row */}
+          <div className="flex flex-col sm:flex-row items-center gap-4 mb-6">
+            <img
+              src={logo}
+              alt="Sustainable Development Office Logo"
+              className="h-16 w-16 sm:h-20 sm:w-20 rounded-full object-cover border-2 border-[#1B5E20]/20 shadow-md select-none"
+            />
+            <div className="flex flex-col items-center lg:items-start">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-red-50 border border-red-200/50 text-red-700 text-[10px] sm:text-xs font-bold uppercase tracking-wider mb-1.5 shadow-sm select-none">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
+                People • Planet • Purpose
+              </div>
+              <p className="italic font-semibold text-sm sm:text-base text-emerald-800/90 leading-relaxed">
+                "Future Ready, Sustainability Steady"
+              </p>
+            </div>
           </div>
 
           {/* Main Headline */}
@@ -22,11 +36,6 @@ export default function HomeHero() {
               Batangas State University Alangilan
             </span>
           </h1>
-
-          {/* Slogan Statement */}
-          <p className="italic font-semibold text-lg sm:text-xl lg:text-2xl text-emerald-800/90 leading-relaxed mb-6">
-            "Future Ready, Sustainability Steady"
-          </p>
 
           {/* Descriptive Context Subtext */}
           <p className="text-gray-600 text-sm sm:text-base md:text-lg leading-relaxed font-light mb-8 max-w-2xl">
