@@ -2,7 +2,7 @@ import ContactForm from "../components/ContactForm/ContactForm";
 
 export default function Contact() {
   return (
-    <section id="contact" className="w-full bg-gradient-to-b from-white to-[#F1F8E9]/30 py-24 px-6 font-sans border-t border-[#1B5E20]/5">
+    <section id="contact" className="w-full bg-gradient-to-b from-white to-[#F1F8E9]/30 py-14 px-6 font-sans border-t border-[#1B5E20]/5">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           

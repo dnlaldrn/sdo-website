@@ -223,10 +223,10 @@ export default function Initiatives() {
   }, []);
 
   return (
-    <div id="initiatives" className="bg-gradient-to-b from-[#F1F8E9]/50 to-white py-24 px-6 font-sans overflow-hidden">
+    <div id="initiatives" className="bg-gradient-to-b from-[#F1F8E9]/50 to-white py-14 px-6 font-sans overflow-hidden">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-16 gap-6 px-4">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-10 gap-6 px-4">
           <div>
             <span className="text-[#7fa13c] text-xs font-bold uppercase tracking-widest block mb-2">
               Ongoing Projects
