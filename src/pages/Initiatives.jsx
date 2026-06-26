@@ -47,20 +47,25 @@ export default function Initiatives() {
 
     let animationFrameId;
     const speed = 0.8; // Scroll speed in pixels per frame
+    let currentScroll = container.scrollLeft;
 
     const scrollLoop = () => {
       if (!isInteracting) {
         const cardWidth = container.scrollWidth / 3;
         if (cardWidth > 0) {
-          container.scrollLeft += speed;
+          currentScroll += speed;
 
           // Infinite wrap boundaries check
-          if (container.scrollLeft >= cardWidth * 2) {
-            container.scrollLeft -= cardWidth;
-          } else if (container.scrollLeft <= cardWidth / 2) {
-            container.scrollLeft += cardWidth;
+          if (currentScroll >= cardWidth * 2) {
+            currentScroll -= cardWidth;
+          } else if (currentScroll <= cardWidth / 2) {
+            currentScroll += cardWidth;
           }
+          container.scrollLeft = currentScroll;
         }
+      } else {
+        // Sync our local float accumulator while the user is actively interacting
+        currentScroll = container.scrollLeft;
       }
       animationFrameId = requestAnimationFrame(scrollLoop);
     };
