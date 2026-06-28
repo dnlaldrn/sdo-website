@@ -45,11 +45,15 @@ html {
   background: #1b5e20;
 }
 
-.scrollbar-none::-webkit-scrollbar {
-  display: none;
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
-@utility scrollbar-none {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+@utility animate-marquee {
+  animation: marquee 35s linear infinite;
 }
