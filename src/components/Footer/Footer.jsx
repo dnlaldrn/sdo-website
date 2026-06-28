@@ -1,15 +1,8 @@
 import logo from "../../assets/logo.jpg";
+import { footerLinks } from "../../../utils/footerLinks";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
-
-  const footerLinks = [
-    { name: "Privacy Policy", href: "#" },
-    { name: "Terms of Service", href: "#" },
-    { name: "SDG Portal", href: "#" },
-    { name: "University Site", href: "#" },
-    { name: "Contact Us", href: "#" },
-  ];
 
   return (
     <footer className="w-full bg-[#f4f8fa] text-gray-600 font-sans py-12 px-6 border-t border-gray-100">

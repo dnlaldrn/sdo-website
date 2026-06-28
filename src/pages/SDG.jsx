@@ -1,3 +1,5 @@
+import { sdgGoals } from "../../utils/sdgData";
+
 
 export default function SDG() {
   return (
