@@ -4,9 +4,17 @@ import { navItems } from "../../../utils/navItems";
 
 export default function Navbar() {
   const [activeSection, setActiveSection] = useState("#home");
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
+      // Toggle scrolled state based on window position
+      if (window.scrollY > 40) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+
       // Check if user is scrolled to the absolute bottom of the page
       const isBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 20;
       if (isBottom) {
@@ -37,7 +45,11 @@ export default function Navbar() {
   return (
     <>
       {/* Top Header Navbar */}
-      <nav className="sticky top-0 z-40 w-full bg-[#F1F8E9]/80 backdrop-blur-md border-b border-gray-100 font-sans shadow-sm transition-all duration-300">
+      <nav className={`sticky top-0 z-40 w-full transition-all duration-500 ease-in-out ${
+        isScrolled
+          ? "translate-y-0 opacity-100 bg-[#F1F8E9]/80 backdrop-blur-md border-b border-gray-100 shadow-sm"
+          : "-translate-y-full opacity-0 pointer-events-none"
+      }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 h-15 flex items-center justify-between">
           {/* Logo / Brand Name */}
           <div className="flex gap-2 items-center">
