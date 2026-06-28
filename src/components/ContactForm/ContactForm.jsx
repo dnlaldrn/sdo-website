@@ -71,11 +71,38 @@ const ContactForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    let filteredValue = value;
+
+    if (name === 'name') {
+      // 1. Strip numbers and special symbols (only letters, spaces, dots, and hyphens)
+      filteredValue = value.replace(/[^A-Za-z\s.-]/g, '');
+      // 2. Limit spammed repeated letters to max 3 consecutive repetitions
+      filteredValue = filteredValue.replace(/(.)\1{3,}/g, '$1$1$1');
+    }
+
+    if (name === 'organization') {
+      // Allow alphanumeric, spaces, periods, commas, ampersands, and hyphens
+      filteredValue = value.replace(/[^A-Za-z0-9\s.,&-]/g, '');
+      // Limit repeated spammed characters to max 3 consecutive
+      filteredValue = filteredValue.replace(/(.)\1{3,}/g, '$1$1$1');
+    }
+
     setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: filteredValue
     }));
-    validateField(name, value);
+    validateField(name, filteredValue);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      if (e.target.tagName === 'TEXTAREA') {
+        if (!e.shiftKey) {
+          e.preventDefault();
+          handleSubmit(e);
+        }
+      }
+    }
   };
 
   const handlePurposeChange = (val) => {
@@ -152,7 +179,7 @@ const ContactForm = () => {
         )}
 
         {/* Contact Form */}
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} onKeyDown={handleKeyDown} className="space-y-6">
           
           {/* Inquiry Purpose Selection Pills */}
           <div>
@@ -226,6 +253,7 @@ const ContactForm = () => {
               id="name"
               name="name"
               required
+              maxLength={50}
               value={formData.name}
               onChange={handleChange}
               placeholder="Alex Morgan"
@@ -258,6 +286,7 @@ const ContactForm = () => {
               id="email"
               name="email"
               required
+              maxLength={80}
               value={formData.email}
               onChange={handleChange}
               placeholder="alex@university.edu"
@@ -291,6 +320,7 @@ const ContactForm = () => {
                 id="organization"
                 name="organization"
                 required={formData.purpose === 'partner'}
+                maxLength={100}
                 value={formData.organization}
                 onChange={handleChange}
                 placeholder="Greenpeace Batangas / BSU Org"
@@ -324,6 +354,7 @@ const ContactForm = () => {
               name="message"
               required
               rows="4"
+              maxLength={500}
               value={formData.message}
               onChange={handleChange}
               placeholder={
