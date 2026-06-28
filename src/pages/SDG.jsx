@@ -1,5 +1,3 @@
-import { sdgGoals } from "../../utils/sdgData";
-
 
 export default function SDG() {
   return (
@@ -23,83 +21,60 @@ export default function SDG() {
         </div>
 
         {/* Goals Grid Layout */}
-        <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-16">
-          {sdgGoals.map((goal) => (
-            <div
-              key={goal.number}
-              className="relative overflow-hidden aspect-square rounded-xl shadow-sm border border-gray-100/50 group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+        <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 mb-12">
+          
+          {/* Loop over first 8 goals (1 to 8) */}
+          {sdgGoals.slice(0, 8).map((goal) => (
+            <div 
+              key={goal.number} 
+              className="bg-white rounded-xl p-6 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-md transition-shadow duration-200 min-h-[160px]"
             >
-              {/* Official UN Image Front Cover */}
-              <img
-                src={goal.image}
-                alt={goal.title}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-              />
+              <div className={`${goal.bgColor} text-white font-bold w-10 h-10 rounded-lg flex items-center justify-center text-lg mb-4 shadow-sm`}>
+                {goal.number}
+              </div>
+              <p className="text-[#032b1d] font-semibold text-xs sm:text-sm tracking-tight">
+                {goal.title}
+              </p>
+            </div>
+          ))}
 
-              {/* Dynamic Overlay On Hover (Fades and slides up) */}
-              <div
-                style={{ backgroundColor: goal.hexColor }}
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 flex flex-col justify-between p-3.5 text-white z-10 select-none text-left"
-              >
-                {/* Goal Index Header & Description */}
-                <div>
-                  <span className="text-xs font-bold uppercase tracking-wider block mb-1">
-                    Goal {goal.number}
-                  </span>
-                  <p className="text-[10px] leading-relaxed opacity-95 font-light line-clamp-3">
-                    {goal.description}
-                  </p>
-                </div>
+          {/* Wide Middle Accent Block (Replaces positions 9 & 10 in the responsive flow) */}
+          <div className="col-span-2 bg-[#edf7ed] border border-[#c8e6c9]/40 rounded-xl p-6 flex items-center justify-center text-center min-h-[160px]">
+            <p className="text-[#1b5e20] font-medium text-sm sm:text-base tracking-wide">
+              And 9 more vital targets...
+            </p>
+          </div>
 
-                {/* Metrics & Outlined Button */}
-                <div className="space-y-2.5 pt-2 border-t border-white/20">
-                  <div className="flex gap-4">
-                    <div>
-                      <span className="text-xs sm:text-sm font-extrabold block leading-none mb-0.5">
-                        {goal.targets}
-                      </span>
-                      <span className="text-[8px] font-medium tracking-wide opacity-80 uppercase block">
-                        Targets
-                      </span>
-                    </div>
-                    <div>
-                      <span className="text-xs sm:text-sm font-extrabold block leading-none mb-0.5">
-                        {goal.actions}
-                      </span>
-                      <span className="text-[8px] font-medium tracking-wide opacity-80 uppercase block">
-                        Actions
-                      </span>
-                    </div>
-                  </div>
-                  
-                  <button className="w-full bg-transparent border border-white/30 hover:border-white text-white font-bold text-[9px] py-1 rounded transition-all uppercase tracking-wider text-center cursor-pointer">
-                    More info
-                  </button>
-                </div>
+          {/* Loop over remaining goals (13 and 17) */}
+          {sdgGoals.slice(8).map((goal) => (
+            <div 
+              key={goal.number} 
+              className="bg-white rounded-xl p-6 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-md transition-shadow duration-200 min-h-[160px]"
+            >
+              <div className={`${goal.bgColor} text-white font-bold w-10 h-10 rounded-lg flex items-center justify-center text-lg mb-4 shadow-sm`}>
+                {goal.number}
               </div>
             </div>
           ))}
 
-          {/* Logo / See All Card (18th slot) */}
-          <div className="relative overflow-hidden aspect-square rounded-xl shadow-sm border border-gray-100/50 bg-white flex flex-col items-center justify-between p-4 sm:p-5 group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-            <div className="flex-1 flex items-center justify-center">
-              <img
-                src="/sdg/global-goals.png"
-                alt="UN Sustainable Development Goals Logo"
-                className="max-h-[75%] object-contain"
-              />
-            </div>
-            <a
-              href="https://sdgs.un.org/goals"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#0A97D9] hover:text-[#00689D] font-bold text-xs sm:text-sm tracking-wide transition-colors mt-auto"
-            >
-              See all
-            </a>
-          </div>
-
         </div>
+
+        {/* Bottom Text Link CTA */}
+        <a 
+          href="#" 
+          className="group flex items-center space-x-2 text-[#1b5e20] font-bold text-sm tracking-wide hover:text-[#003311] transition-colors duration-200"
+        >
+          <span>Explore all 17 Goals</span>
+          <svg 
+            className="w-4 h-4 transform transition-transform duration-200 group-hover:translate-x-1" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2.5" 
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
+        </a>
 
       </div>
     </section>
