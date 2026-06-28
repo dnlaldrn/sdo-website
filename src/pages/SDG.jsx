@@ -78,24 +78,26 @@ export default function SDG() {
             </div>
           ))}
 
-        </div>
+          {/* Logo / See All Card (18th slot) */}
+          <div className="relative overflow-hidden aspect-square rounded-xl shadow-sm border border-gray-100/50 bg-white flex flex-col items-center justify-between p-4 sm:p-5 group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+            <div className="flex-1 flex items-center justify-center">
+              <img
+                src="/sdg/global-goals.png"
+                alt="UN Sustainable Development Goals Logo"
+                className="max-h-[75%] object-contain"
+              />
+            </div>
+            <a
+              href="https://sdgs.un.org/goals"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#0A97D9] hover:text-[#00689D] font-bold text-xs sm:text-sm tracking-wide transition-colors mt-auto"
+            >
+              See all
+            </a>
+          </div>
 
-        {/* Bottom Text Link CTA */}
-        <a 
-          href="#" 
-          className="group flex items-center space-x-2 text-[#1b5e20] font-bold text-sm tracking-wide hover:text-[#003311] transition-colors duration-200"
-        >
-          <span>Explore all 17 Goals</span>
-          <svg 
-            className="w-4 h-4 transform transition-transform duration-200 group-hover:translate-x-1" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth="2.5" 
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-          </svg>
-        </a>
+        </div>
 
       </div>
     </section>
