@@ -1,14 +1,15 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import { acts } from "../../utils/initiativesData";
 
 export default function Initiatives() {
   const scrollContainerRef = useRef(null);
-  const [isInteracting, setIsInteracting] = useState(false);
+  const isInteractingRef = useRef(false);
   const interactionTimeoutRef = useRef(null);
+  const scrollPositionRef = useRef(0);
 
   // Unified functions to manage interaction state and timeouts globally
   const startInteraction = useCallback(() => {
-    setIsInteracting(true);
+    isInteractingRef.current = true;
     if (interactionTimeoutRef.current) {
       clearTimeout(interactionTimeoutRef.current);
       interactionTimeoutRef.current = null;
@@ -20,7 +21,7 @@ export default function Initiatives() {
       clearTimeout(interactionTimeoutRef.current);
     }
     interactionTimeoutRef.current = setTimeout(() => {
-      setIsInteracting(false);
+      isInteractingRef.current = false;
       interactionTimeoutRef.current = null;
     }, 2500);
   }, []);
@@ -34,6 +35,7 @@ export default function Initiatives() {
       const cardWidth = container.scrollWidth / 3;
       if (cardWidth > 0) {
         container.scrollLeft = cardWidth;
+        scrollPositionRef.current = cardWidth; // Synchronize initial scroll accumulator
       }
     }, 150); // Small timeout to ensure browser layout is fully painted
 
@@ -47,25 +49,24 @@ export default function Initiatives() {
 
     let animationFrameId;
     const speed = 0.8; // Scroll speed in pixels per frame
-    let currentScroll = container.scrollLeft;
 
     const scrollLoop = () => {
-      if (!isInteracting) {
+      if (!isInteractingRef.current) {
+        scrollPositionRef.current += speed;
+
         const cardWidth = container.scrollWidth / 3;
         if (cardWidth > 0) {
-          currentScroll += speed;
-
-          // Infinite wrap boundaries check
-          if (currentScroll >= cardWidth * 2) {
-            currentScroll -= cardWidth;
-          } else if (currentScroll <= cardWidth / 2) {
-            currentScroll += cardWidth;
+          if (scrollPositionRef.current >= cardWidth * 2) {
+            scrollPositionRef.current -= cardWidth;
+          } else if (scrollPositionRef.current <= cardWidth / 2) {
+            scrollPositionRef.current += cardWidth;
           }
-          container.scrollLeft = currentScroll;
         }
+
+        container.scrollLeft = scrollPositionRef.current;
       } else {
         // Sync our local float accumulator while the user is actively interacting
-        currentScroll = container.scrollLeft;
+        scrollPositionRef.current = container.scrollLeft;
       }
       animationFrameId = requestAnimationFrame(scrollLoop);
     };
@@ -73,7 +74,7 @@ export default function Initiatives() {
     animationFrameId = requestAnimationFrame(scrollLoop);
 
     return () => cancelAnimationFrame(animationFrameId);
-  }, [isInteracting]);
+  }, []);
 
   // 3. User interaction listener (mouse drag, wheel, touch swipe)
   useEffect(() => {
@@ -85,14 +86,30 @@ export default function Initiatives() {
     let scrollLeftVal;
 
     const handleScroll = () => {
+      // If we are not interacting (auto-scroll is active), ignore programmatic scroll events
+      // to prevent integer subpixel rounding from resetting our precise float accumulator.
+      if (!isInteractingRef.current) return;
+
       const cardWidth = container.scrollWidth / 3;
       if (cardWidth <= 0) return;
 
-      if (container.scrollLeft >= cardWidth * 2) {
-        container.scrollLeft -= cardWidth;
-      } else if (container.scrollLeft <= cardWidth / 2) {
-        container.scrollLeft += cardWidth;
+      let current = container.scrollLeft;
+      let didWrap = false;
+
+      if (current >= cardWidth * 2) {
+        current -= cardWidth;
+        didWrap = true;
+      } else if (current <= cardWidth / 2) {
+        current += cardWidth;
+        didWrap = true;
       }
+
+      if (didWrap) {
+        container.scrollLeft = current;
+      }
+      
+      // Always keep our shared scrollPositionRef in sync with the real scrollLeft
+      scrollPositionRef.current = current;
     };
 
     const handleWheel = () => {
@@ -238,7 +255,7 @@ export default function Initiatives() {
           {/* Scrolling Track Container */}
           <div 
             ref={scrollContainerRef}
-            className="flex overflow-x-auto scrollbar-none gap-6 py-2 scroll-smooth select-none cursor-grab active:cursor-grabbing"
+            className="flex overflow-x-auto scrollbar-none gap-6 py-2 select-none cursor-grab active:cursor-grabbing"
           >
             {/* Render items three times to build a truly seamless infinite scroll */}
             {[...acts, ...acts, ...acts].map((act, index) => (
