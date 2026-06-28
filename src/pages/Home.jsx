@@ -6,7 +6,7 @@ export default function HomeHero() {
   return (
     <section
       id="home"
-      className="w-full min-h-[calc(100vh-60px)] px-6 py-12 md:py-16 lg:py-20 flex flex-col items-center justify-center bg-gradient-to-b from-[#F1F8E9]/20 to-white font-sans"
+      className="w-full min-h-screen px-6 py-12 md:py-16 lg:py-20 flex flex-col items-center justify-center bg-gradient-to-b from-[#F1F8E9]/20 to-white font-sans"
     >
       <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
         {/* Left Column: Branding, Typography & Action Buttons */}
