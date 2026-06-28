@@ -4,6 +4,8 @@ const ContactForm = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    purpose: 'inquiry', // 'volunteer' | 'partner' | 'inquiry'
+    organization: '',
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -22,11 +24,11 @@ const ContactForm = () => {
     setIsSubmitting(true);
     setSubmitStatus(null);
 
-    // Simulate API request timeout
     try {
+      // Simulate API submit timeout
       await new Promise((resolve) => setTimeout(resolve, 1200));
       setSubmitStatus('success');
-      setFormData({ name: '', email: '', message: '' }); // Reset form on success
+      setFormData({ name: '', email: '', purpose: 'inquiry', organization: '', message: '' });
     } catch {
       setSubmitStatus('error');
     } finally {
@@ -35,15 +37,15 @@ const ContactForm = () => {
   };
 
   return (
-    <div className="w-full max-w-lg bg-white rounded-2xl p-8 md:p-10 font-sans">
+    <div className="w-full max-w-xl bg-white border border-gray-100 shadow-sm rounded-3xl p-6 sm:p-8 md:p-10 font-sans hover:shadow-md transition-shadow duration-300">
         
         {/* Form Header */}
         <div className="mb-8">
-          <h2 className="text-[#064e3b] text-2xl md:text-3xl font-bold mb-2">
+          <h3 className="text-[#064e3b] text-2xl md:text-3xl font-bold mb-2">
             Get in Touch
-          </h2>
-          <p className="text-gray-500 text-sm">
-            Have questions about our campus initiatives? Drop us a message below.
+          </h3>
+          <p className="text-gray-400 text-sm leading-relaxed">
+            Have questions or want to collaborate on our campus initiatives? Let us know how we can help.
           </p>
         </div>
 
@@ -62,6 +64,33 @@ const ContactForm = () => {
         {/* Contact Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
           
+          {/* Inquiry Purpose Selection Pills */}
+          <div>
+            <label className="block text-[#064e3b] text-xs font-bold uppercase tracking-wider mb-2.5">
+              I want to:
+            </label>
+            <div className="grid grid-cols-3 gap-2">
+              {[
+                { id: "inquiry", label: "💬 Inquire", val: "inquiry" },
+                { id: "volunteer", label: "🙋 Volunteer", val: "volunteer" },
+                { id: "partner", label: "🏢 Partner", val: "partner" },
+              ].map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => setFormData((prev) => ({ ...prev, purpose: item.val }))}
+                  className={`py-2.5 px-2 text-xs sm:text-sm font-bold rounded-xl border text-center transition-all duration-200 cursor-pointer ${
+                    formData.purpose === item.val
+                      ? "bg-[#064e3b] text-white border-[#064e3b] shadow-xs"
+                      : "bg-gray-50 text-gray-500 border-gray-200 hover:bg-gray-100 hover:border-gray-300"
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* Name Field */}
           <div>
             <label 
@@ -70,7 +99,6 @@ const ContactForm = () => {
             >
               Full Name
             </label>
-            
             <input
               type="text"
               id="name"
@@ -103,6 +131,28 @@ const ContactForm = () => {
             />
           </div>
 
+          {/* Organization Field (Conditional) */}
+          {formData.purpose === 'partner' && (
+            <div className="animate-fadeIn duration-200">
+              <label 
+                htmlFor="organization" 
+                className="block text-[#064e3b] text-xs font-bold uppercase tracking-wider mb-2"
+              >
+                Organization / Institution Name
+              </label>
+              <input
+                type="text"
+                id="organization"
+                name="organization"
+                required={formData.purpose === 'partner'}
+                value={formData.organization}
+                onChange={handleChange}
+                placeholder="Greenpeace Batangas / BSU Org"
+                className="w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl px-4 py-3 outline-none transition-all duration-200 focus:bg-white focus:border-[#064e3b] focus:ring-2 focus:ring-[#064e3b]/10 placeholder:text-gray-400"
+              />
+            </div>
+          )}
+
           {/* Message Field */}
           <div>
             <label 
@@ -115,10 +165,16 @@ const ContactForm = () => {
               id="message"
               name="message"
               required
-              rows="5"
+              rows="4"
               value={formData.message}
               onChange={handleChange}
-              placeholder="Tell us how you'd like to collaborate or ask a question..."
+              placeholder={
+                formData.purpose === 'volunteer'
+                  ? "Tell us about your interests, skills, or why you'd like to volunteer..."
+                  : formData.purpose === 'partner'
+                  ? "Describe your collaboration proposal, target SDGs, or resource request..."
+                  : "Tell us how we can help or ask a question..."
+              }
               className="w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl px-4 py-3 outline-none transition-all duration-200 focus:bg-white focus:border-[#064e3b] focus:ring-2 focus:ring-[#064e3b]/10 placeholder:text-gray-400 resize-none"
             />
           </div>
@@ -127,17 +183,20 @@ const ContactForm = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-[#064e3b] hover:bg-[#043427] text-white font-medium text-sm py-3.5 px-5 rounded-xl shadow-md shadow-emerald-950/10 hover:shadow-lg hover:shadow-emerald-950/20 active:scale-[0.99] transition-all duration-150 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full bg-[#064e3b] hover:bg-[#043427] text-white font-medium text-sm py-3.5 px-5 rounded-xl shadow-xs hover:shadow-md active:scale-[0.99] transition-all duration-150 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
           >
             {isSubmitting ? (
               <>
-                {/* Minimalist Spinner */}
                 <svg className="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                 </svg>
                 Sending...
               </>
+            ) : formData.purpose === 'volunteer' ? (
+              'Join as Volunteer'
+            ) : formData.purpose === 'partner' ? (
+              'Submit Proposal'
             ) : (
               'Submit Message'
             )}
