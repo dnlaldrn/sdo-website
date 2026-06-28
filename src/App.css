@@ -1,6 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 @theme {
+  --font-sans: "Outfit", sans-serif;
+
   /* Premium Sustainability theme colors */
   --color-primary: #1b5e20;
   --color-primary-dark: #003311;

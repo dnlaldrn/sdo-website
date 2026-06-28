@@ -7,6 +7,13 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
+      // Check if user is scrolled to the absolute bottom of the page
+      const isBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 20;
+      if (isBottom) {
+        setActiveSection(navItems[navItems.length - 1].path);
+        return;
+      }
+
       const scrollPosition = window.scrollY + 120; // Offset for header height
       let currentSection = "#home";
 
@@ -98,14 +105,15 @@ export default function Navbar() {
           } else if (item.name === "Initiatives") {
             icon = (
               <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" />
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 19.5h4.5" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 2v2M4.93 4.93l1.41 1.41M2 12h2M4.93 19.07l1.41-1.41M12 20v2M17.66 19.07l-1.41-1.41M22 12h-2M17.66 4.93l-1.41 1.41" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 16a5 5 0 116 0c0 1.25.5 2 1 3H8c.5-1 1-1.75 1-3z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 21.5h4.5" />
               </svg>
             );
           } else if (item.name === "Contact") {
             icon = (
               <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
               </svg>
             );
           }
