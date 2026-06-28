@@ -8,8 +8,66 @@ const ContactForm = () => {
     organization: '',
     message: ''
   });
+  const [errors, setErrors] = useState({
+    name: '',
+    email: '',
+    organization: '',
+    message: ''
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error' | null
+  const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error' | 'error-validation' | null
+
+  const validateField = (name, value) => {
+    let errorMsg = '';
+
+    if (name === 'name') {
+      const trimmed = value.trim();
+      if (!value) {
+        errorMsg = 'Full Name is required.';
+      } else if (!/^[A-Za-z\s.-]+$/.test(value)) {
+        errorMsg = 'Name must contain only letters, spaces, dots, or hyphens.';
+      } else if (trimmed.length < 2 || trimmed.length > 50) {
+        errorMsg = 'Name must be between 2 and 50 characters.';
+      }
+    }
+
+    if (name === 'email') {
+      if (!value) {
+        errorMsg = 'Email address is required.';
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+        errorMsg = 'Please enter a valid email address.';
+      }
+    }
+
+    if (name === 'organization') {
+      const trimmed = value.trim();
+      if (!value) {
+        errorMsg = 'Organization name is required.';
+      } else if (!/^[A-Za-z0-9\s.,&-]+$/.test(value)) {
+        errorMsg = 'Organization name contains invalid characters.';
+      } else if (trimmed.length < 2 || trimmed.length > 100) {
+        errorMsg = 'Organization name must be between 2 and 100 characters.';
+      }
+    }
+
+    if (name === 'message') {
+      const trimmed = value.trim();
+      if (!value) {
+        errorMsg = 'Message is required.';
+      } else if (trimmed.length < 10) {
+        errorMsg = `Message must be at least 10 characters long (currently ${trimmed.length} chars).`;
+      } else if (trimmed.length > 1000) {
+        errorMsg = `Message cannot exceed 1000 characters (currently ${trimmed.length} chars).`;
+      }
+    }
+
+    setErrors((prev) => ({
+      ...prev,
+      [name]: errorMsg
+    }));
+
+    return errorMsg === '';
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,10 +75,36 @@ const ContactForm = () => {
       ...prev,
       [name]: value
     }));
+    validateField(name, value);
+  };
+
+  const handlePurposeChange = (val) => {
+    setFormData((prev) => {
+      const updated = { ...prev, purpose: val };
+      if (val !== 'partner') {
+        updated.organization = '';
+      }
+      return updated;
+    });
+    setErrors((prev) => ({ ...prev, organization: '' }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validate all fields on submit
+    const isNameValid = validateField('name', formData.name);
+    const isEmailValid = validateField('email', formData.email);
+    const isOrgValid = formData.purpose === 'partner' 
+      ? validateField('organization', formData.organization) 
+      : true;
+    const isMsgValid = validateField('message', formData.message);
+
+    if (!isNameValid || !isEmailValid || !isOrgValid || !isMsgValid) {
+      setSubmitStatus('error-validation');
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitStatus(null);
 
@@ -29,6 +113,7 @@ const ContactForm = () => {
       await new Promise((resolve) => setTimeout(resolve, 1200));
       setSubmitStatus('success');
       setFormData({ name: '', email: '', purpose: 'inquiry', organization: '', message: '' });
+      setErrors({ name: '', email: '', organization: '', message: '' });
     } catch {
       setSubmitStatus('error');
     } finally {
@@ -55,9 +140,14 @@ const ContactForm = () => {
             ✨ Message sent successfully! We'll be in touch soon.
           </div>
         )}
+        {submitStatus === 'error-validation' && (
+          <div className="mb-6 p-4 bg-rose-50 text-rose-700 text-sm font-medium rounded-xl border border-rose-100 flex items-center gap-2">
+            ⚠️ Please correct the highlighted errors before submitting.
+          </div>
+        )}
         {submitStatus === 'error' && (
           <div className="mb-6 p-4 bg-rose-50 text-rose-700 text-sm font-medium rounded-xl border border-rose-100 flex items-center gap-2">
-            ❌ Something went wrong. Please try again.
+            ❌ Something went wrong on the server. Please try again.
           </div>
         )}
 
@@ -109,7 +199,7 @@ const ContactForm = () => {
                 <button
                   key={item.id}
                   type="button"
-                  onClick={() => setFormData((prev) => ({ ...prev, purpose: item.val }))}
+                  onClick={() => handlePurposeChange(item.val)}
                   className={`py-2.5 px-2 text-xs sm:text-sm font-bold rounded-xl border flex items-center justify-center gap-1.5 transition-all duration-200 cursor-pointer ${
                     formData.purpose === item.val
                       ? "bg-[#064e3b] text-white border-[#064e3b] shadow-xs"
@@ -139,8 +229,20 @@ const ContactForm = () => {
               value={formData.name}
               onChange={handleChange}
               placeholder="Alex Morgan"
-              className="w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl px-4 py-3 outline-none transition-all duration-200 focus:bg-white focus:border-[#064e3b] focus:ring-2 focus:ring-[#064e3b]/10 placeholder:text-gray-400"
+              className={`w-full bg-gray-50 border text-gray-800 text-sm rounded-xl px-4 py-3 outline-none transition-all duration-200 focus:bg-white focus:ring-2 placeholder:text-gray-400 ${
+                errors.name 
+                  ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-500/10' 
+                  : 'border-gray-200 focus:border-[#064e3b] focus:ring-[#064e3b]/10'
+              }`}
             />
+            {errors.name && (
+              <p className="mt-1.5 text-rose-600 text-xs font-medium animate-fadeIn flex items-center gap-1">
+                <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                {errors.name}
+              </p>
+            )}
           </div>
 
           {/* Email Field */}
@@ -159,8 +261,20 @@ const ContactForm = () => {
               value={formData.email}
               onChange={handleChange}
               placeholder="alex@university.edu"
-              className="w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl px-4 py-3 outline-none transition-all duration-200 focus:bg-white focus:border-[#064e3b] focus:ring-2 focus:ring-[#064e3b]/10 placeholder:text-gray-400"
+              className={`w-full bg-gray-50 border text-gray-800 text-sm rounded-xl px-4 py-3 outline-none transition-all duration-200 focus:bg-white focus:ring-2 placeholder:text-gray-400 ${
+                errors.email 
+                  ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-500/10' 
+                  : 'border-gray-200 focus:border-[#064e3b] focus:ring-[#064e3b]/10'
+              }`}
             />
+            {errors.email && (
+              <p className="mt-1.5 text-rose-600 text-xs font-medium animate-fadeIn flex items-center gap-1">
+                <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                {errors.email}
+              </p>
+            )}
           </div>
 
           {/* Organization Field (Conditional) */}
@@ -180,8 +294,20 @@ const ContactForm = () => {
                 value={formData.organization}
                 onChange={handleChange}
                 placeholder="Greenpeace Batangas / BSU Org"
-                className="w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl px-4 py-3 outline-none transition-all duration-200 focus:bg-white focus:border-[#064e3b] focus:ring-2 focus:ring-[#064e3b]/10 placeholder:text-gray-400"
+                className={`w-full bg-gray-50 border text-gray-800 text-sm rounded-xl px-4 py-3 outline-none transition-all duration-200 focus:bg-white focus:ring-2 placeholder:text-gray-400 ${
+                  errors.organization 
+                    ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-500/10' 
+                    : 'border-gray-200 focus:border-[#064e3b] focus:ring-[#064e3b]/10'
+                }`}
               />
+              {errors.organization && (
+                <p className="mt-1.5 text-rose-600 text-xs font-medium animate-fadeIn flex items-center gap-1">
+                  <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                  {errors.organization}
+                </p>
+              )}
             </div>
           )}
 
@@ -207,8 +333,20 @@ const ContactForm = () => {
                   ? "Describe your collaboration proposal, target SDGs, or resource request..."
                   : "Tell us how we can help or ask a question..."
               }
-              className="w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl px-4 py-3 outline-none transition-all duration-200 focus:bg-white focus:border-[#064e3b] focus:ring-2 focus:ring-[#064e3b]/10 placeholder:text-gray-400 resize-none"
+              className={`w-full bg-gray-50 border text-gray-800 text-sm rounded-xl px-4 py-3 outline-none transition-all duration-200 focus:bg-white focus:ring-2 placeholder:text-gray-400 resize-none ${
+                errors.message 
+                  ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-500/10' 
+                  : 'border-gray-200 focus:border-[#064e3b] focus:ring-[#064e3b]/10'
+              }`}
             />
+            {errors.message && (
+              <p className="mt-1.5 text-rose-600 text-xs font-medium animate-fadeIn flex items-center gap-1">
+                <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                {errors.message}
+              </p>
+            )}
           </div>
 
           {/* Submit Button */}
