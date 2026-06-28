@@ -21,38 +21,62 @@ export default function SDG() {
         </div>
 
         {/* Goals Grid Layout */}
-        <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 mb-12">
-          
-          {/* Loop over first 8 goals (1 to 8) */}
-          {sdgGoals.slice(0, 8).map((goal) => (
-            <div 
-              key={goal.number} 
-              className="bg-white rounded-xl p-6 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-md transition-shadow duration-200 min-h-[160px]"
+        <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-16">
+          {sdgGoals.map((goal) => (
+            <div
+              key={goal.number}
+              className="relative overflow-hidden aspect-[3/4] rounded-xl shadow-sm border border-gray-100/50 group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
             >
-              <div className={`${goal.bgColor} text-white font-bold w-10 h-10 rounded-lg flex items-center justify-center text-lg mb-4 shadow-sm`}>
-                {goal.number}
-              </div>
-              <p className="text-[#032b1d] font-semibold text-xs sm:text-sm tracking-tight">
-                {goal.title}
-              </p>
-            </div>
-          ))}
+              {/* Official UN Image Front Cover */}
+              <img
+                src={goal.image}
+                alt={goal.title}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
 
-          {/* Wide Middle Accent Block (Replaces positions 9 & 10 in the responsive flow) */}
-          <div className="col-span-2 bg-[#edf7ed] border border-[#c8e6c9]/40 rounded-xl p-6 flex items-center justify-center text-center min-h-[160px]">
-            <p className="text-[#1b5e20] font-medium text-sm sm:text-base tracking-wide">
-              And 9 more vital targets...
-            </p>
-          </div>
+              {/* Dynamic Overlay On Hover (Fades and slides up) */}
+              <div
+                style={{ backgroundColor: goal.hexColor }}
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 flex flex-col justify-between p-4 sm:p-5 text-white z-10 select-none text-left"
+              >
+                {/* Large Number & Goal Index */}
+                <div>
+                  <span className="text-4xl sm:text-5xl font-black leading-none block mb-0.5">
+                    {goal.number}
+                  </span>
+                  <span className="text-xs sm:text-sm font-extrabold block mb-2 tracking-tight">
+                    Goal {goal.number}
+                  </span>
+                  <p className="text-[9px] sm:text-[11px] leading-relaxed opacity-95 font-light line-clamp-3 sm:line-clamp-4">
+                    {goal.description}
+                  </p>
+                </div>
 
-          {/* Loop over remaining goals (13 and 17) */}
-          {sdgGoals.slice(8).map((goal) => (
-            <div 
-              key={goal.number} 
-              className="bg-white rounded-xl p-6 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-md transition-shadow duration-200 min-h-[160px]"
-            >
-              <div className={`${goal.bgColor} text-white font-bold w-10 h-10 rounded-lg flex items-center justify-center text-lg mb-4 shadow-sm`}>
-                {goal.number}
+                {/* Metrics & Outlined Button */}
+                <div className="space-y-3 pt-3 border-t border-white/20">
+                  <div className="flex gap-6">
+                    <div>
+                      <span className="text-base sm:text-lg font-extrabold block leading-none mb-1">
+                        {goal.targets}
+                      </span>
+                      <span className="text-[8px] sm:text-[9px] font-medium tracking-wide opacity-80 uppercase block">
+                        Targets
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-base sm:text-lg font-extrabold block leading-none mb-1">
+                        {goal.actions}
+                      </span>
+                      <span className="text-[8px] sm:text-[9px] font-medium tracking-wide opacity-80 uppercase block">
+                        Actions
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <button className="w-full bg-transparent border border-white/40 hover:border-white text-white font-semibold text-[9px] sm:text-[10px] py-1.5 rounded transition-all uppercase tracking-wider text-center cursor-pointer">
+                    More info
+                  </button>
+                </div>
               </div>
             </div>
           ))}
