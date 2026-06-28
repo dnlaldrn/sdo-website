@@ -25,7 +25,7 @@ export default function SDG() {
           {sdgGoals.map((goal) => (
             <div
               key={goal.number}
-              className="relative overflow-hidden aspect-[3/4] rounded-xl shadow-sm border border-gray-100/50 group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+              className="relative overflow-hidden aspect-square rounded-xl shadow-sm border border-gray-100/50 group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
             >
               {/* Official UN Image Front Cover */}
               <img
@@ -37,43 +37,40 @@ export default function SDG() {
               {/* Dynamic Overlay On Hover (Fades and slides up) */}
               <div
                 style={{ backgroundColor: goal.hexColor }}
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 flex flex-col justify-between p-4 sm:p-5 text-white z-10 select-none text-left"
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 flex flex-col justify-between p-3.5 text-white z-10 select-none text-left"
               >
-                {/* Large Number & Goal Index */}
+                {/* Goal Index Header & Description */}
                 <div>
-                  <span className="text-4xl sm:text-5xl font-black leading-none block mb-0.5">
-                    {goal.number}
-                  </span>
-                  <span className="text-xs sm:text-sm font-extrabold block mb-2 tracking-tight">
+                  <span className="text-xs font-bold uppercase tracking-wider block mb-1">
                     Goal {goal.number}
                   </span>
-                  <p className="text-[9px] sm:text-[11px] leading-relaxed opacity-95 font-light line-clamp-3 sm:line-clamp-4">
+                  <p className="text-[10px] leading-relaxed opacity-95 font-light line-clamp-3">
                     {goal.description}
                   </p>
                 </div>
 
                 {/* Metrics & Outlined Button */}
-                <div className="space-y-3 pt-3 border-t border-white/20">
-                  <div className="flex gap-6">
+                <div className="space-y-2.5 pt-2 border-t border-white/20">
+                  <div className="flex gap-4">
                     <div>
-                      <span className="text-base sm:text-lg font-extrabold block leading-none mb-1">
+                      <span className="text-xs sm:text-sm font-extrabold block leading-none mb-0.5">
                         {goal.targets}
                       </span>
-                      <span className="text-[8px] sm:text-[9px] font-medium tracking-wide opacity-80 uppercase block">
+                      <span className="text-[8px] font-medium tracking-wide opacity-80 uppercase block">
                         Targets
                       </span>
                     </div>
                     <div>
-                      <span className="text-base sm:text-lg font-extrabold block leading-none mb-1">
+                      <span className="text-xs sm:text-sm font-extrabold block leading-none mb-0.5">
                         {goal.actions}
                       </span>
-                      <span className="text-[8px] sm:text-[9px] font-medium tracking-wide opacity-80 uppercase block">
+                      <span className="text-[8px] font-medium tracking-wide opacity-80 uppercase block">
                         Actions
                       </span>
                     </div>
                   </div>
                   
-                  <button className="w-full bg-transparent border border-white/40 hover:border-white text-white font-semibold text-[9px] sm:text-[10px] py-1.5 rounded transition-all uppercase tracking-wider text-center cursor-pointer">
+                  <button className="w-full bg-transparent border border-white/30 hover:border-white text-white font-bold text-[9px] py-1 rounded transition-all uppercase tracking-wider text-center cursor-pointer">
                     More info
                   </button>
                 </div>
