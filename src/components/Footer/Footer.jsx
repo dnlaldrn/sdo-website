@@ -17,7 +17,7 @@ export default function Footer() {
               alt="SDO Alangilan Logo"
             />
             <span className="text-[#1B5E20] font-bold text-lg tracking-wide whitespace-nowrap">
-              Sustainable Development Office
+              SDO Alangilan
             </span>
           </div>
 
