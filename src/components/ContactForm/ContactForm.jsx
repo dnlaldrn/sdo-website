@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import emailjs from "@emailjs/browser";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -136,12 +137,39 @@ const ContactForm = () => {
     setSubmitStatus(null);
 
     try {
-      // Simulate API submit timeout
-      await new Promise((resolve) => setTimeout(resolve, 1200));
-      setSubmitStatus('success');
-      setFormData({ name: '', email: '', purpose: 'inquiry', organization: '', message: '' });
-      setErrors({ name: '', email: '', organization: '', message: '' });
-    } catch {
+     await emailjs.send(
+  import.meta.env.VITE_EMAILJS_SERVICE_ID,
+  import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+  {
+    name: formData.name,
+    email: formData.email,
+    purpose: formData.purpose,
+    organization: formData.organization || "N/A",
+    message: formData.message,
+  },
+  import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+);
+
+setSubmitStatus("success");
+
+setFormData({
+  name: "",
+  email: "",
+  purpose: "Inquiry",
+  organization: "",
+  message: "",
+});
+
+setErrors({
+  name: "",
+  email: "",
+  organization: "",
+  message: "",
+});
+    } catch(error) {
+       console.log(error);
+      console.log(error.text);
+      console.log(error.status);
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
