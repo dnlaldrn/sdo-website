@@ -21,6 +21,7 @@ const ContactForm = () => {
   const validateField = (name, value) => {
     let errorMsg = '';
 
+   
     if (name === 'name') {
       const trimmed = value.trim();
       if (!value) {
@@ -74,6 +75,8 @@ const ContactForm = () => {
     const { name, value } = e.target;
     let filteredValue = value;
 
+    
+
     if (name === 'name') {
       // 1. Strip numbers and special symbols (only letters, spaces, dots, and hyphens)
       filteredValue = value.replace(/[^A-Za-z\s.-]/g, '');
@@ -117,8 +120,12 @@ const ContactForm = () => {
     setErrors((prev) => ({ ...prev, organization: '' }));
   };
 
+   const [lastSubmitTime, setLastSubmitTime] = useState(0);
+   
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+     const now = Date.now();
     
     // Validate all fields on submit
     const isNameValid = validateField('name', formData.name);
@@ -132,9 +139,15 @@ const ContactForm = () => {
       setSubmitStatus('error-validation');
       return;
     }
+     if (now - lastSubmitTime < 60000) {
+   setSubmitStatus("limit");
+    return;
+  }
 
-    setIsSubmitting(true);
-    setSubmitStatus(null);
+   setIsSubmitting(true);
+   setSubmitStatus(null);
+  setLastSubmitTime(now);
+   
 
     try {
      await emailjs.send(
@@ -198,6 +211,11 @@ setErrors({
         {submitStatus === 'error-validation' && (
           <div className="mb-6 p-4 bg-rose-50 text-rose-700 text-sm font-medium rounded-xl border border-rose-100 flex items-center gap-2">
             ⚠️ Please correct the highlighted errors before submitting.
+          </div>
+        )}
+         {submitStatus === 'limit' && (
+          <div className="mb-6 p-4 bg-rose-50 text-rose-700 text-sm font-medium rounded-xl border border-rose-100 flex items-center gap-2">
+            ⚠️ Please wait 1 minute before sending another message.
           </div>
         )}
         {submitStatus === 'error' && (
