@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { acts } from "../../utils/initiativesData";
 
-
 export default function Initiatives() {
   const scrollContainerRef = useRef(null);
+  const scrollPositionRef = useRef(0);
+  const isInteractingRef = useRef(false);
   const [isInteracting, setIsInteracting] = useState(false);
 
   useEffect(() => {
@@ -84,7 +85,7 @@ export default function Initiatives() {
       if (didWrap) {
         container.scrollLeft = current;
       }
-      
+
       // Always keep our shared scrollPositionRef in sync with the real scrollLeft
       scrollPositionRef.current = current;
     };
@@ -117,7 +118,9 @@ export default function Initiatives() {
     };
 
     container.addEventListener("scroll", handleScroll);
-    container.addEventListener("touchstart", startInteraction, { passive: true });
+    container.addEventListener("touchstart", startInteraction, {
+      passive: true,
+    });
     container.addEventListener("touchend", endInteraction, { passive: true });
     container.addEventListener("mousedown", handleMouseDown);
     container.addEventListener("mouseup", handleMouseUp);
@@ -171,7 +174,10 @@ export default function Initiatives() {
   }, []);
 
   return (
-    <div id="initiatives" className="bg-gradient-to-b from-[#F1F8E9]/50 to-white py-14 px-6 font-sans overflow-hidden">
+    <div
+      id="initiatives"
+      className="bg-gradient-to-b from-[#F1F8E9]/50 to-white py-14 px-6 font-sans overflow-hidden"
+    >
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-10 gap-6 px-4">
@@ -184,12 +190,14 @@ export default function Initiatives() {
             </h1>
           </div>
           <div>
-            <a 
-              href="#projects" 
+            <a
+              href="#projects"
               className="text-[#064e3b] hover:text-[#003311] font-bold text-sm flex items-center gap-1.5 transition-colors duration-200 group whitespace-nowrap cursor-pointer"
             >
-              View All Projects 
-              <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
+              View All Projects
+              <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">
+                →
+              </span>
             </a>
           </div>
         </div>
@@ -201,7 +209,7 @@ export default function Initiatives() {
           <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-white via-white/10 to-transparent z-10 pointer-events-none" />
 
           {/* Scrolling Track Container */}
-          <div 
+          <div
             ref={scrollContainerRef}
             className="flex overflow-x-auto scrollbar-none gap-6 py-2 select-none cursor-grab active:cursor-grabbing"
           >
@@ -245,7 +253,6 @@ export default function Initiatives() {
             ))}
           </div>
         </div>
-
       </div>
     </div>
   );
