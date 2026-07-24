@@ -214,7 +214,7 @@ export default function Initiatives() {
             className="flex overflow-x-auto scrollbar-none gap-6 py-2 select-none cursor-grab active:cursor-grabbing"
           >
             {/* Render items three times to build a truly seamless infinite scroll */}
-            {[...acts, ...acts, ...acts].map((act, index) => (
+            {[...acts].map((act, index) => (
               <div
                 key={`${act.title}-${index}`}
                 className="w-[280px] sm:w-[320px] md:w-[340px] flex-shrink-0 transition-all duration-300"
