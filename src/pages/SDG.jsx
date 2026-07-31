@@ -3,11 +3,11 @@ import { sdgGoals } from "../../utils/sdgData";
 
 export default function SDG() {
   return (
-    <section id="sdgs" className="w-full bg-[#f4f8fa] py-24 px-6 font-sans">
+    <section id="sdgs" className="w-full bg-[#f4f8fa] py-14 px-6 font-sans">
       <div className="max-w-7xl mx-auto flex flex-col items-center">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mb-16 space-y-4">
+        <div className="text-center max-w-3xl mb-10 space-y-4">
           <span className="text-primary-accent uppercase font-bold text-xs tracking-widest block">
             Our Roadmap
           </span>
@@ -23,7 +23,7 @@ export default function SDG() {
         </div>
 
         {/* Goals Grid Layout */}
-        <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-16">
+        <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-10">
           {sdgGoals.map((goal) => (
             <div
               key={goal.number}
