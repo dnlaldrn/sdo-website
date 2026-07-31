@@ -1,5 +1,3 @@
-
-
 import logo from "../assets/logo.jpg";
 
 export default function HomeHero() {
@@ -16,6 +14,9 @@ export default function HomeHero() {
             <img
               src={logo}
               alt="Sustainable Development Office Logo"
+              width={80}
+              height={80}
+              fetchpriority="high"
               className="h-16 w-16 sm:h-20 sm:w-20 rounded-full object-cover border-2 border-[#1B5E20]/20 shadow-md select-none"
             />
             <div className="flex flex-col items-center lg:items-start">
@@ -47,15 +48,12 @@ export default function HomeHero() {
 
           {/* Call to Action Button Row */}
           <div className="flex flex-col sm:flex-row items-center gap-4 w-full max-w-[280px] sm:max-w-none sm:w-auto mb-4">
-            {/* Solid Green CTA */}
             <a
               href="#sdgs"
               className="w-full sm:w-auto bg-[#004d1a] hover:bg-[#003311] text-white px-8 py-3.5 rounded-xl text-sm font-semibold tracking-wide shadow-md hover:shadow-lg transition-all duration-200 text-center cursor-pointer"
             >
               Our Strategic Goals
             </a>
-
-            {/* Outlined Light CTA */}
             <a
               href="#about"
               className="w-full sm:w-auto bg-white border border-[#004d1a]/30 hover:border-[#004d1a] text-[#004d1a] hover:bg-[#004d1a]/5 px-8 py-3.5 rounded-xl text-sm font-semibold tracking-wide shadow-sm hover:shadow transition-all duration-200 text-center cursor-pointer"
@@ -70,10 +68,12 @@ export default function HomeHero() {
           {/* Card 1: Organic Growth (Left Back) */}
           <div className="absolute top-0 left-4 w-[65%] aspect-[4/3] rounded-3xl overflow-hidden shadow-xl border-4 border-white transform -rotate-3 hover:rotate-0 hover:scale-105 hover:z-30 transition-all duration-500 z-10 group cursor-pointer">
             <img
-              src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=600&q=80"
+              src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=400&q=60&fm=webp"
               alt="Sustainability seedling growth"
+              width={400}
+              height={300}
+              fetchpriority="high"
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-              loading="lazy"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 z-10">
               <span className="text-white text-xs font-bold uppercase tracking-wider">Environmental Stewardship</span>
@@ -83,10 +83,12 @@ export default function HomeHero() {
           {/* Card 2: Renewable Energy (Right Front) */}
           <div className="absolute bottom-4 right-4 w-[60%] aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border-4 border-white transform rotate-3 hover:rotate-0 hover:scale-105 hover:z-30 transition-all duration-500 z-20 group cursor-pointer">
             <img
-              src="https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=600&q=80"
+              src="https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=400&q=60&fm=webp"
               alt="Clean solar panel infrastructure"
+              width={400}
+              height={300}
+              fetchpriority="high"
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-              loading="lazy"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 z-10">
               <span className="text-white text-xs font-bold uppercase tracking-wider">Renewable Energy Solutions</span>
@@ -96,10 +98,12 @@ export default function HomeHero() {
           {/* Card 3: Academic Collaboration (Small Floating Front) */}
           <div className="absolute top-12 right-12 w-[35%] aspect-square rounded-2xl overflow-hidden shadow-lg border-2 border-white transform -rotate-12 hover:rotate-0 hover:scale-115 hover:z-30 transition-all duration-500 z-30 group cursor-pointer hidden sm:block">
             <img
-              src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=400&q=80"
+              src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=250&q=60&fm=webp"
               alt="Collaborative teamwork"
+              width={250}
+              height={250}
+              fetchpriority="high"
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-              loading="lazy"
             />
           </div>
         </div>

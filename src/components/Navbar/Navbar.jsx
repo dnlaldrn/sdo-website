@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { navItems } from "../../../utils/navItems";
-import {logo} from '../../assets/logo.jpg'
+
 
 export default function Navbar() {
   const [activeSection, setActiveSection] = useState("#home");
@@ -55,7 +55,8 @@ export default function Navbar() {
           <div className="flex gap-2 items-center">
             <img
               className="h-8 w-8 sm:h-10 sm:w-10 rounded-[50%]"
-              src={logo}
+              src="/logo.jpg"
+            
               alt="SDO Alangilan Logo"
             />
             <p className="text-[#1B5E20] font-bold text-sm sm:text-base md:text-xl tracking-wide shrink-0">
