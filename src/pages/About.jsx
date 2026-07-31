@@ -1,6 +1,6 @@
 export default function About() {
   return (
-    <section id="about" className="w-full bg-[#F1F8E9] py-14 px-6 font-sans">
+    <section id="about" className="w-full bg-[#F1F8E9] py-8 sm:py-12 md:py-16 px-4 sm:px-6 font-sans">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
         {/* Left Column: Text Content (Occupies 5 columns on large screens) */}
         <div className="lg:col-span-5 flex flex-col space-y-6">

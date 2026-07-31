@@ -8,7 +8,7 @@ function MainLayout() {
       <div className="min-h-screen flex flex-col bg-white">
         <Navbar />
 
-        <main className="pb-16 md:pb-0">
+        <main className="flex-1">
           <Outlet />
         </main>
 
