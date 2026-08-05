@@ -1,5 +1,6 @@
 import logo from "../assets/logo.jpg";
 
+
 export default function HomeHero() {
   return (
     <section
@@ -131,6 +132,7 @@ export default function HomeHero() {
           </svg>
         </a>
       </div>
+
     </section>
   );
 }
