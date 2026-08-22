@@ -20,7 +20,7 @@ export default function Initiatives() {
     }
 
     let animationFrameId;
-    const speed = 0.9; // Smooth scroll speed in pixels per frame
+    const speed = 0.85; // Smooth scroll speed in pixels per frame
 
     const scrollLoop = () => {
       if (!isInteractingRef.current && !selectedInitiative && container) {
@@ -177,7 +177,7 @@ export default function Initiatives() {
         return;
       }
 
-      const scrollAmount = 360; // Card width + gap spacing
+      const scrollAmount = 430; // 3-Card width + gap spacing
 
       if (e.key === "ArrowRight" || e.key === "." || e.key === ">") {
         isInteractingRef.current = true;
@@ -220,84 +220,95 @@ export default function Initiatives() {
   return (
     <div
       id="initiatives"
-      className="bg-gradient-to-b from-[#F1F8E9]/50 to-white py-8 sm:py-12 md:py-16 px-4 sm:px-6 font-sans overflow-hidden"
+      className="scroll-mt-16 bg-gradient-to-b from-white via-[#F1F8E9]/40 to-[#F1F8E9]/60 py-6 sm:py-8 lg:py-10 px-4 sm:px-6 font-sans overflow-hidden"
     >
       <div className="max-w-7xl mx-auto">
-        {/* Header Section */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-6 sm:mb-10 gap-6 px-4">
+        
+        {/* DEVCON-Style Header Section (Compact for 1-Screen View) */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-4 sm:mb-6 gap-3 px-2">
           <div>
-            <span className="text-[#7fa13c] text-xs font-bold uppercase tracking-widest block mb-2">
-              Ongoing Projects
+            <span className="text-[#1B5E20] text-xs font-bold uppercase tracking-widest block mb-1">
+              WHAT WE RUN
             </span>
-            <h1 className="text-[#064e3b] text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight tracking-tight">
-              Pioneering Change Through Campus Initiatives
-            </h1>
+            <h2 className="text-[#064e3b] text-2xl sm:text-3xl lg:text-4xl font-md leading-tight tracking-tight">
+              Featured Programs
+            </h2>
           </div>
-          <div className="justify-center">
-            <a
-              href="#initiatives"
-              className="text-[#064e3b] hover:text-[#003311] font-bold text-sm flex items-center gap-1.5 transition-colors duration-200 group whitespace-nowrap cursor-pointer"
-            >
-              View All Projects
-              <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">
-                →
-              </span>
-            </a>
+          <div className="lg:max-w-md">
+            <p className="text-gray-600 text-xs sm:text-sm leading-relaxed font-light lg:text-right">
+              Year-round initiatives to educate, connect, and elevate sustainable practices across BatStateU Alangilan.
+            </p>
           </div>
         </div>
 
-        {/* Interactive Marquee Slider Wrapper */}
-        <div className="relative overflow-hidden w-full py-4">
-          {/* Subtle gradient overlays to fade the scrolling list on the edges */}
-          <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-[#F1F8E9]/40 via-[#F1F8E9]/10 to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-white via-white/10 to-transparent z-10 pointer-events-none" />
+        {/* Interactive 3-Card Marquee Track Wrapper */}
+        <div className="relative overflow-hidden w-full py-2">
+          {/* Subtle gradient edges to fade the scrolling list smoothly */}
+          <div className="absolute left-0 top-0 bottom-0 w-10 md:w-20 bg-gradient-to-r from-[#F1F8E9]/90 to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-10 md:w-20 bg-gradient-to-l from-[#F1F8E9]/90 to-transparent z-10 pointer-events-none" />
 
           {/* Scrolling Track Container */}
           <div
             ref={scrollContainerRef}
-            className="flex overflow-x-auto scrollbar-none gap-6 py-2 select-none cursor-grab active:cursor-grabbing"
+            className="flex overflow-x-auto scrollbar-none gap-5 sm:gap-6 py-1 select-none cursor-grab active:cursor-grabbing"
           >
             {/* Render items three times to build a truly seamless infinite scroll */}
             {[...acts, ...acts, ...acts].map((act, index) => (
               <div
                 key={`${act.title}-${index}`}
-                className="w-[280px] sm:w-[320px] md:w-[340px] flex-shrink-0 transition-all duration-300"
+                className="w-[300px] sm:w-[350px] md:w-[370px] lg:w-[390px] flex-shrink-0 transition-all duration-300"
               >
                 <div
                   onClick={() => setSelectedInitiative(act)}
-                  className="relative bg-white rounded-2xl overflow-hidden shadow-sm group border border-gray-100/50 flex flex-col h-[400px] hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+                  className="relative bg-white rounded-3xl overflow-hidden shadow-md group border border-gray-100/90 flex flex-col h-[390px] sm:h-[410px] hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 cursor-pointer"
                 >
-                  {/* Image Area */}
-                  <div className="relative h-[200px] overflow-hidden bg-gray-100">
+                  {/* Image Area with Title and Category Overlays */}
+                  <div className="relative h-[210px] sm:h-[225px] overflow-hidden bg-gray-100 shrink-0">
                     <img
                       src={act.image}
                       alt={act.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       loading="lazy"
                     />
-                    <span className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm text-[#064e3b] font-bold text-[10px] tracking-wider uppercase px-2.5 py-1 rounded-full shadow-sm">
+                    {/* Dark gradient for text readability */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/10" />
+                    
+                    {/* Outlined Category Pill Badge (Top Left) */}
+                    <span className="absolute top-3.5 left-3.5 bg-white/95 backdrop-blur-md text-[#064e3b] border border-[#1B5E20]/20 font-bold text-[10px] sm:text-[11px] tracking-wider uppercase px-2.5 py-1 rounded-full shadow-sm">
                       {act.category}
                     </span>
-                  </div>
 
-                  {/* Content Area */}
-                  <div className="flex-1 p-5 flex flex-col justify-between">
-                    <div>
-                      <h3 className="text-[#064e3b] text-base sm:text-lg font-bold group-hover:text-[#7fa13c] transition-colors duration-200 line-clamp-1">
+                    {/* Initiative Title Positioned at Bottom of Image */}
+                    <div className="absolute bottom-3 left-3.5 right-3.5">
+                      <h3 className="text-white text-base sm:text-lg font-bold tracking-tight uppercase leading-snug drop-shadow-sm group-hover:text-[#8BC34A] transition-colors duration-200 line-clamp-1">
                         {act.title}
                       </h3>
-                      <p className="text-gray-500 text-xs sm:text-sm leading-relaxed line-clamp-3 mt-2">
-                        {act.description}
-                      </p>
                     </div>
+                  </div>
 
-                    {/* Learn More: Only visible and animated on hover */}
-                    <div className="pt-3 border-t border-gray-50 flex items-center justify-between">
-                      <span className="text-[#064e3b] font-bold text-xs tracking-wider uppercase flex items-center gap-1 transition-all duration-200 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0">
-                        Learn More
-                        <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">
-                          →
-                        </span>
+                  {/* Content Body Area */}
+                  <div className="flex-1 p-4 sm:p-5 flex flex-col justify-between">
+                    <p className="text-gray-600 text-xs sm:text-sm leading-relaxed line-clamp-3 font-light">
+                      {act.description}
+                    </p>
+
+                    {/* Learn More Link (Appears on Hover with Smooth Transition) */}
+                    <div className="pt-3 border-t border-gray-100 flex items-center justify-between">
+                      <span className="text-[#1B5E20] group-hover:text-[#064e3b] font-bold text-xs sm:text-sm tracking-wide uppercase flex items-center gap-1.5 transition-all duration-200 opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0">
+                        <span>Learn More</span>
+                        <svg
+                          className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2.5"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
+                          />
+                        </svg>
                       </span>
                     </div>
                   </div>
@@ -376,7 +387,7 @@ export default function Initiatives() {
                 <a
                   href="#contact"
                   onClick={() => setSelectedInitiative(null)}
-                  className="flex-1 bg-[#064e3b] hover:bg-[#003311] text-white py-3 px-5 rounded-xl text-center text-sm font-semibold transition-colors shadow-sm cursor-pointer"
+                  className="flex-1 bg-[#064e3b] hover:bg-[#1B5E20] text-white py-3 px-5 rounded-xl text-center text-sm font-semibold transition-colors shadow-sm cursor-pointer"
                 >
                   Get Involved →
                 </a>
@@ -388,3 +399,4 @@ export default function Initiatives() {
     </div>
   );
 }
+
