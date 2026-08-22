@@ -235,46 +235,46 @@ const ContactForm = () => {
   };
 
   return (
-    <div className="w-full max-w-xl bg-white border border-gray-100 shadow-sm rounded-3xl p-6 sm:p-8 md:p-10 font-sans hover:shadow-md transition-shadow duration-300">
+    <div className="w-full max-w-lg bg-white/95 backdrop-blur-md border border-white/80 shadow-2xl rounded-3xl p-5 sm:p-6 md:p-7 font-sans hover:shadow-2xl transition-shadow duration-300">
         
       {/* Form Header */}
-      <div className="mb-8">
-        <h3 className="text-[#064e3b] text-2xl md:text-3xl font-bold mb-2">
-          Get in Touch
+      <div className="mb-4">
+        <h3 className="text-[#064e3b] text-xl sm:text-2xl font-bold leading-tight mb-1">
+         Send us a message
         </h3>
-        <p className="text-gray-400 text-sm leading-relaxed">
-          Have questions or want to collaborate on our campus initiatives? Let us know how we can help.
+        <p className="text-gray-500 text-xs leading-relaxed font-light">
+          Have questions or want to collaborate on campus initiatives? Send us a message.
         </p>
       </div>
 
       {/* Status Notifications */}
       {submitStatus === 'success' && (
-        <div className="mb-6 p-4 bg-emerald-50 text-emerald-700 text-sm font-medium rounded-xl border border-emerald-100 flex items-center gap-2">
+        <div className="mb-3.5 p-3 bg-emerald-50 text-emerald-700 text-xs font-medium rounded-xl border border-emerald-100 flex items-center gap-2">
           ✨ Message sent successfully! We'll be in touch soon.
         </div>
       )}
       {submitStatus === 'error-validation' && (
-        <div className="mb-6 p-4 bg-rose-50 text-rose-700 text-sm font-medium rounded-xl border border-rose-100 flex items-center gap-2">
+        <div className="mb-3.5 p-3 bg-rose-50 text-rose-700 text-xs font-medium rounded-xl border border-rose-100 flex items-center gap-2">
           ⚠️ Please correct the highlighted errors before submitting.
         </div>
       )}
       {submitStatus === 'limit' && (
-        <div className="mb-6 p-4 bg-rose-50 text-rose-700 text-sm font-medium rounded-xl border border-rose-100 flex items-center gap-2">
+        <div className="mb-3.5 p-3 bg-rose-50 text-rose-700 text-xs font-medium rounded-xl border border-rose-100 flex items-center gap-2">
           ⚠️ Please wait 1 minute before sending another message.
         </div>
       )}
       {submitStatus === 'error' && (
-        <div className="mb-6 p-4 bg-rose-50 text-rose-700 text-sm font-medium rounded-xl border border-rose-100 flex items-center gap-2">
+        <div className="mb-3.5 p-3 bg-rose-50 text-rose-700 text-xs font-medium rounded-xl border border-rose-100 flex items-center gap-2">
           ❌ Something went wrong on the server. Please try again.
         </div>
       )}
 
       {/* Contact Form */}
-      <form onSubmit={handleSubmit} onKeyDown={handleKeyDown} className="space-y-6">
+      <form onSubmit={handleSubmit} onKeyDown={handleKeyDown} className="space-y-3.5">
         
         {/* Inquiry Purpose Selection Pills */}
         <div>
-          <label className="block text-[#064e3b] text-xs font-bold uppercase tracking-wider mb-2.5">
+          <label className="block text-[#064e3b] text-[10px] font-bold uppercase tracking-wider mb-1.5">
             I want to:
           </label>
           <div className="grid grid-cols-3 gap-2">
@@ -284,7 +284,7 @@ const ContactForm = () => {
                 label: "Inquire", 
                 val: "inquiry",
                 icon: (
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
                   </svg>
                 )
@@ -294,7 +294,7 @@ const ContactForm = () => {
                 label: "Volunteer", 
                 val: "volunteer",
                 icon: (
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
                     <circle cx="9" cy="7" r="4" />
                     <line x1="19" y1="8" x2="19" y2="14" />
@@ -307,7 +307,7 @@ const ContactForm = () => {
                 label: "Partner", 
                 val: "partner",
                 icon: (
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
                     <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
                   </svg>
@@ -318,7 +318,7 @@ const ContactForm = () => {
                 key={item.id}
                 type="button"
                 onClick={() => handlePurposeChange(item.val)}
-                className={`py-2.5 px-2 text-xs sm:text-sm font-bold rounded-xl border flex items-center justify-center gap-1.5 transition-all duration-200 cursor-pointer ${
+                className={`py-2 px-2 text-xs font-semibold rounded-xl border flex items-center justify-center gap-1.5 transition-all duration-200 cursor-pointer ${
                   formData.purpose === item.val
                     ? "bg-[#064e3b] text-white border-[#064e3b] shadow-xs"
                     : "bg-gray-50 text-gray-500 border-gray-200 hover:bg-gray-100 hover:border-gray-300"
@@ -331,93 +331,90 @@ const ContactForm = () => {
           </div>
         </div>
 
-        {/* Name Field */}
-        <div>
-          <div className="flex justify-between items-center mb-2">
-            <label 
-              htmlFor="name" 
-              className="block text-[#064e3b] text-xs font-bold uppercase tracking-wider"
-            >
-              Full Name
-            </label>
-            <span className="text-[11px] font-medium text-gray-400">
-              {formData.name.length}/{MAX_LENGTHS.name}
-            </span>
+        {/* 2-Column Name & Email Row */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {/* Name Field */}
+          <div>
+            <div className="flex justify-between items-center mb-1">
+              <label 
+                htmlFor="name" 
+                className="block text-[#064e3b] text-[10px] font-bold uppercase tracking-wider"
+              >
+                Full Name
+              </label>
+              <span className="text-[10px] font-medium text-gray-400">
+                {formData.name.length}/{MAX_LENGTHS.name}
+              </span>
+            </div>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              required
+              maxLength={MAX_LENGTHS.name}
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Alex Morgan"
+              className={`w-full bg-gray-50/80 border text-gray-800 text-xs sm:text-sm rounded-xl px-3.5 py-2.5 outline-none transition-all duration-200 focus:bg-white focus:ring-2 placeholder:text-gray-400 ${
+                errors.name 
+                  ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-500/10' 
+                  : 'border-gray-200 focus:border-[#064e3b] focus:ring-[#064e3b]/10'
+              }`}
+            />
+            {errors.name && (
+              <p className="mt-1 text-rose-600 text-[10px] font-medium flex items-center gap-1">
+                {errors.name}
+              </p>
+            )}
           </div>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            required
-            maxLength={MAX_LENGTHS.name}
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="Alex Morgan"
-            className={`w-full bg-gray-50 border text-gray-800 text-sm rounded-xl px-4 py-3 outline-none transition-all duration-200 focus:bg-white focus:ring-2 placeholder:text-gray-400 ${
-              errors.name 
-                ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-500/10' 
-                : 'border-gray-200 focus:border-[#064e3b] focus:ring-[#064e3b]/10'
-            }`}
-          />
-          {errors.name && (
-            <p className="mt-1.5 text-rose-600 text-xs font-medium animate-fadeIn flex items-center gap-1">
-              <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-              </svg>
-              {errors.name}
-            </p>
-          )}
-        </div>
 
-        {/* Email Field */}
-        <div>
-          <div className="flex justify-between items-center mb-2">
-            <label 
-              htmlFor="email" 
-              className="block text-[#064e3b] text-xs font-bold uppercase tracking-wider"
-            >
-              Email Address
-            </label>
-            <span className="text-[11px] font-medium text-gray-400">
-              {formData.email.length}/{MAX_LENGTHS.email}
-            </span>
+          {/* Email Field */}
+          <div>
+            <div className="flex justify-between items-center mb-1">
+              <label 
+                htmlFor="email" 
+                className="block text-[#064e3b] text-[10px] font-bold uppercase tracking-wider"
+              >
+                Email Address
+              </label>
+              <span className="text-[10px] font-medium text-gray-400">
+                {formData.email.length}/{MAX_LENGTHS.email}
+              </span>
+            </div>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              maxLength={MAX_LENGTHS.email}
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="alex@university.edu"
+              className={`w-full bg-gray-50/80 border text-gray-800 text-xs sm:text-sm rounded-xl px-3.5 py-2.5 outline-none transition-all duration-200 focus:bg-white focus:ring-2 placeholder:text-gray-400 ${
+                errors.email 
+                  ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-500/10' 
+                  : 'border-gray-200 focus:border-[#064e3b] focus:ring-[#064e3b]/10'
+              }`}
+            />
+            {errors.email && (
+              <p className="mt-1 text-rose-600 text-[10px] font-medium flex items-center gap-1">
+                {errors.email}
+              </p>
+            )}
           </div>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            required
-            maxLength={MAX_LENGTHS.email}
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="alex@university.edu"
-            className={`w-full bg-gray-50 border text-gray-800 text-sm rounded-xl px-4 py-3 outline-none transition-all duration-200 focus:bg-white focus:ring-2 placeholder:text-gray-400 ${
-              errors.email 
-                ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-500/10' 
-                : 'border-gray-200 focus:border-[#064e3b] focus:ring-[#064e3b]/10'
-            }`}
-          />
-          {errors.email && (
-            <p className="mt-1.5 text-rose-600 text-xs font-medium animate-fadeIn flex items-center gap-1">
-              <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-              </svg>
-              {errors.email}
-            </p>
-          )}
         </div>
 
         {/* Organization Field (Conditional for Partner) */}
         {formData.purpose === 'partner' && (
           <div className="animate-fadeIn duration-200">
-            <div className="flex justify-between items-center mb-2">
+            <div className="flex justify-between items-center mb-1">
               <label 
                 htmlFor="organization" 
-                className="block text-[#064e3b] text-xs font-bold uppercase tracking-wider"
+                className="block text-[#064e3b] text-[10px] font-bold uppercase tracking-wider"
               >
-                Organization / Institution Name
+                Organization Name
               </label>
-              <span className="text-[11px] font-medium text-gray-400">
+              <span className="text-[10px] font-medium text-gray-400">
                 {formData.organization.length}/{MAX_LENGTHS.organization}
               </span>
             </div>
@@ -429,18 +426,15 @@ const ContactForm = () => {
               maxLength={MAX_LENGTHS.organization}
               value={formData.organization}
               onChange={handleChange}
-              placeholder="Greenpeace Batangas / BSU Org"
-              className={`w-full bg-gray-50 border text-gray-800 text-sm rounded-xl px-4 py-3 outline-none transition-all duration-200 focus:bg-white focus:ring-2 placeholder:text-gray-400 ${
+              placeholder="Greenpeace / BSU Org"
+              className={`w-full bg-gray-50/80 border text-gray-800 text-xs sm:text-sm rounded-xl px-3.5 py-2.5 outline-none transition-all duration-200 focus:bg-white focus:ring-2 placeholder:text-gray-400 ${
                 errors.organization 
                   ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-500/10' 
                   : 'border-gray-200 focus:border-[#064e3b] focus:ring-[#064e3b]/10'
               }`}
             />
             {errors.organization && (
-              <p className="mt-1.5 text-rose-600 text-xs font-medium animate-fadeIn flex items-center gap-1">
-                <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
+              <p className="mt-1 text-rose-600 text-[10px] font-medium flex items-center gap-1">
                 {errors.organization}
               </p>
             )}
@@ -449,14 +443,14 @@ const ContactForm = () => {
 
         {/* Message Field */}
         <div>
-          <div className="flex justify-between items-center mb-2">
+          <div className="flex justify-between items-center mb-1">
             <label 
               htmlFor="message" 
-              className="block text-[#064e3b] text-xs font-bold uppercase tracking-wider"
+              className="block text-[#064e3b] text-[10px] font-bold uppercase tracking-wider"
             >
               Your Message
             </label>
-            <span className="text-[11px] font-medium text-gray-400">
+            <span className="text-[10px] font-medium text-gray-400">
               {formData.message.length}/{MAX_LENGTHS.message}
             </span>
           </div>
@@ -464,28 +458,25 @@ const ContactForm = () => {
             id="message"
             name="message"
             required
-            rows="4"
+            rows="3"
             maxLength={MAX_LENGTHS.message}
             value={formData.message}
             onChange={handleChange}
             placeholder={
               formData.purpose === 'volunteer'
-                ? "Tell us about your interests, skills, or why you'd like to volunteer..."
+                ? "Tell us about your interests or why you'd like to volunteer..."
                 : formData.purpose === 'partner'
-                ? "Describe your collaboration proposal, target SDGs, or resource request..."
+                ? "Describe your collaboration proposal or resource request..."
                 : "Tell us how we can help or ask a question..."
             }
-            className={`w-full bg-gray-50 border text-gray-800 text-sm rounded-xl px-4 py-3 outline-none transition-all duration-200 focus:bg-white focus:ring-2 placeholder:text-gray-400 resize-none ${
+            className={`w-full bg-gray-50/80 border text-gray-800 text-xs sm:text-sm rounded-xl px-3.5 py-2.5 outline-none transition-all duration-200 focus:bg-white focus:ring-2 placeholder:text-gray-400 resize-none ${
               errors.message 
                 ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-500/10' 
                 : 'border-gray-200 focus:border-[#064e3b] focus:ring-[#064e3b]/10'
             }`}
           />
           {errors.message && (
-            <p className="mt-1.5 text-rose-600 text-xs font-medium animate-fadeIn flex items-center gap-1">
-              <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-              </svg>
+            <p className="mt-1 text-rose-600 text-[10px] font-medium flex items-center gap-1">
               {errors.message}
             </p>
           )}
@@ -495,22 +486,22 @@ const ContactForm = () => {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-[#064e3b] hover:bg-[#043427] text-white font-medium text-sm py-3.5 px-5 rounded-xl shadow-xs hover:shadow-md active:scale-[0.99] transition-all duration-150 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
+          className="w-full bg-[#064e3b] hover:bg-[#043427] text-white font-medium text-xs sm:text-sm py-3 px-4 rounded-xl shadow-xs hover:shadow-md active:scale-[0.99] transition-all duration-150 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer mt-1"
         >
           {isSubmitting ? (
             <>
-              <svg className="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+              <svg className="animate-spin h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
               </svg>
               Sending...
             </>
           ) : formData.purpose === 'volunteer' ? (
-            'Join as Volunteer'
+            'Join as Volunteer →'
           ) : formData.purpose === 'partner' ? (
-            'Submit Proposal'
+            'Submit Proposal →'
           ) : (
-            'Submit Message'
+            'Submit Message →'
           )}
         </button>
 

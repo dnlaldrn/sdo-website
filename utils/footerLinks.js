@@ -3,5 +3,4 @@ export const footerLinks = [
   { name: "Terms of Service", href: "#" },
   { name: "SDG Portal", href: "#" },
   { name: "University Site", href: "#" },
-  { name: "Contact Us", href: "#" },
 ];
