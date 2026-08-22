@@ -1,3 +1,5 @@
+import heroimage from "../assets/heroimage.jpg";
+
 export default function About() {
   return (
     <section id="about" className="w-full bg-[#F1F8E9] py-8 sm:py-12 md:py-16 px-4 sm:px-6 font-sans">
@@ -31,7 +33,7 @@ export default function About() {
           {/* Main Tilted Graphical Container Card */}
           <div className="relative bg-white p-4 rounded-2xl shadow-xl shadow-gray-200/60 max-w-lg rotate-2 transition-transform duration-300 hover:rotate-0">
             <img
-              src="./src/assets/heroimage.jpg"
+              src={heroimage}
               alt="Sustainable Development Office Badge and Matrix"
               className="w-full h-auto rounded-xl object-cover"
             />

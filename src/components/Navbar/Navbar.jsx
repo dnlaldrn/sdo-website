@@ -45,12 +45,12 @@ export default function Navbar() {
   return (
     <>
       {/* Top Header Navbar */}
-      <nav className={`fixed top-0 left-0 right-0 z-40 w-full transition-all duration-500 ease-in-out ${
+      <nav className={`fixed top-0 left-0 right-0 z-40 w-full transition-all duration-300 ease-in-out ${
         isScrolled
-          ? "translate-y-0 opacity-100 bg-[#F1F8E9]/80 backdrop-blur-md border-b border-gray-100 shadow-sm"
-          : "-translate-y-full opacity-0 pointer-events-none"
+          ? "bg-[#F1F8E9]/90 backdrop-blur-md border-b border-gray-200/60 shadow-xs py-2"
+          : "bg-white/40 md:bg-transparent backdrop-blur-xs md:backdrop-blur-none border-b border-transparent py-3 sm:py-4"
       }`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 h-15 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 flex items-center justify-between">
           {/* Logo / Brand Name */}
           <div className="flex gap-2 items-center">
             <img

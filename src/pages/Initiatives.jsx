@@ -1,11 +1,10 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { acts } from "../../utils/initiativesData";
 
 export default function Initiatives() {
   const scrollContainerRef = useRef(null);
   const scrollPositionRef = useRef(0);
   const isInteractingRef = useRef(false);
-  const [isInteracting, setIsInteracting] = useState(false);
 
   useEffect(() => {
     const container = scrollContainerRef.current;
@@ -19,7 +18,7 @@ export default function Initiatives() {
     const speed = 0.8; // Scroll speed in pixels per frame
 
     const scrollLoop = () => {
-      if (!isInteracting) {
+      if (!isInteractingRef.current) {
         container.scrollLeft += speed;
 
         // Loop boundaries check
@@ -52,14 +51,14 @@ export default function Initiatives() {
     let scrollLeftVal;
 
     const startInteraction = () => {
-      setIsInteracting(true);
+      isInteractingRef.current = true;
       clearTimeout(interactionTimeout);
     };
 
     const endInteraction = () => {
       clearTimeout(interactionTimeout);
       interactionTimeout = setTimeout(() => {
-        setIsInteracting(false);
+        isInteractingRef.current = false;
       }, 2500);
     };
 
@@ -159,13 +158,17 @@ export default function Initiatives() {
       const scrollAmount = 360; // Card width + gap spacing
 
       if (e.key === "ArrowRight" || e.key === "." || e.key === ">") {
-        setIsInteracting(true);
+        isInteractingRef.current = true;
         container.scrollBy({ left: scrollAmount, behavior: "smooth" });
-        setTimeout(() => setIsInteracting(false), 3000);
+        setTimeout(() => {
+          isInteractingRef.current = false;
+        }, 3000);
       } else if (e.key === "ArrowLeft" || e.key === "," || e.key === "<") {
-        setIsInteracting(true);
+        isInteractingRef.current = true;
         container.scrollBy({ left: -scrollAmount, behavior: "smooth" });
-        setTimeout(() => setIsInteracting(false), 3000);
+        setTimeout(() => {
+          isInteractingRef.current = false;
+        }, 3000);
       }
     };
 
@@ -191,7 +194,7 @@ export default function Initiatives() {
           </div>
           <div className="justify-center">
             <a
-              href="#projects"
+              href="#initiatives"
               className="text-[#064e3b] hover:text-[#003311] font-bold text-sm flex items-center gap-1.5 transition-colors duration-200 group whitespace-nowrap cursor-pointer"
             >
               View All Projects
@@ -214,7 +217,7 @@ export default function Initiatives() {
             className="flex overflow-x-auto scrollbar-none gap-6 py-2 select-none cursor-grab active:cursor-grabbing"
           >
             {/* Render items three times to build a truly seamless infinite scroll */}
-            {[...acts].map((act, index) => (
+            {[...acts, ...acts, ...acts].map((act, index) => (
               <div
                 key={`${act.title}-${index}`}
                 className="w-[280px] sm:w-[320px] md:w-[340px] flex-shrink-0 transition-all duration-300"
