@@ -11,26 +11,32 @@ export default function Initiatives() {
     if (!container) return;
 
     // Position container initially in the middle third
-    const cardWidth = container.scrollWidth / 3;
-    container.scrollLeft = cardWidth;
+    const loopWidth = container.scrollWidth / 3;
+    if (loopWidth > 0) {
+      container.scrollLeft = loopWidth;
+      scrollPositionRef.current = loopWidth;
+    }
 
     let animationFrameId;
-    const speed = 0.8; // Scroll speed in pixels per frame
+    const speed = 0.9; // Smooth scroll speed in pixels per frame
 
     const scrollLoop = () => {
-      if (!isInteractingRef.current) {
-        container.scrollLeft += speed;
+      if (!isInteractingRef.current && container) {
+        scrollPositionRef.current += speed;
 
-        // Loop boundaries check
-        if (container.scrollLeft >= cardWidth * 2) {
-          container.scrollLeft -= cardWidth;
-        } else if (container.scrollLeft <= cardWidth / 2) {
-          container.scrollLeft += cardWidth;
+        const currentLoopWidth = container.scrollWidth / 3;
+        if (currentLoopWidth > 0) {
+          // Wrap boundaries
+          if (scrollPositionRef.current >= currentLoopWidth * 2) {
+            scrollPositionRef.current -= currentLoopWidth;
+          } else if (scrollPositionRef.current <= currentLoopWidth * 0.5) {
+            scrollPositionRef.current += currentLoopWidth;
+          }
         }
 
         container.scrollLeft = scrollPositionRef.current;
-      } else {
-        // Sync our local float accumulator while the user is actively interacting
+      } else if (container) {
+        // Sync our local float accumulator while the user is actively interacting/dragging
         scrollPositionRef.current = container.scrollLeft;
       }
       animationFrameId = requestAnimationFrame(scrollLoop);
@@ -58,26 +64,37 @@ export default function Initiatives() {
     const endInteraction = () => {
       clearTimeout(interactionTimeout);
       interactionTimeout = setTimeout(() => {
+        if (!isDown) {
+          isInteractingRef.current = false;
+        }
+      }, 1500);
+    };
+
+    const handleMouseEnter = () => {
+      isInteractingRef.current = true;
+      clearTimeout(interactionTimeout);
+    };
+
+    const handleMouseLeave = () => {
+      if (!isDown) {
         isInteractingRef.current = false;
-      }, 2500);
+      }
     };
 
     const handleScroll = () => {
-      // If we are not interacting (auto-scroll is active), ignore programmatic scroll events
-      // to prevent integer subpixel rounding from resetting our precise float accumulator.
       if (!isInteractingRef.current) return;
 
-      const cardWidth = container.scrollWidth / 3;
-      if (cardWidth <= 0) return;
+      const loopWidth = container.scrollWidth / 3;
+      if (loopWidth <= 0) return;
 
       let current = container.scrollLeft;
       let didWrap = false;
 
-      if (current >= cardWidth * 2) {
-        current -= cardWidth;
+      if (current >= loopWidth * 2) {
+        current -= loopWidth;
         didWrap = true;
-      } else if (current <= cardWidth / 2) {
-        current += cardWidth;
+      } else if (current <= loopWidth * 0.5) {
+        current += loopWidth;
         didWrap = true;
       }
 
@@ -85,7 +102,6 @@ export default function Initiatives() {
         container.scrollLeft = current;
       }
 
-      // Always keep our shared scrollPositionRef in sync with the real scrollLeft
       scrollPositionRef.current = current;
     };
 
@@ -114,26 +130,29 @@ export default function Initiatives() {
       const x = e.pageX - container.offsetLeft;
       const walk = (x - startX) * 1.5; // Drag sensitivity modifier
       container.scrollLeft = scrollLeftVal - walk;
+      scrollPositionRef.current = container.scrollLeft;
     };
 
     container.addEventListener("scroll", handleScroll);
+    container.addEventListener("mouseenter", handleMouseEnter);
+    container.addEventListener("mouseleave", handleMouseLeave);
     container.addEventListener("touchstart", startInteraction, {
       passive: true,
     });
     container.addEventListener("touchend", endInteraction, { passive: true });
     container.addEventListener("mousedown", handleMouseDown);
-    container.addEventListener("mouseup", handleMouseUp);
-    container.addEventListener("mouseleave", handleMouseUp);
+    window.addEventListener("mouseup", handleMouseUp);
     container.addEventListener("mousemove", handleMouseMove);
     container.addEventListener("wheel", handleWheel, { passive: true });
 
     return () => {
       container.removeEventListener("scroll", handleScroll);
+      container.removeEventListener("mouseenter", handleMouseEnter);
+      container.removeEventListener("mouseleave", handleMouseLeave);
       container.removeEventListener("touchstart", startInteraction);
       container.removeEventListener("touchend", endInteraction);
       container.removeEventListener("mousedown", handleMouseDown);
-      container.removeEventListener("mouseup", handleMouseUp);
-      container.removeEventListener("mouseleave", handleMouseUp);
+      window.removeEventListener("mouseup", handleMouseUp);
       container.removeEventListener("mousemove", handleMouseMove);
       container.removeEventListener("wheel", handleWheel);
       clearTimeout(interactionTimeout);
@@ -162,13 +181,13 @@ export default function Initiatives() {
         container.scrollBy({ left: scrollAmount, behavior: "smooth" });
         setTimeout(() => {
           isInteractingRef.current = false;
-        }, 3000);
+        }, 2000);
       } else if (e.key === "ArrowLeft" || e.key === "," || e.key === "<") {
         isInteractingRef.current = true;
         container.scrollBy({ left: -scrollAmount, behavior: "smooth" });
         setTimeout(() => {
           isInteractingRef.current = false;
-        }, 3000);
+        }, 2000);
       }
     };
 
