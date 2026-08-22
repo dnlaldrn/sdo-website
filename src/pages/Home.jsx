@@ -1,143 +1,147 @@
-import logo from "../assets/logo.jpg";
-
+import bgHero from "../assets/HomeImageBackground.jpg";
+import HomeSectionLogo from "../assets/HomeSectionLogo.png";
 
 export default function HomeHero() {
   return (
     <section
       id="home"
-      className="w-full min-h-screen px-6 py-12 md:py-16 lg:py-20 flex flex-col items-center justify-center bg-gradient-to-b from-[#F1F8E9]/20 to-white font-sans"
+      className="relative w-full min-h-screen flex flex-col items-center justify-between font-sans overflow-hidden px-4 sm:px-6 md:px-8 pt-12 sm:pt-24 md:pt-44 lg:pt-38 pb-16 md:pb-8"
     >
-      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-        {/* Left Column: Branding, Typography & Action Buttons */}
-        <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left">
-          {/* Brand Logo & Tagline Row */}
-          <div className="flex flex-col sm:flex-row items-center gap-4 mb-6">
-            <img
-              src={logo}
-              alt="Sustainable Development Office Logo"
-              width={80}
-              height={80}
-              fetchpriority="high"
-              className="h-16 w-16 sm:h-20 sm:w-20 rounded-full object-cover border-2 border-[#1B5E20]/20 shadow-md select-none"
-            />
-            <div className="flex flex-col items-center lg:items-start">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-red-50 border border-red-200/50 text-red-700 text-[10px] sm:text-xs font-bold uppercase tracking-wider mb-1.5 shadow-sm select-none">
-                <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
-                People • Planet • Purpose
-              </div>
-              <p className="italic font-semibold text-sm sm:text-base text-emerald-800/90 leading-relaxed">
-                "Future Ready, Sustainability Steady"
-              </p>
-            </div>
-          </div>
+      {/* =========================
+          BACKGROUND IMAGE
+      ========================== */}
+      <div className="absolute inset-0 z-0">
+        <img
+          src={bgHero}
+          alt="SDO Alangilan Campus Community"
+          className="w-full h-full object-cover object-center scale-105 animate-in fade-in duration-1000"
+          fetchPriority="high"
+        />
 
-          {/* Main Headline */}
-          <h1 className="text-[#004d1a] font-extrabold text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-4">
-            Sustainable Development Office
-            <span className="block text-[#1B5E20] font-bold text-xl sm:text-2xl md:text-3xl lg:text-4xl mt-1">
-              Batangas State University Alangilan
-            </span>
-          </h1>
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-black/50" />
 
-          {/* Descriptive Context Subtext */}
-          <p className="text-gray-600 text-sm sm:text-base md:text-lg leading-relaxed font-light mb-8 max-w-2xl">
-            The Sustainable Development Office–Alangilan embeds sustainability at
-            the heart of the campus’s academic and administrative functions,
-            advancing regional and global commitments to the United Nations’ 17
-            Sustainable Development Goals (SDGs).
-          </p>
-
-          {/* Call to Action Button Row */}
-          <div className="flex flex-col sm:flex-row items-center gap-4 w-full max-w-[280px] sm:max-w-none sm:w-auto mb-4">
-            <a
-              href="#sdgs"
-              className="w-full sm:w-auto bg-[#004d1a] hover:bg-[#003311] text-white px-8 py-3.5 rounded-xl text-sm font-semibold tracking-wide shadow-md hover:shadow-lg transition-all duration-200 text-center cursor-pointer"
-            >
-              Our Strategic Goals
-            </a>
-            <a
-              href="https://www.facebook.com/profile.php?id=61587545961771"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full sm:w-auto bg-white border border-[#004d1a]/30 hover:border-[#004d1a] text-[#004d1a] hover:bg-[#004d1a]/5 px-8 py-3.5 rounded-xl text-sm font-semibold tracking-wide shadow-sm hover:shadow transition-all duration-200 text-center cursor-pointer inline-flex items-center justify-center gap-1.5"
-            >
-              <span>Read Latest Report</span>
-              <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-              </svg>
-            </a>
-          </div>
-        </div>
-
-        {/* Right Column: Layered Sustainability Image Collage */}
-        <div className="lg:col-span-5 relative w-full h-[320px] sm:h-[400px] lg:h-[450px] flex items-center justify-center mt-6 lg:mt-0 select-none">
-          {/* Card 1: Organic Growth (Left Back) */}
-          <div className="absolute top-0 left-4 w-[65%] aspect-[4/3] rounded-3xl overflow-hidden shadow-xl border-4 border-white transform -rotate-3 hover:rotate-0 hover:scale-105 hover:z-30 transition-all duration-500 z-10 group cursor-pointer">
-            <img
-              src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=400&q=60&fm=webp"
-              alt="Sustainability seedling growth"
-              width={400}
-              height={300}
-              fetchpriority="high"
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 z-10">
-              <span className="text-white text-xs font-bold uppercase tracking-wider">Environmental Stewardship</span>
-            </div>
-          </div>
-
-          {/* Card 2: Renewable Energy (Right Front) */}
-          <div className="absolute bottom-4 right-4 w-[60%] aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border-4 border-white transform rotate-3 hover:rotate-0 hover:scale-105 hover:z-30 transition-all duration-500 z-20 group cursor-pointer">
-            <img
-              src="https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=400&q=60&fm=webp"
-              alt="Clean solar panel infrastructure"
-              width={400}
-              height={300}
-              fetchpriority="high"
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 z-10">
-              <span className="text-white text-xs font-bold uppercase tracking-wider">Renewable Energy Solutions</span>
-            </div>
-          </div>
-
-          {/* Card 3: Academic Collaboration (Small Floating Front) */}
-          <div className="absolute top-12 right-12 w-[35%] aspect-square rounded-2xl overflow-hidden shadow-lg border-2 border-white transform -rotate-12 hover:rotate-0 hover:scale-115 hover:z-30 transition-all duration-500 z-30 group cursor-pointer hidden sm:block">
-            <img
-              src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=250&q=60&fm=webp"
-              alt="Collaborative teamwork"
-              width={250}
-              height={250}
-              fetchpriority="high"
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-            />
-          </div>
-        </div>
+        {/* Cinematic gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/35 to-black/75" />
       </div>
 
-      {/* Animated Scroll Indicator */}
-      <div className="mt-12 lg:mt-16 z-10">
-        <a
-          href="#about"
-          className="text-[#004d1a]/60 animate-bounce cursor-pointer hover:text-[#004d1a] transition-colors inline-block"
-          aria-label="Scroll to About Section"
-        >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            viewBox="0 0 24 24"
+      {/* =========================
+          MAIN HERO CONTENT
+      ========================== */}
+      <div className="relative z-10 max-w-5xl mx-auto flex flex-col items-center text-center w-full my-auto">
+        {/* Centered SDO Emblem / Logo on Mobile (Image 2 Hierarchy) */}
+        <div className="md:hidden flex justify-center mb-5">
+          <img
+            src={HomeSectionLogo}
+            alt="SDO Alangilan Logo"
+            className="h-16 sm:h-20 w-auto object-contain drop-shadow-2xl animate-in zoom-in-95 duration-700"
+          />
+        </div>
+
+        {/* Top Eyebrow Badge */}
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full backdrop-blur-md border border-white/25 text-[#8BC34A] text-xs sm:text-sm font-semibold tracking-wide mb-4 sm:mb-5 shadow-md">
+          <span>Sustainability-Empowered Campus for All</span>
+        </div>
+
+        {/* =========================
+            MAIN HEADLINE
+        ========================== */}
+        <h1 className="text-white font-extrabold text-3xl sm:text-4xl md:text-5xl lg:text-[52px] tracking-tight leading-[1.15] mb-4 sm:mb-5 max-w-4xl">
+          Where{" "}
+          <span className="bg-gradient-to-r from-[#8BC34A] via-[#A3E635] to-[#4ADE80] bg-clip-text text-transparent">
+            Sustainability Leaders
+          </span>
+          <br />
+          Connect
+        </h1>
+
+        {/* =========================
+            DESCRIPTION
+        ========================== */}
+        <p className="text-gray-100 text-sm sm:text-base md:text-lg lg:text-xl font-light leading-relaxed max-w-3xl mb-6 sm:mb-7">
+          Welcome to the Sustainable Development Office – Alangilan, the vibrant
+          campus hub driving regional and global commitments to the United
+          Nations’ 17 SDGs through academic excellence, research innovation, and
+          impactful community action.
+        </p>
+
+        {/* =========================
+            CALL TO ACTION BUTTONS
+        ========================== */}
+        <div className="flex flex-row flex-wrap items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-6">
+          {/* Strategic Goals */}
+          <a
+            href="#sdgs"
+            className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-[#1B5E20] hover:bg-[#004d1a] text-white text-xs sm:text-sm font-bold tracking-wide shadow-lg hover:shadow-[#1B5E20]/40 hover:scale-105 active:scale-95 transition-all duration-200 text-center flex items-center justify-center gap-1.5 cursor-pointer border border-[#8BC34A]/30 whitespace-nowrap"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M19.5 5.25l-7.5 7.5-7.5-7.5m15 6l-7.5 7.5-7.5-7.5"
-            />
-          </svg>
-        </a>
+            <span>Explore Strategic Goals</span>
+            <span>→</span>
+          </a>
+
+          {/* About SDO Section Link */}
+          <a
+            href="#about"
+            className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-full hover:bg-white/25 text-white border border-white/30 hover:border-white text-xs sm:text-sm font-semibold tracking-wide transition-all duration-200 text-center inline-flex items-center justify-center gap-1.5 cursor-pointer shadow-md hover:scale-105 active:scale-95 whitespace-nowrap"
+          >
+            <span>About Sustainable Development Office</span>
+            <svg
+              className="w-3.5 h-3.5 shrink-0"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+              />
+            </svg>
+          </a>
+        </div>
+
+        {/* =========================
+            METRIC STATS
+        ========================== */}
+        <div className="grid grid-cols-3 gap-2 sm:gap-6 max-w-3xl mx-auto w-full pt-4 sm:pt-6  text-center">
+          {/* Stat 1 */}
+          <div className="flex flex-col items-center">
+            <span className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight leading-none mb-1">
+              17
+            </span>
+
+            <span className="text-[10px] sm:text-xs text-gray-300 font-medium tracking-wider uppercase">
+              UN SDGs Mapped
+            </span>
+          </div>
+
+          {/* Stat 2 */}
+          <div className="flex flex-col items-center border-x  px-2 sm:px-4">
+            <span className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#8BC34A] tracking-tight leading-none mb-1">
+              100+
+            </span>
+
+            <span className="text-[10px] sm:text-xs text-gray-300 font-medium tracking-wider uppercase">
+              Campus Initiatives
+            </span>
+          </div>
+
+          {/* Stat 3 */}
+          <div className="flex flex-col items-center">
+            <span className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight leading-none mb-1">
+              150+
+            </span>
+
+            <span className="text-[10px] sm:text-xs text-gray-300 font-medium tracking-wider uppercase">
+              Volunteers & Partners
+            </span>
+          </div>
+        </div>
       </div>
 
-    </section>
+      {/* =========================
+          SCROLL INDICATOR
+      ========================== */}
+      </section>
   );
 }

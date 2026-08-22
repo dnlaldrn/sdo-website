@@ -1,55 +1,62 @@
-import heroimage from "../assets/heroimage.jpg";
+import aboutImg from "../assets/AboutImage.png";
 
 export default function About() {
   return (
-    <section id="about" className="w-full bg-[#F1F8E9] py-8 sm:py-12 md:py-16 px-4 sm:px-6 font-sans">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-        {/* Left Column: Text Content (Occupies 5 columns on large screens) */}
-        <div className="lg:col-span-5 flex flex-col space-y-6">
-          <span className="text-[#8BC34A] uppercase font-semibold text-xs tracking-widest">
-            The Foundation
+    <section
+      id="about"
+      className="w-full bg-[#F1F8E9] py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-8 font-sans"
+    >
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+        {/* Left Column: Narrative, Headline & Quick Impact Byte */}
+        <div className="lg:col-span-6 flex flex-col space-y-3 text-left">
+          {/* Eyebrow Category Tag */}
+          <span className="text-[#1B5E20] font-bold text-xs uppercase tracking-widest">
+            ABOUT SDO ALANGILAN
           </span>
 
-          <h2 className="text-[#263238] font-bold text-3xl sm:text-4xl tracking-tight leading-tight">
-            Our Commitment to Sustainability
+          {/* Main Section Headline */}
+          <h2 className="text-[#064e3b] font-md text-3xl sm:text-4xl lg:text-5xl tracking-tight leading-[1.15]">
+            Where Purpose, Policy, and Campus Action Connect
           </h2>
 
-          <p className="text-[#263238] text-sm sm:text-base leading-relaxed font-light">
-            The Sustainable Development Office - Alangilan serves as the core
-            catalyst for integrating ESG (Environmental, Social, and Governance)
-            principles within our institution. We bridge the gap between
-            academic theory and practical community impact.
+          {/* Core Descriptive Text */}
+          <p className="text-gray-700 text-sm sm:text-base md:text-lg leading-relaxed font-light">
+            The Sustainable Development Office–Alangilan embeds sustainability at
+            the heart of the campus’s academic and administrative functions,
+            advancing regional and global commitments to the United Nations’ 17
+            Sustainable Development Goals (SDGs).
           </p>
 
-          <p className="text-[#263238] text-sm sm:text-base leading-relaxed font-light">
-            Our mission is to foster a culture where every research paper, every
-            classroom discussion, and every operational decision contributes to
-            the 2030 Agenda. We don't just teach sustainability; we embody it.
-          </p>
+          {/* Quick Impact Byte Callout (DEVCON Inspo Layout) */}
+          <div className="border-l-2 border-[#1B5E20] pl-4 sm:pl-5 space-y-2.5 py-1">
+            <h3 className="text-[#064e3b] font-bold text-xs uppercase tracking-wider">
+              QUICK IMPACT BYTE!
+            </h3>
+            <div className="text-gray-600 text-xs sm:text-sm leading-relaxed space-y-2">
+              <p>
+                <strong className="text-gray-800">Did you know?</strong> SDO Alangilan actively champions campus-wide sustainability campaigns—from energy conservation and responsible consumption to environmental education like the{" "}
+                <em className="text-[#1B5E20] font-medium not-italic">"Leaf Me a Fact"</em>{" "}
+                advocacy series.
+              </p>
+              <p>
+                We collaborate with academic departments, student leaders, and community partners to transform global sustainability goals into actionable local initiatives. If you are interested in collaborating or volunteering, connect with us and take part in our journey!
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* Right Column: Image Graphic Display (Occupies 7 columns on large screens) */}
-        <div className="lg:col-span-7 relative flex justify-center lg:justify-end pt-6 lg:pt-0">
-          {/* Main Tilted Graphical Container Card */}
-          <div className="relative bg-white p-4 rounded-2xl shadow-xl shadow-gray-200/60 max-w-lg rotate-2 transition-transform duration-300 hover:rotate-0">
+        {/* Right Column: High-Impact Rounded Photography Display */}
+        <div className="lg:col-span-6 flex justify-center lg:justify-end">
+          <div className="w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-white group transition-all duration-300 hover:shadow-3xl">
             <img
-              src={heroimage}
-              alt="Sustainable Development Office Badge and Matrix"
-              className="w-full h-auto rounded-xl object-cover"
+              src={aboutImg}
+              alt="SDO Alangilan Sustainability Advocacies and Leaf Me a Fact Infographics"
+              className="w-full h-[320px] sm:h-[400px] md:h-[460px] lg:h-[500px] object-cover group-hover:scale-[1.02] transition-transform duration-500"
             />
-          </div>
-
-          {/* Overlapping Floating Metric/Stats Badge Element */}
-          <div className="absolute -bottom-6 left-4 sm:left-12 lg:left-8 bg-[#8BC34A] text-[#263238] p-5 rounded-2xl shadow-lg w-36 h-36 flex flex-col justify-center transition-transform duration-300 hover:scale-105">
-            <span className="font-bold text-xl sm:text-2xl block mb-1">
-              100+
-            </span>
-            <span className="text-xs sm:text-sm font-medium leading-snug">
-              Local Initiatives
-            </span>
           </div>
         </div>
       </div>
     </section>
   );
 }
+
