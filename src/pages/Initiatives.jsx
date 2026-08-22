@@ -1,11 +1,10 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { acts } from "../../utils/initiativesData";
 
 export default function Initiatives() {
   const scrollContainerRef = useRef(null);
   const scrollPositionRef = useRef(0);
   const isInteractingRef = useRef(false);
-  const [isInteracting, setIsInteracting] = useState(false);
 
   useEffect(() => {
     const container = scrollContainerRef.current;
@@ -19,7 +18,7 @@ export default function Initiatives() {
     const speed = 0.8; // Scroll speed in pixels per frame
 
     const scrollLoop = () => {
-      if (!isInteracting) {
+      if (!isInteractingRef.current) {
         container.scrollLeft += speed;
 
         // Loop boundaries check
@@ -52,14 +51,14 @@ export default function Initiatives() {
     let scrollLeftVal;
 
     const startInteraction = () => {
-      setIsInteracting(true);
+      isInteractingRef.current = true;
       clearTimeout(interactionTimeout);
     };
 
     const endInteraction = () => {
       clearTimeout(interactionTimeout);
       interactionTimeout = setTimeout(() => {
-        setIsInteracting(false);
+        isInteractingRef.current = false;
       }, 2500);
     };
 
@@ -159,13 +158,17 @@ export default function Initiatives() {
       const scrollAmount = 360; // Card width + gap spacing
 
       if (e.key === "ArrowRight" || e.key === "." || e.key === ">") {
-        setIsInteracting(true);
+        isInteractingRef.current = true;
         container.scrollBy({ left: scrollAmount, behavior: "smooth" });
-        setTimeout(() => setIsInteracting(false), 3000);
+        setTimeout(() => {
+          isInteractingRef.current = false;
+        }, 3000);
       } else if (e.key === "ArrowLeft" || e.key === "," || e.key === "<") {
-        setIsInteracting(true);
+        isInteractingRef.current = true;
         container.scrollBy({ left: -scrollAmount, behavior: "smooth" });
-        setTimeout(() => setIsInteracting(false), 3000);
+        setTimeout(() => {
+          isInteractingRef.current = false;
+        }, 3000);
       }
     };
 

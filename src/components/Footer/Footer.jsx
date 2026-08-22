@@ -1,4 +1,3 @@
-import logo from "../../assets/logo.jpg";
 import { footerLinks } from "../../../utils/footerLinks";
 import ContactForm from "../ContactForm/ContactForm";
 
