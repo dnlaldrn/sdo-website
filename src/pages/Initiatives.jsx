@@ -1,11 +1,13 @@
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { acts } from "../../utils/initiativesData";
 
 export default function Initiatives() {
   const scrollContainerRef = useRef(null);
   const scrollPositionRef = useRef(0);
   const isInteractingRef = useRef(false);
+  const [selectedInitiative, setSelectedInitiative] = useState(null);
 
+  // Auto-scrolling loop
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
@@ -21,7 +23,7 @@ export default function Initiatives() {
     const speed = 0.9; // Smooth scroll speed in pixels per frame
 
     const scrollLoop = () => {
-      if (!isInteractingRef.current && container) {
+      if (!isInteractingRef.current && !selectedInitiative && container) {
         scrollPositionRef.current += speed;
 
         const currentLoopWidth = container.scrollWidth / 3;
@@ -45,8 +47,9 @@ export default function Initiatives() {
     animationFrameId = requestAnimationFrame(scrollLoop);
 
     return () => cancelAnimationFrame(animationFrameId);
-  }, []);
+  }, [selectedInitiative]);
 
+  // Touch, Drag and Wheel Interaction Handlers
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
@@ -195,6 +198,25 @@ export default function Initiatives() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  // Close modal on Escape key and lock body scroll
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === "Escape") {
+        setSelectedInitiative(null);
+      }
+    };
+
+    if (selectedInitiative) {
+      window.addEventListener("keydown", handleEsc);
+      document.body.style.overflow = "hidden";
+    }
+
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+      document.body.style.overflow = "auto";
+    };
+  }, [selectedInitiative]);
+
   return (
     <div
       id="initiatives"
@@ -241,7 +263,10 @@ export default function Initiatives() {
                 key={`${act.title}-${index}`}
                 className="w-[280px] sm:w-[320px] md:w-[340px] flex-shrink-0 transition-all duration-300"
               >
-                <div className="relative bg-white rounded-2xl overflow-hidden shadow-sm group border border-gray-100/50 flex flex-col h-[400px] hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+                <div
+                  onClick={() => setSelectedInitiative(act)}
+                  className="relative bg-white rounded-2xl overflow-hidden shadow-sm group border border-gray-100/50 flex flex-col h-[400px] hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+                >
                   {/* Image Area */}
                   <div className="relative h-[200px] overflow-hidden bg-gray-100">
                     <img
@@ -266,9 +291,15 @@ export default function Initiatives() {
                       </p>
                     </div>
 
-                    <span className="text-[#064e3b] hover:text-[#003311] font-bold text-xs tracking-wider uppercase flex items-center gap-1 transition-colors mt-auto">
-                      Learn More <span>→</span>
-                    </span>
+                    {/* Learn More: Only visible and animated on hover */}
+                    <div className="pt-3 border-t border-gray-50 flex items-center justify-between">
+                      <span className="text-[#064e3b] font-bold text-xs tracking-wider uppercase flex items-center gap-1 transition-all duration-200 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0">
+                        Learn More
+                        <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">
+                          →
+                        </span>
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -276,6 +307,82 @@ export default function Initiatives() {
           </div>
         </div>
       </div>
+
+      {/* Minimalist Initiative Details Modal */}
+      {selectedInitiative && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modal-initiative-title"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs transition-opacity duration-300"
+          onClick={() => setSelectedInitiative(null)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-gray-100 flex flex-col max-h-[90vh] transition-all transform duration-300 animate-in fade-in zoom-in-95"
+          >
+            {/* Modal Image Header */}
+            <div className="relative h-48 sm:h-56 w-full bg-gray-100 shrink-0">
+              <img
+                src={selectedInitiative.image}
+                alt={selectedInitiative.title}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
+              
+              {/* Category Badge on Image */}
+              <span className="absolute bottom-3.5 left-4 sm:left-6 bg-white/95 backdrop-blur-sm text-[#064e3b] font-bold text-xs tracking-wider uppercase px-3 py-1 rounded-full shadow-sm">
+                {selectedInitiative.category}
+              </span>
+
+              {/* Close Button */}
+              <button
+                type="button"
+                onClick={() => setSelectedInitiative(null)}
+                aria-label="Close modal"
+                className="absolute top-3.5 right-3.5 bg-black/40 hover:bg-black/70 text-white rounded-full p-2 transition-colors cursor-pointer"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Modal Content Body */}
+            <div className="p-5 sm:p-7 overflow-y-auto">
+              <h2
+                id="modal-initiative-title"
+                className="text-[#064e3b] text-xl sm:text-2xl font-bold tracking-tight mb-2.5"
+              >
+                {selectedInitiative.title}
+              </h2>
+
+              <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-6">
+                {selectedInitiative.description}
+              </p>
+
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                <a
+                  href="#contact"
+                  onClick={() => setSelectedInitiative(null)}
+                  className="flex-1 bg-[#064e3b] hover:bg-[#003311] text-white py-3 px-5 rounded-xl text-center text-sm font-semibold transition-colors shadow-sm cursor-pointer"
+                >
+                  Get Involved →
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setSelectedInitiative(null)}
+                  className="bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 px-5 rounded-xl text-sm font-medium transition-colors cursor-pointer"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+
