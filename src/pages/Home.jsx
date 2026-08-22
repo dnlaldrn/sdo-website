@@ -56,10 +56,15 @@ export default function HomeHero() {
               Our Strategic Goals
             </a>
             <a
-              href="#about"
-              className="w-full sm:w-auto bg-white border border-[#004d1a]/30 hover:border-[#004d1a] text-[#004d1a] hover:bg-[#004d1a]/5 px-8 py-3.5 rounded-xl text-sm font-semibold tracking-wide shadow-sm hover:shadow transition-all duration-200 text-center cursor-pointer"
+              href="https://www.facebook.com/profile.php?id=61587545961771"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto bg-white border border-[#004d1a]/30 hover:border-[#004d1a] text-[#004d1a] hover:bg-[#004d1a]/5 px-8 py-3.5 rounded-xl text-sm font-semibold tracking-wide shadow-sm hover:shadow transition-all duration-200 text-center cursor-pointer inline-flex items-center justify-center gap-1.5"
             >
-              Read Latest Report
+              <span>Read Latest Report</span>
+              <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+              </svg>
             </a>
           </div>
         </div>

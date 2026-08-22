@@ -329,7 +329,7 @@ export default function Initiatives() {
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
-              
+
               {/* Category Badge on Image */}
               <span className="absolute bottom-3.5 left-4 sm:left-6 bg-white/95 backdrop-blur-sm text-[#064e3b] font-bold text-xs tracking-wider uppercase px-3 py-1 rounded-full shadow-sm">
                 {selectedInitiative.category}
@@ -342,8 +342,18 @@ export default function Initiatives() {
                 aria-label="Close modal"
                 className="absolute top-3.5 right-3.5 bg-black/40 hover:bg-black/70 text-white rounded-full p-2 transition-colors cursor-pointer"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             </div>
@@ -370,13 +380,6 @@ export default function Initiatives() {
                 >
                   Get Involved →
                 </a>
-                <button
-                  type="button"
-                  onClick={() => setSelectedInitiative(null)}
-                  className="bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 px-5 rounded-xl text-sm font-medium transition-colors cursor-pointer"
-                >
-                  Close
-                </button>
               </div>
             </div>
           </div>
@@ -385,4 +388,3 @@ export default function Initiatives() {
     </div>
   );
 }
-
