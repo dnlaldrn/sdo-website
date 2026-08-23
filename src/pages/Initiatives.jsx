@@ -1,10 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { acts } from "../../utils/initiativesData";
 
 export default function Initiatives() {
   const scrollContainerRef = useRef(null);
   const scrollPositionRef = useRef(0);
   const isInteractingRef = useRef(false);
+  const [selectedInitiative, setSelectedInitiative] = useState(null);
 
   // Auto-scrolling loop
   useEffect(() => {
@@ -22,8 +23,8 @@ export default function Initiatives() {
     const speed = 0.85; // Smooth scroll speed in pixels per frame
 
     const scrollLoop = () => {
-      if (!isInteractingRef.current) {
-        container.scrollLeft += speed;
+     if (!isInteractingRef.current && container) {
+        scrollPositionRef.current += speed;
 
         const currentLoopWidth = container.scrollWidth / 3;
         if (currentLoopWidth > 0) {
@@ -46,7 +47,7 @@ export default function Initiatives() {
     animationFrameId = requestAnimationFrame(scrollLoop);
 
     return () => cancelAnimationFrame(animationFrameId);
-  }, [selectedInitiative]);
+  }, []); // <- no longer depends on selectedInitiative
 
   // Touch, Drag and Wheel Interaction Handlers
   useEffect(() => {
@@ -120,6 +121,17 @@ export default function Initiatives() {
       const walk = (x - startX) * 1.5; // Drag sensitivity modifier
       container.scrollLeft = scrollLeftVal - walk;
       scrollPositionRef.current = container.scrollLeft;
+    };
+
+    const handleMouseEnter = () => {
+      isInteractingRef.current = true;
+      clearTimeout(interactionTimeout);
+    };
+
+    const handleMouseLeave = () => {
+      if (!isDown) {
+        isInteractingRef.current = false;
+      }
     };
 
     container.addEventListener("scroll", handleScroll);
@@ -209,7 +221,7 @@ export default function Initiatives() {
       className="scroll-mt-16 bg-gradient-to-b from-white via-[#F1F8E9]/40 to-[#F1F8E9]/60 py-6 sm:py-8 lg:py-10 px-4 sm:px-6 font-sans overflow-hidden"
     >
       <div className="max-w-7xl mx-auto">
-        
+
         {/* DEVCON-Style Header Section (Compact for 1-Screen View) */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-4 sm:mb-6 gap-3 px-2">
           <div>
@@ -258,7 +270,7 @@ export default function Initiatives() {
                     />
                     {/* Dark gradient for text readability */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/10" />
-                    
+
                     {/* Outlined Category Pill Badge (Top Left) */}
                     <span className="absolute top-3.5 left-3.5 bg-white/95 backdrop-blur-md text-[#064e3b] border border-[#1B5E20]/20 font-bold text-[10px] sm:text-[11px] tracking-wider uppercase px-2.5 py-1 rounded-full shadow-sm">
                       {act.category}
@@ -370,8 +382,8 @@ export default function Initiatives() {
 
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                <a
-                  href="#contact"
+                
+                <a href="#contact"
                   onClick={() => setSelectedInitiative(null)}
                   className="flex-1 bg-[#064e3b] hover:bg-[#1B5E20] text-white py-3 px-5 rounded-xl text-center text-sm font-semibold transition-colors shadow-sm cursor-pointer"
                 >
@@ -385,4 +397,3 @@ export default function Initiatives() {
     </div>
   );
 }
-
