@@ -1,11 +1,10 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { acts } from "../../utils/initiativesData";
 
 export default function Initiatives() {
   const scrollContainerRef = useRef(null);
   const scrollPositionRef = useRef(0);
   const isInteractingRef = useRef(false);
-  const [selectedInitiative, setSelectedInitiative] = useState(null);
 
   // Auto-scrolling loop
   useEffect(() => {
@@ -23,8 +22,8 @@ export default function Initiatives() {
     const speed = 0.85; // Smooth scroll speed in pixels per frame
 
     const scrollLoop = () => {
-      if (!isInteractingRef.current && !selectedInitiative && container) {
-        scrollPositionRef.current += speed;
+      if (!isInteractingRef.current) {
+        container.scrollLeft += speed;
 
         const currentLoopWidth = container.scrollWidth / 3;
         if (currentLoopWidth > 0) {
@@ -67,21 +66,8 @@ export default function Initiatives() {
     const endInteraction = () => {
       clearTimeout(interactionTimeout);
       interactionTimeout = setTimeout(() => {
-        if (!isDown) {
-          isInteractingRef.current = false;
-        }
-      }, 1500);
-    };
-
-    const handleMouseEnter = () => {
-      isInteractingRef.current = true;
-      clearTimeout(interactionTimeout);
-    };
-
-    const handleMouseLeave = () => {
-      if (!isDown) {
         isInteractingRef.current = false;
-      }
+      }, 2500);
     };
 
     const handleScroll = () => {
@@ -184,13 +170,13 @@ export default function Initiatives() {
         container.scrollBy({ left: scrollAmount, behavior: "smooth" });
         setTimeout(() => {
           isInteractingRef.current = false;
-        }, 2000);
+        }, 3000);
       } else if (e.key === "ArrowLeft" || e.key === "," || e.key === "<") {
         isInteractingRef.current = true;
         container.scrollBy({ left: -scrollAmount, behavior: "smooth" });
         setTimeout(() => {
           isInteractingRef.current = false;
-        }, 2000);
+        }, 3000);
       }
     };
 
