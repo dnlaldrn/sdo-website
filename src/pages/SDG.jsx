@@ -41,7 +41,7 @@ export default function SDG() {
         ========================================================================= */}
         {viewMode === "globe" && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            {/* Left Column: Header, Dynamic Goal Spotlight & Controls */}
+            {/* Left Column: Header, Interactive Exploration Hub & Controls */}
             <div className="lg:col-span-5 flex flex-col space-y-5 text-left">
               <div>
                 <span className="text-[#1B5E20] uppercase font-bold text-xs tracking-widest block mb-1.5">
@@ -49,16 +49,6 @@ export default function SDG() {
                 </span>
                 <h2 className="text-[#064e3b] font-md text-3xl sm:text-4xl lg:text-5xl tracking-tight leading-tight mb-3">
                   Global Goals, Local Impact
-                  {/* View Switcher Toggle */}
-                  <div className="flex items-center justify-between pt-1">
-                    <button
-                      type="button"
-                      onClick={() => setViewMode("grid")}
-                      className="px-3.5 py-1.5 rounded-full bg-[#1B5E20] hover:bg-gray-50 text-[#064e3b] border border-gray-200 text-xs font-semibold tracking-wide transition-all shadow-2xs hover:shadow-xs flex items-center gap-1.5 cursor-pointer"
-                    >
-                      <span className="text-white">Switch to 17-Goal Grid</span>
-                    </button>
-                  </div>
                 </h2>
                 <p className="text-gray-600 text-xs sm:text-sm leading-relaxed font-light">
                   The Sustainable Development Office aligns its efforts with all
@@ -67,75 +57,72 @@ export default function SDG() {
                 </p>
               </div>
 
-              {/* Dynamic Live Goal Spotlight Card with Fixed Min-Height */}
-              {activeGoal && (
-                <div className="p-4 sm:p-5 rounded-2xl bg-white border border-gray-100/90 shadow-md transition-all duration-300 relative overflow-hidden group min-h-[300px] flex flex-col">
-                  <div
-                    style={{ backgroundColor: activeGoal.hexColor }}
-                    className="absolute top-0 left-0 right-0 h-1.5 transition-colors duration-300"
-                  />
-
+              {/* Clean Interactive 3D Guide & Impact Overview (Zero Redundancy) */}
+              <div className="p-5 sm:p-6 rounded-2xl bg-white border border-gray-100/90 shadow-md space-y-4">
+                <div className="flex items-start gap-3.5">
+                  <div className="w-10 h-10 rounded-xl bg-[#F1F8E9] text-[#1B5E20] border border-[#1B5E20]/15 flex items-center justify-center shrink-0">
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zM12 2.25V4.5m5.834.166l-1.591 1.591M20.25 10.5H18M7.757 14.743l-1.59 1.59M6 10.5H3.75m3.407-4.243L5.566 4.666"
+                      />
+                    </svg>
+                  </div>
                   <div>
-                    {/* Header with Goal Badge & Title */}
-                    <div className="flex items-center gap-3 mb-2.5">
-                      <span
-                        style={{ backgroundColor: activeGoal.hexColor }}
-                        className="w-10 h-10 rounded-xl flex items-center justify-center font-extrabold text-white text-base shadow-xs shrink-0 transition-colors duration-300"
-                      >
-                        {activeGoal.number}
-                      </span>
-                      <div className="overflow-hidden">
-                        <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">
-                          Featured Goal
-                        </span>
-                        <h3 className="text-base sm:text-lg font-bold text-gray-800 leading-snug">
-                          {activeGoal.title}
-                        </h3>
-                      </div>
-                    </div>
-
-                    {/* Goal Description */}
-                    <p className="text-gray-600 text-xs sm:text-sm leading-relaxed line-clamp-3 mb-4">
-                      {activeGoal.description}
+                    <h3 className="text-xs sm:text-sm font-bold text-[#064e3b] uppercase tracking-wider">
+                      Direct 3D Interaction
+                    </h3>
+                    <p className="text-gray-600 text-xs sm:text-sm mt-1 font-light leading-relaxed">
+                      Click or tap any numbered SDG badge orbiting the Earth to immediately open its full global targets and local campus action roadmap.
                     </p>
                   </div>
+                </div>
 
-                  <div>
-                    {/* Key Metrics Chips */}
-                    <div className="grid grid-cols-2 gap-2.5 mb-3.5">
-                      <div className="p-2.5 rounded-xl bg-gray-50 border border-gray-100 flex flex-col">
-                        <span className="text-lg font-extrabold text-[#064e3b] leading-none mb-0.5">
-                          {activeGoal.targets}
-                        </span>
-                        <span className="text-[9px] text-gray-500 font-bold uppercase tracking-wider">
-                          Global Targets
-                        </span>
-                      </div>
-                      <div className="p-2.5 rounded-xl bg-gray-50 border border-gray-100 flex flex-col">
-                        <span className="text-lg font-extrabold text-[#064e3b] leading-none mb-0.5">
-                          {activeGoal.actions}
-                        </span>
-                        <span className="text-[9px] text-gray-500 font-bold uppercase tracking-wider">
-                          Campus Actions
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Action CTA Button */}
-                    <button
-                      type="button"
-                      onClick={() => setSelectedGoal(activeGoal)}
-                      style={{ backgroundColor: activeGoal.hexColor }}
-                      className="w-full text-white py-2.5 px-4 rounded-xl text-xs sm:text-sm font-semibold transition-all hover:opacity-90 shadow-sm flex items-center justify-center gap-2 cursor-pointer"
-                    >
-                      <span>
-                        Explore Goal {activeGoal.number} Targets & Actions
-                      </span>
-                      <span>→</span>
-                    </button>
+                {/* 3 Impact Metrics Chips */}
+                <div className="grid grid-cols-3 gap-2.5 pt-2 border-t border-gray-100">
+                  <div className="p-2.5 rounded-xl bg-gray-50/90 text-center border border-gray-100">
+                    <span className="block text-lg font-extrabold text-[#064e3b] leading-none mb-0.5">
+                      17
+                    </span>
+                    <span className="text-[9px] font-bold text-gray-500 uppercase tracking-wider">
+                      UN Goals
+                    </span>
+                  </div>
+                  <div className="p-2.5 rounded-xl bg-gray-50/90 text-center border border-gray-100">
+                    <span className="block text-lg font-extrabold text-[#1B5E20] leading-none mb-0.5">
+                      169
+                    </span>
+                    <span className="text-[9px] font-bold text-gray-500 uppercase tracking-wider">
+                      Targets
+                    </span>
+                  </div>
+                  <div className="p-2.5 rounded-xl bg-gray-50/90 text-center border border-gray-100">
+                    <span className="block text-lg font-extrabold text-[#8BC34A] leading-none mb-0.5">
+                      100+
+                    </span>
+                    <span className="text-[9px] font-bold text-gray-500 uppercase tracking-wider">
+                      Actions
+                    </span>
                   </div>
                 </div>
-              )}
+
+                {/* Switch to 17-Goal Grid Button */}
+                <button
+                  type="button"
+                  onClick={() => setViewMode("grid")}
+                  className="w-full py-2.5 px-4 rounded-xl bg-[#1B5E20] hover:bg-[#004d1a] text-white text-xs sm:text-sm font-semibold tracking-wide transition-all shadow-xs hover:shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <span>Switch to 17-Goal Grid Matrix</span>
+                  <span>→</span>
+                </button>
+              </div>
             </div>
 
             {/* Right Column: Seamless Blended 3D Eco-Globe */}
@@ -143,7 +130,7 @@ export default function SDG() {
               <SDGGlobe
                 activeGoal={activeGoal}
                 onHoverGoal={handleHoverGoal}
-                onSelectGoal={handleHoverGoal}
+                onSelectGoal={setSelectedGoal}
               />
             </div>
           </div>

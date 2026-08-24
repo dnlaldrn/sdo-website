@@ -531,7 +531,7 @@ function SDGGlobeInner({ activeGoal, onHoverGoal, onSelectGoal }) {
 
       isDraggingRef.current = false;
 
-      // Clean Tap / Click: Select goal on card without opening modal
+      // Clean Tap / Click: Select goal and open modal directly
       if (dragDist < 10) {
         const rect = renderer.domElement.getBoundingClientRect();
         mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
@@ -540,6 +540,9 @@ function SDGGlobeInner({ activeGoal, onHoverGoal, onSelectGoal }) {
         const clickedGoal = getVisibleHoveredNode();
         if (clickedGoal) {
           handleNodeTrigger(clickedGoal);
+          if (onSelectGoalRef.current) {
+            onSelectGoalRef.current(clickedGoal);
+          }
         }
       }
 
