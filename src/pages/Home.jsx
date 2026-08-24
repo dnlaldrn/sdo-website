@@ -46,13 +46,12 @@ export default function HomeHero() {
         {/* =========================
             MAIN HEADLINE
         ========================== */}
-        <h1 className="text-white font-extrabold text-3xl sm:text-4xl md:text-5xl lg:text-[52px] tracking-tight leading-[1.15] mb-4 sm:mb-5 max-w-4xl">
-          Where{" "}
-          <span className="bg-gradient-to-r from-[#8BC34A] via-[#A3E635] to-[#4ADE80] bg-clip-text text-transparent">
-            Sustainability Leaders
-          </span>
+        <h1 className="text-white font-extrabold text-2xl sm:text-4xl md:text-5xl lg:text-[52px] tracking-tight leading-[1.18] mb-4 sm:mb-5 max-w-4xl">
+          <span>Where Sustainability</span>
           <br />
-          Connect
+          <span className="bg-gradient-to-r from-[#8BC34A] via-[#A3E635] to-[#4ADE80] bg-clip-text text-transparent">
+            Leaders Connect
+          </span>
         </h1>
 
         {/* =========================
