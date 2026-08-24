@@ -17,32 +17,32 @@ export default function Footer() {
       />
       <div className="absolute inset-0 bg-gradient-to-b from-[#02140a]/92 via-[#041a0d]/88 to-[#02140a]/95 backdrop-blur-[2px]" />
 
-      {/* 1. Upper Section: Contact Split Grid (DEVCON Layout, Centered 1-Screen Fit) */}
-      <div className="relative z-10 max-w-7xl mx-auto w-full flex-1 flex items-center py-6 sm:py-8 lg:py-6 px-4 sm:px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center w-full">
+      {/* 1. Upper Section: Contact Split Grid (DEVCON Layout, Natural & Balanced Fit) */}
+      <div className="relative z-10 max-w-7xl mx-auto w-full flex-1 flex flex-col justify-start lg:justify-center lg:items-center pt-12 sm:pt-14 lg:py-6 px-4 sm:px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 lg:gap-10 items-center w-full">
           {/* Left Column: Header & Sleek Channel List */}
-          <div className="lg:col-span-5 flex flex-col space-y-4 sm:space-y-5 text-left">
+          <div className="lg:col-span-5 flex flex-col space-y-3 sm:space-y-4 lg:space-y-5 text-left">
             <div>
               <span className="text-[#8BC34A] text-xs font-bold uppercase tracking-widest block mb-1">
                 GET IN TOUCH
               </span>
-              <h2 className="text-white text-2xl sm:text-3xl lg:text-[2.2rem] font-md tracking-tight leading-tight whitespace-nowrap">
+              <h2 className="text-white text-2xl sm:text-3xl lg:text-[2.2rem] font-bold tracking-tight leading-tight whitespace-nowrap">
                 Contact SDO Alangilan
               </h2>
-              <p className="text-gray-300 text-xs sm:text-sm leading-relaxed mt-2 font-light max-w-md">
+              <p className="text-gray-300 text-xs sm:text-sm leading-relaxed mt-1.5 sm:mt-2 font-light max-w-md">
                 Have questions about campus sustainability initiatives, events,
                 or partnership opportunities? Reach out through any of our
                 official channels or send us a direct message.
               </p>
             </div>
 
-            {/* DEVCON-Style Contact Channels List */}
-            <div className="space-y-3 pt-0.5">
+            {/* 2-Column x 2-Row Glass Contact Cards on Mobile, Clean Minimalist List (Image 1) on Desktop */}
+            <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-1 lg:space-y-3.5 lg:gap-0 pt-1">
               {/* Channel 1: Email */}
-              <div className="flex items-center gap-3 group">
-                <div className="w-9 h-9 shrink-0 rounded-xl bg-white/10 text-[#8BC34A] border border-white/15 flex items-center justify-center group-hover:bg-[#8BC34A] group-hover:text-[#041a0d] transition-all duration-200">
+              <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 lg:p-0 rounded-xl sm:rounded-2xl lg:rounded-none bg-white/5 lg:bg-transparent border border-white/10 lg:border-none backdrop-blur-xs lg:backdrop-blur-none hover:bg-white/10 lg:hover:bg-transparent transition-all group">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 shrink-0 rounded-lg sm:rounded-xl bg-[#8BC34A]/15 lg:bg-white/10 text-[#8BC34A] border border-[#8BC34A]/30 lg:border-white/15 flex items-center justify-center group-hover:bg-[#8BC34A] group-hover:text-[#041a0d] transition-all duration-200">
                   <svg
-                    className="w-4 h-4"
+                    className="w-3.5 h-3.5 sm:w-4 sm:h-4"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="2"
@@ -55,13 +55,13 @@ export default function Footer() {
                     />
                   </svg>
                 </div>
-                <div>
-                  <span className="text-[9px] font-bold text-gray-400 uppercase tracking-wider block">
+                <div className="min-w-0 flex-1">
+                  <span className="text-[8px] sm:text-[9px] font-bold text-gray-400 uppercase tracking-wider block leading-none mb-0.5">
                     Email
                   </span>
                   <a
                     href="mailto:sdo.alangilan@g.batstate-u.edu.ph"
-                    className="text-xs sm:text-sm font-semibold text-white hover:text-[#8BC34A] transition-colors break-all"
+                    className="text-[11px] sm:text-xs lg:text-sm font-semibold text-white hover:text-[#8BC34A] transition-colors truncate lg:break-all block"
                   >
                     sdo.alangilan@g.batstate-u.edu.ph
                   </a>
@@ -69,40 +69,40 @@ export default function Footer() {
               </div>
 
               {/* Channel 2: Official Facebook */}
-              <div className="flex items-center gap-3 group">
-                <div className="w-9 h-9 shrink-0 rounded-xl bg-white/10 text-[#8BC34A] border border-white/15 flex items-center justify-center group-hover:bg-[#8BC34A] group-hover:text-[#041a0d] transition-all duration-200">
+              <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 lg:p-0 rounded-xl sm:rounded-2xl lg:rounded-none bg-white/5 lg:bg-transparent border border-white/10 lg:border-none backdrop-blur-xs lg:backdrop-blur-none hover:bg-white/10 lg:hover:bg-transparent transition-all group">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 shrink-0 rounded-lg sm:rounded-xl bg-[#8BC34A]/15 lg:bg-white/10 text-[#8BC34A] border border-[#8BC34A]/30 lg:border-white/15 flex items-center justify-center group-hover:bg-[#8BC34A] group-hover:text-[#041a0d] transition-all duration-200">
                   <svg
-                    className="w-4 h-4"
+                    className="w-3.5 h-3.5 sm:w-4 sm:h-4"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
                     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
                   </svg>
                 </div>
-                <div>
-                  <span className="text-[9px] font-bold text-gray-400 uppercase tracking-wider block">
+                <div className="min-w-0 flex-1">
+                  <span className="text-[8px] sm:text-[9px] font-bold text-gray-400 uppercase tracking-wider block leading-none mb-0.5">
                     Official Facebook
                   </span>
                   <a
                     href="https://www.facebook.com/profile.php?id=61587545961771"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs sm:text-sm font-semibold text-white hover:text-[#8BC34A] transition-colors inline-flex items-center gap-1"
+                    className="text-[11px] sm:text-xs lg:text-sm font-semibold text-white hover:text-[#8BC34A] transition-colors inline-flex items-center gap-1"
                   >
                     <span>SDO Alangilan Chapter</span>
-                    <span className="text-xs">↗</span>
+                    <span className="text-[10px] lg:text-xs">↗</span>
                   </a>
-                  <p className="text-gray-400 text-[10px] font-light">
+                  <p className="text-gray-400 text-[9px] lg:text-[10px] font-light hidden sm:block">
                     Announcements, campaigns & updates
                   </p>
                 </div>
               </div>
 
               {/* Channel 3: Campus Location (Clickable Google Maps link) */}
-              <div className="flex items-center gap-3 group">
-                <div className="w-9 h-9 shrink-0 rounded-xl bg-white/10 text-[#8BC34A] border border-white/15 flex items-center justify-center group-hover:bg-[#8BC34A] group-hover:text-[#041a0d] transition-all duration-200">
+              <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 lg:p-0 rounded-xl sm:rounded-2xl lg:rounded-none bg-white/5 lg:bg-transparent border border-white/10 lg:border-none backdrop-blur-xs lg:backdrop-blur-none hover:bg-white/10 lg:hover:bg-transparent transition-all group">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 shrink-0 rounded-lg sm:rounded-xl bg-[#8BC34A]/15 lg:bg-white/10 text-[#8BC34A] border border-[#8BC34A]/30 lg:border-white/15 flex items-center justify-center group-hover:bg-[#8BC34A] group-hover:text-[#041a0d] transition-all duration-200">
                   <svg
-                    className="w-4 h-4"
+                    className="w-3.5 h-3.5 sm:w-4 sm:h-4"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="2"
@@ -120,32 +120,31 @@ export default function Footer() {
                     />
                   </svg>
                 </div>
-                <div>
-                  <span className="text-[9px] font-bold text-gray-400 uppercase tracking-wider block">
+                <div className="min-w-0 flex-1">
+                  <span className="text-[8px] sm:text-[9px] font-bold text-gray-400 uppercase tracking-wider block leading-none mb-0.5">
                     Campus Location
                   </span>
                   <a
                     href="https://share.google/r6q6yZVQ2kJz9ZWuw"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs sm:text-sm font-semibold text-white hover:text-[#8BC34A] transition-colors inline-flex items-center gap-1"
+                    className="text-[11px] sm:text-xs lg:text-sm font-semibold text-white hover:text-[#8BC34A] transition-colors inline-flex items-center gap-1"
                   >
-                    <span>
-                      Albert Einstein Building, First Floor, Left Side
-                    </span>
-                    <span className="text-xs">↗</span>
+                    <span className="truncate lg:hidden">Albert Einstein Bldg</span>
+                    <span className="hidden lg:inline">Albert Einstein Building, First Floor, Left Side</span>
+                    <span className="text-[10px] lg:text-xs">↗</span>
                   </a>
-                  <p className="text-gray-400 text-[10px] font-light">
+                  <p className="text-gray-400 text-[9px] lg:text-[10px] font-light hidden sm:block">
                     BatStateU Alangilan Campus, Batangas City
                   </p>
                 </div>
               </div>
 
               {/* Channel 4: Office Hours */}
-              <div className="flex items-center gap-3 group">
-                <div className="w-9 h-9 shrink-0 rounded-xl bg-white/10 text-[#8BC34A] border border-white/15 flex items-center justify-center group-hover:bg-[#8BC34A] group-hover:text-[#041a0d] transition-all duration-200">
+              <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 lg:p-0 rounded-xl sm:rounded-2xl lg:rounded-none bg-white/5 lg:bg-transparent border border-white/10 lg:border-none backdrop-blur-xs lg:backdrop-blur-none hover:bg-white/10 lg:hover:bg-transparent transition-all group">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 shrink-0 rounded-lg sm:rounded-xl bg-[#8BC34A]/15 lg:bg-white/10 text-[#8BC34A] border border-[#8BC34A]/30 lg:border-white/15 flex items-center justify-center group-hover:bg-[#8BC34A] group-hover:text-[#041a0d] transition-all duration-200">
                   <svg
-                    className="w-4 h-4"
+                    className="w-3.5 h-3.5 sm:w-4 sm:h-4"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="2"
@@ -158,14 +157,15 @@ export default function Footer() {
                     />
                   </svg>
                 </div>
-                <div>
-                  <span className="text-[9px] font-bold text-gray-400 uppercase tracking-wider block">
+                <div className="min-w-0 flex-1">
+                  <span className="text-[8px] sm:text-[9px] font-bold text-gray-400 uppercase tracking-wider block leading-none mb-0.5">
                     Office Hours
                   </span>
-                  <p className="text-xs sm:text-sm font-semibold text-white">
-                    Monday – Friday, 8:00 AM – 5:00 PM
+                  <p className="text-[11px] sm:text-xs lg:text-sm font-semibold text-white">
+                    <span className="truncate lg:hidden">Mon – Fri, 8AM – 5PM</span>
+                    <span className="hidden lg:inline">Monday – Friday, 8:00 AM – 5:00 PM</span>
                   </p>
-                  <p className="text-gray-400 text-[10px] font-light">
+                  <p className="text-gray-400 text-[9px] lg:text-[10px] font-light hidden sm:block">
                     Excluding university holidays
                   </p>
                 </div>

@@ -235,11 +235,11 @@ const ContactForm = () => {
   };
 
   return (
-    <div className="w-full max-w-lg bg-white/95 backdrop-blur-md border border-white/80 shadow-2xl rounded-3xl p-5 sm:p-6 md:p-7 font-sans hover:shadow-2xl transition-shadow duration-300">
+    <div className="w-full max-w-lg bg-white/95 backdrop-blur-md border border-white/80 shadow-2xl rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-7 font-sans hover:shadow-2xl transition-shadow duration-300">
         
       {/* Form Header */}
-      <div className="mb-4">
-        <h3 className="text-[#064e3b] text-xl sm:text-2xl font-bold leading-tight mb-1">
+      <div className="mb-2.5 sm:mb-4">
+        <h3 className="text-[#064e3b] text-xl sm:text-2xl font-bold leading-tight mb-0.5 sm:mb-1">
          Send us a message
         </h3>
         <p className="text-gray-500 text-xs leading-relaxed font-light">
@@ -249,28 +249,28 @@ const ContactForm = () => {
 
       {/* Status Notifications */}
       {submitStatus === 'success' && (
-        <div className="mb-3.5 p-3 bg-emerald-50 text-emerald-700 text-xs font-medium rounded-xl border border-emerald-100 flex items-center gap-2">
+        <div className="mb-2.5 sm:mb-3.5 p-2.5 sm:p-3 bg-emerald-50 text-emerald-700 text-xs font-medium rounded-xl border border-emerald-100 flex items-center gap-2">
           ✨ Message sent successfully! We'll be in touch soon.
         </div>
       )}
       {submitStatus === 'error-validation' && (
-        <div className="mb-3.5 p-3 bg-rose-50 text-rose-700 text-xs font-medium rounded-xl border border-rose-100 flex items-center gap-2">
+        <div className="mb-2.5 sm:mb-3.5 p-2.5 sm:p-3 bg-rose-50 text-rose-700 text-xs font-medium rounded-xl border border-rose-100 flex items-center gap-2">
           ⚠️ Please correct the highlighted errors before submitting.
         </div>
       )}
       {submitStatus === 'limit' && (
-        <div className="mb-3.5 p-3 bg-rose-50 text-rose-700 text-xs font-medium rounded-xl border border-rose-100 flex items-center gap-2">
+        <div className="mb-2.5 sm:mb-3.5 p-2.5 sm:p-3 bg-rose-50 text-rose-700 text-xs font-medium rounded-xl border border-rose-100 flex items-center gap-2">
           ⚠️ Please wait 1 minute before sending another message.
         </div>
       )}
       {submitStatus === 'error' && (
-        <div className="mb-3.5 p-3 bg-rose-50 text-rose-700 text-xs font-medium rounded-xl border border-rose-100 flex items-center gap-2">
+        <div className="mb-2.5 sm:mb-3.5 p-2.5 sm:p-3 bg-rose-50 text-rose-700 text-xs font-medium rounded-xl border border-rose-100 flex items-center gap-2">
           ❌ Something went wrong on the server. Please try again.
         </div>
       )}
 
       {/* Contact Form */}
-      <form onSubmit={handleSubmit} onKeyDown={handleKeyDown} className="space-y-3.5">
+      <form onSubmit={handleSubmit} onKeyDown={handleKeyDown} className="space-y-2.5 sm:space-y-3.5">
         
         {/* Inquiry Purpose Selection Pills */}
         <div>
@@ -332,7 +332,7 @@ const ContactForm = () => {
         </div>
 
         {/* 2-Column Name & Email Row */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
           {/* Name Field */}
           <div>
             <div className="flex justify-between items-center mb-1">
@@ -355,7 +355,7 @@ const ContactForm = () => {
               value={formData.name}
               onChange={handleChange}
               placeholder="Alex Morgan"
-              className={`w-full bg-gray-50/80 border text-gray-800 text-xs sm:text-sm rounded-xl px-3.5 py-2.5 outline-none transition-all duration-200 focus:bg-white focus:ring-2 placeholder:text-gray-400 ${
+              className={`w-full bg-gray-50/80 border text-gray-800 text-xs sm:text-sm rounded-xl px-3.5 py-2 sm:py-2.5 outline-none transition-all duration-200 focus:bg-white focus:ring-2 placeholder:text-gray-400 ${
                 errors.name 
                   ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-500/10' 
                   : 'border-gray-200 focus:border-[#064e3b] focus:ring-[#064e3b]/10'
@@ -390,7 +390,7 @@ const ContactForm = () => {
               value={formData.email}
               onChange={handleChange}
               placeholder="alex@university.edu"
-              className={`w-full bg-gray-50/80 border text-gray-800 text-xs sm:text-sm rounded-xl px-3.5 py-2.5 outline-none transition-all duration-200 focus:bg-white focus:ring-2 placeholder:text-gray-400 ${
+              className={`w-full bg-gray-50/80 border text-gray-800 text-xs sm:text-sm rounded-xl px-3.5 py-2 sm:py-2.5 outline-none transition-all duration-200 focus:bg-white focus:ring-2 placeholder:text-gray-400 ${
                 errors.email 
                   ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-500/10' 
                   : 'border-gray-200 focus:border-[#064e3b] focus:ring-[#064e3b]/10'
@@ -427,7 +427,7 @@ const ContactForm = () => {
               value={formData.organization}
               onChange={handleChange}
               placeholder="Greenpeace / BSU Org"
-              className={`w-full bg-gray-50/80 border text-gray-800 text-xs sm:text-sm rounded-xl px-3.5 py-2.5 outline-none transition-all duration-200 focus:bg-white focus:ring-2 placeholder:text-gray-400 ${
+              className={`w-full bg-gray-50/80 border text-gray-800 text-xs sm:text-sm rounded-xl px-3.5 py-2 sm:py-2.5 outline-none transition-all duration-200 focus:bg-white focus:ring-2 placeholder:text-gray-400 ${
                 errors.organization 
                   ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-500/10' 
                   : 'border-gray-200 focus:border-[#064e3b] focus:ring-[#064e3b]/10'
@@ -458,7 +458,7 @@ const ContactForm = () => {
             id="message"
             name="message"
             required
-            rows="3"
+            rows="2.5"
             maxLength={MAX_LENGTHS.message}
             value={formData.message}
             onChange={handleChange}
@@ -469,7 +469,7 @@ const ContactForm = () => {
                 ? "Describe your collaboration proposal or resource request..."
                 : "Tell us how we can help or ask a question..."
             }
-            className={`w-full bg-gray-50/80 border text-gray-800 text-xs sm:text-sm rounded-xl px-3.5 py-2.5 outline-none transition-all duration-200 focus:bg-white focus:ring-2 placeholder:text-gray-400 resize-none ${
+            className={`w-full bg-gray-50/80 border text-gray-800 text-xs sm:text-sm rounded-xl px-3.5 py-2 sm:py-2.5 outline-none transition-all duration-200 focus:bg-white focus:ring-2 placeholder:text-gray-400 resize-none ${
               errors.message 
                 ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-500/10' 
                 : 'border-gray-200 focus:border-[#064e3b] focus:ring-[#064e3b]/10'
@@ -486,7 +486,7 @@ const ContactForm = () => {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-[#064e3b] hover:bg-[#043427] text-white font-medium text-xs sm:text-sm py-3 px-4 rounded-xl shadow-xs hover:shadow-md active:scale-[0.99] transition-all duration-150 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer mt-1"
+          className="w-full bg-[#064e3b] hover:bg-[#043427] text-white font-medium text-xs sm:text-sm py-2.5 sm:py-3 px-4 rounded-xl shadow-xs hover:shadow-md active:scale-[0.99] transition-all duration-150 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer mt-1"
         >
           {isSubmitting ? (
             <>
