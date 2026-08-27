@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import aboutImg from "../assets/AboutImage.png";
+import { supabase } from "../lib/supabaseClient";
 
-// Import all 9 Leaf Me a Fact infographics
+// Import local bundled Leaf Me a Fact infographics for offline/fallback
 import firstImg from "../assets/LeafMe/First.jpg";
 import secondImg from "../assets/LeafMe/Second.jpg";
 import thirdImg from "../assets/LeafMe/Third.jpg";
@@ -12,7 +13,7 @@ import sevenImg from "../assets/LeafMe/Seven.jpg";
 import eightImg from "../assets/LeafMe/Eight.jpg";
 import nineImg from "../assets/LeafMe/Nine.jpg";
 
-const leafMeSlides = [
+const DEFAULT_SLIDES = [
   { id: 1, src: firstImg, title: "Leaf Me a Fact • Volume 1" },
   { id: 2, src: secondImg, title: "Leaf Me a Fact • Volume 2" },
   { id: 3, src: thirdImg, title: "Leaf Me a Fact • Volume 3" },
@@ -24,20 +25,86 @@ const leafMeSlides = [
   { id: 9, src: nineImg, title: "Leaf Me a Fact • Volume 9" },
 ];
 
+function extractImageUrl(rawUrl) {
+  if (!rawUrl) return null;
+  if (
+    typeof rawUrl === "string" &&
+    (rawUrl.startsWith("http://") || rawUrl.startsWith("https://"))
+  ) {
+    return rawUrl;
+  }
+  try {
+    const parsed = typeof rawUrl === "string" ? JSON.parse(rawUrl) : rawUrl;
+    if (parsed?.props?.url) return parsed.props.url;
+    if (parsed?.url) return parsed.url;
+  } catch {
+    const match = String(rawUrl).match(/https:\/\/[^"'\s\\]+/);
+    if (match) return match[0];
+  }
+  return rawUrl;
+}
+
+function cleanTitle(rawTitle, fallbackIndex) {
+  if (!rawTitle) return `Leaf Me a Fact • Volume ${fallbackIndex}`;
+  let cleaned = rawTitle.replace(/[\p{Extended_Pictographic}]/gu, "").trim();
+  if (cleaned.length > 60) {
+    cleaned = cleaned.substring(0, 57) + "...";
+  }
+  return cleaned || `Leaf Me a Fact • Volume ${fallbackIndex}`;
+}
+
 export default function About() {
   const [isOpen, setIsOpen] = useState(false);
+  const [slides, setSlides] = useState(DEFAULT_SLIDES);
+  const [isLiveFeed, setIsLiveFeed] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [touchStartX, setTouchStartX] = useState(null);
 
-  const handlePrev = useCallback(() => {
-    setCurrentIndex(
-      (prev) => (prev - 1 + leafMeSlides.length) % leafMeSlides.length,
-    );
+  // Fetch dynamic Leaf Me a Fact posts from Supabase database (Latest posts first)
+  useEffect(() => {
+    async function fetchLeafMeFacts() {
+      try {
+        const { data, error } = await supabase
+          .from("leaf_me_facts")
+          .select("*")
+          .eq("is_published", true)
+          .order("published_at", { ascending: false })
+          .limit(10);
+
+        if (!error && data && data.length > 0) {
+          const dbSlides = data.map((item, index) => {
+            const parsedImg = extractImageUrl(item.image_url);
+            return {
+              id: item.id || index + 1,
+              src:
+                parsedImg || DEFAULT_SLIDES[index % DEFAULT_SLIDES.length].src,
+              title: cleanTitle(
+                item.title,
+                item.volume_number || data.length - index,
+              ),
+              caption: item.caption,
+              fbPostUrl: item.fb_post_url,
+              publishedAt: item.published_at,
+            };
+          });
+          setSlides(dbSlides);
+          setIsLiveFeed(true);
+        }
+      } catch (err) {
+        console.warn("Using local Leaf Me facts fallback:", err);
+      }
+    }
+
+    fetchLeafMeFacts();
   }, []);
 
+  const handlePrev = useCallback(() => {
+    setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
+  }, [slides.length]);
+
   const handleNext = useCallback(() => {
-    setCurrentIndex((prev) => (prev + 1) % leafMeSlides.length);
-  }, []);
+    setCurrentIndex((prev) => (prev + 1) % slides.length);
+  }, [slides.length]);
 
   // Keyboard navigation: Escape to close, Left/Right arrows to swipe
   useEffect(() => {
@@ -132,7 +199,7 @@ export default function About() {
           </div>
         </div>
 
-        {/* Right Column: High-Impact Rounded Photography Display (Clickable Showcase) */}
+        {/* Right Column: High-Impact Photography / Live Post Display (Option 1) */}
         <div className="lg:col-span-6 flex justify-center lg:justify-end">
           <button
             type="button"
@@ -143,28 +210,29 @@ export default function About() {
             aria-label="Open Leaf Me a Fact infographic gallery"
             className="w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-white group transition-all duration-300 hover:shadow-3xl cursor-pointer relative block focus:outline-none focus:ring-4 focus:ring-[#1B5E20]/30 text-left"
           >
+            {/* Main Poster Image (Shows Latest Live Post or Clean Infographic Poster) */}
             <img
-              src={aboutImg}
-              alt="SDO Alangilan Sustainability Advocacies and Leaf Me a Fact Infographics"
+              src={slides[0]?.src || aboutImg}
+              alt={slides[0]?.title || "SDO Alangilan Leaf Me a Fact Showcase"}
               className="w-full h-[320px] sm:h-[400px] md:h-[460px] lg:h-[500px] object-cover group-hover:scale-[1.02] transition-transform duration-500"
             />
-            {/* Subtle Hover / Tap Overlay Indicator */}
-            <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
-              <div className="px-4 py-2 rounded-full bg-black/70 backdrop-blur-md text-white text-xs font-semibold tracking-wide flex items-center gap-2 shadow-xl transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"
-                  />
-                </svg>
-                <span> Click to View</span>
+
+            {/* Top Live Badge */}
+            <div className="absolute top-4 left-4 z-10">
+              <div className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white text-[11px] font-semibold tracking-wide flex items-center gap-2 shadow-lg">
+                <span>{isLiveFeed ? "Live from FB" : "Leaf Me a Fact"}</span>
+              </div>
+            </div>
+
+            {/* Bottom Action Bar */}
+            <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/85 via-black/40 to-transparent flex items-center justify-between text-white">
+              <div className="min-w-0 pr-2">
+                <span className="text-[10px] text-gray-300 font-bold uppercase tracking-wider block">
+                  Advocacy Series
+                </span>
+                <p className="text-xs sm:text-sm font-semibold truncate">
+                  {slides[0]?.title || "Explore Leaf Me a Fact"}
+                </p>
               </div>
             </div>
           </button>
@@ -188,6 +256,22 @@ export default function About() {
             className="absolute top-4 left-4 right-4 sm:top-6 sm:left-6 sm:right-6 flex items-center justify-between z-50 pointer-events-none"
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Gallery Info Pill */}
+            <div className="pointer-events-auto px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-semibold tracking-wide flex items-center gap-2 shadow-lg">
+              <span>Leaf Me a Fact</span>
+              {slides[currentIndex]?.fbPostUrl && (
+                <a
+                  href={slides[currentIndex].fbPostUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ml-1 px-2 py-0.5 rounded-md bg-white/15 hover:bg-[#8BC34A] hover:text-[#041a0d] text-[10px] font-bold text-white transition-all inline-flex items-center gap-1"
+                >
+                  <span>Post</span>
+                  <span>↗</span>
+                </a>
+              )}
+            </div>
+
             {/* Close 'X' Button */}
             <button
               type="button"
@@ -243,14 +327,14 @@ export default function About() {
           >
             <img
               key={currentIndex}
-              src={leafMeSlides[currentIndex].src}
-              alt={leafMeSlides[currentIndex].title}
+              src={slides[currentIndex].src}
+              alt={slides[currentIndex].title}
               className="max-w-full max-h-[72vh] sm:max-h-[78vh] w-auto h-auto object-contain rounded-2xl shadow-2xl border-2 border-white/25 select-none transition-all duration-300"
             />
 
             {/* Bottom Dots Indicator Bar */}
             <div className="flex items-center gap-1.5 sm:gap-2 mt-3.5 sm:mt-4">
-              {leafMeSlides.map((slide, idx) => (
+              {slides.map((slide, idx) => (
                 <button
                   key={slide.id}
                   type="button"
