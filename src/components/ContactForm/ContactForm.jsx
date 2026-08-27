@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import emailjs from "@emailjs/browser";
+import { supabase } from "../../lib/supabaseClient";
 
 const MAX_LENGTHS = {
   name: 50,
@@ -23,8 +24,45 @@ const ContactForm = () => {
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error' | 'error-validation' | 'limit' | null
   const [lastSubmitTime, setLastSubmitTime] = useState(0);
+  const [popupModal, setPopupModal] = useState({
+    isOpen: false,
+    type: 'success', // 'success' | 'limit' | 'validation' | 'error'
+    title: '',
+    message: '',
+    buttonText: 'Okay',
+  });
+
+  const openPopup = (type, title, message, buttonText = 'Okay') => {
+    setPopupModal({
+      isOpen: true,
+      type,
+      title,
+      message,
+      buttonText,
+    });
+  };
+
+  const closePopup = () => {
+    setPopupModal((prev) => ({ ...prev, isOpen: false }));
+  };
+
+  // Close popup modal on Escape key and lock body scroll
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        closePopup();
+      }
+    };
+    if (popupModal.isOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'hidden';
+    }
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'auto';
+    };
+  }, [popupModal.isOpen]);
 
   // Helper to prevent 4+ consecutive identical characters (e.g. "eeee" -> "eee")
   const preventCharSpam = (text) => text.replace(/(.)\1{3,}/g, '$1$1$1');
@@ -183,34 +221,75 @@ const ContactForm = () => {
     const isMsgValid = validateField('message', formData.message);
 
     if (!isNameValid || !isEmailValid || !isOrgValid || !isMsgValid) {
-      setSubmitStatus('error-validation');
+      openPopup(
+        'validation',
+        'Please Check Your Inputs',
+        'Please fill in all required fields and correct the highlighted errors before submitting.',
+        'Review Form'
+      );
       return;
     }
 
     if (now - lastSubmitTime < 60000) {
-      setSubmitStatus("limit");
+      openPopup(
+        'limit',
+        'Please Wait a Moment',
+        'To prevent spam, please wait 1 minute before sending another message.',
+        'Got it'
+      );
       return;
     }
 
     setIsSubmitting(true);
-    setSubmitStatus(null);
     setLastSubmitTime(now);
 
     try {
-      await emailjs.send(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+      // 1. Insert message to Supabase database
+      const { error: dbError } = await supabase.from("contact_messages").insert([
         {
-          name: formData.name,
-          email: formData.email,
+          name: formData.name.trim(),
+          email: formData.email.trim(),
           purpose: formData.purpose,
-          organization: formData.organization || "N/A",
-          message: formData.message,
+          organization: formData.organization?.trim() || null,
+          message: formData.message.trim(),
         },
-        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-      );
+      ]);
 
-      setSubmitStatus("success");
+      if (dbError) {
+        console.error("Supabase insert error:", dbError);
+        throw dbError;
+      }
+
+      // 2. Optionally trigger EmailJS if configured
+      if (
+        import.meta.env.VITE_EMAILJS_SERVICE_ID &&
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID &&
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      ) {
+        try {
+          await emailjs.send(
+            import.meta.env.VITE_EMAILJS_SERVICE_ID,
+            import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+            {
+              name: formData.name,
+              email: formData.email,
+              purpose: formData.purpose,
+              organization: formData.organization || "N/A",
+              message: formData.message,
+            },
+            import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+          );
+        } catch (emailErr) {
+          console.warn("EmailJS notification failed, but message was saved in Supabase:", emailErr);
+        }
+      }
+
+      openPopup(
+        'success',
+        'Message Sent!',
+        'Thank you for reaching out to SDO Alangilan. We have received your message and will get back to you soon.',
+        'Okay'
+      );
 
       setFormData({
         name: "",
@@ -227,50 +306,34 @@ const ContactForm = () => {
         message: "",
       });
     } catch (error) {
-      console.log(error);
-      setSubmitStatus('error');
+      console.error("Contact submit error:", error);
+      openPopup(
+        'error',
+        'Submission Failed',
+        'Something went wrong while sending your message. Please check your connection and try again.',
+        'Close'
+      );
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="w-full max-w-lg bg-white/95 backdrop-blur-md border border-white/80 shadow-2xl rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-7 font-sans hover:shadow-2xl transition-shadow duration-300">
-        
-      {/* Form Header */}
-      <div className="mb-2.5 sm:mb-4">
-        <h3 className="text-[#064e3b] text-xl sm:text-2xl font-bold leading-tight mb-0.5 sm:mb-1">
-         Send us a message
-        </h3>
-        <p className="text-gray-500 text-xs leading-relaxed font-light">
-          Have questions or want to collaborate on campus initiatives? Send us a message.
-        </p>
-      </div>
+    <>
+      <div className="w-full max-w-lg bg-white/95 backdrop-blur-md border border-white/80 shadow-2xl rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-7 font-sans hover:shadow-2xl transition-shadow duration-300">
+          
+        {/* Form Header */}
+        <div className="mb-2.5 sm:mb-4">
+          <h3 className="text-[#064e3b] text-xl sm:text-2xl font-bold leading-tight mb-0.5 sm:mb-1">
+           Send us a message
+          </h3>
+          <p className="text-gray-500 text-xs leading-relaxed font-light">
+            Have questions or want to collaborate on campus initiatives? Send us a message.
+          </p>
+        </div>
 
-      {/* Status Notifications */}
-      {submitStatus === 'success' && (
-        <div className="mb-2.5 sm:mb-3.5 p-2.5 sm:p-3 bg-emerald-50 text-emerald-700 text-xs font-medium rounded-xl border border-emerald-100 flex items-center gap-2">
-          ✨ Message sent successfully! We'll be in touch soon.
-        </div>
-      )}
-      {submitStatus === 'error-validation' && (
-        <div className="mb-2.5 sm:mb-3.5 p-2.5 sm:p-3 bg-rose-50 text-rose-700 text-xs font-medium rounded-xl border border-rose-100 flex items-center gap-2">
-          ⚠️ Please correct the highlighted errors before submitting.
-        </div>
-      )}
-      {submitStatus === 'limit' && (
-        <div className="mb-2.5 sm:mb-3.5 p-2.5 sm:p-3 bg-rose-50 text-rose-700 text-xs font-medium rounded-xl border border-rose-100 flex items-center gap-2">
-          ⚠️ Please wait 1 minute before sending another message.
-        </div>
-      )}
-      {submitStatus === 'error' && (
-        <div className="mb-2.5 sm:mb-3.5 p-2.5 sm:p-3 bg-rose-50 text-rose-700 text-xs font-medium rounded-xl border border-rose-100 flex items-center gap-2">
-          ❌ Something went wrong on the server. Please try again.
-        </div>
-      )}
-
-      {/* Contact Form */}
-      <form onSubmit={handleSubmit} onKeyDown={handleKeyDown} className="space-y-2.5 sm:space-y-3.5">
+        {/* Contact Form */}
+        <form onSubmit={handleSubmit} onKeyDown={handleKeyDown} className="space-y-2.5 sm:space-y-3.5">
         
         {/* Inquiry Purpose Selection Pills */}
         <div>
@@ -507,6 +570,121 @@ const ContactForm = () => {
 
       </form>
     </div>
+
+    {/* =========================================================================
+        MODERN MINIMALIST UNIFIED POPUP MODAL (Centered with Icon, Title, Msg & Button)
+    ========================================================================= */}
+    {popupModal.isOpen && (
+      <div
+        role="dialog"
+        aria-modal="true"
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-xs animate-in fade-in duration-200"
+        onClick={closePopup}
+      >
+        <div
+          className="w-full max-w-sm bg-white rounded-3xl shadow-2xl p-6 sm:p-7 text-center flex flex-col items-center justify-center animate-in zoom-in-95 duration-200 border border-gray-100"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Top Centered Status Icon Circle */}
+          {popupModal.type === 'success' && (
+            <div className="w-14 h-14 rounded-full bg-emerald-50 text-[#064e3b] border border-emerald-200/60 flex items-center justify-center mb-3.5 shadow-xs">
+              <svg
+                className="w-7 h-7 stroke-[#064e3b]"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </div>
+          )}
+
+          {popupModal.type === 'limit' && (
+            <div className="w-14 h-14 rounded-full bg-amber-50 text-amber-600 border border-amber-200/60 flex items-center justify-center mb-3.5 shadow-xs">
+              <svg
+                className="w-7 h-7 stroke-amber-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+            </div>
+          )}
+
+          {popupModal.type === 'validation' && (
+            <div className="w-14 h-14 rounded-full bg-amber-50 text-amber-600 border border-amber-200/60 flex items-center justify-center mb-3.5 shadow-xs">
+              <svg
+                className="w-7 h-7 stroke-amber-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                <line x1="12" y1="9" x2="12" y2="13" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg>
+            </div>
+          )}
+
+          {popupModal.type === 'error' && (
+            <div className="w-14 h-14 rounded-full bg-rose-50 text-rose-600 border border-rose-200/60 flex items-center justify-center mb-3.5 shadow-xs">
+              <svg
+                className="w-7 h-7 stroke-rose-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <line x1="15" y1="9" x2="9" y2="15" />
+                <line x1="9" y1="9" x2="15" y2="15" />
+              </svg>
+            </div>
+          )}
+
+          {/* Title */}
+          <h3
+            className={`text-xl font-bold mb-1.5 text-center ${
+              popupModal.type === 'success'
+                ? 'text-[#064e3b]'
+                : popupModal.type === 'error'
+                ? 'text-rose-800'
+                : 'text-amber-800'
+            }`}
+          >
+            {popupModal.title}
+          </h3>
+
+          {/* Short Centered Description */}
+          <p className="text-gray-600 text-xs sm:text-sm leading-relaxed mb-5 font-light text-center">
+            {popupModal.message}
+          </p>
+
+          {/* Centered Action Button */}
+          <button
+            type="button"
+            onClick={closePopup}
+            className={`w-full text-white font-semibold text-xs sm:text-sm py-2.5 sm:py-3 px-6 rounded-xl shadow-xs hover:shadow-md active:scale-98 transition-all duration-150 cursor-pointer ${
+              popupModal.type === 'error'
+                ? 'bg-rose-700 hover:bg-rose-800'
+                : 'bg-[#064e3b] hover:bg-[#043427]'
+            }`}
+          >
+            {popupModal.buttonText}
+          </button>
+        </div>
+      </div>
+    )}
+  </>
   );
 };
 
