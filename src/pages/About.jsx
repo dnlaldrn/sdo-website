@@ -13,42 +13,46 @@ import sevenImg from "../assets/LeafMe/Seven.jpg";
 import eightImg from "../assets/LeafMe/Eight.jpg";
 import nineImg from "../assets/LeafMe/Nine.jpg";
 
+const SDO_FB_PAGE_URL = "https://www.facebook.com/profile.php?id=61587545961771";
+
 const DEFAULT_SLIDES = [
-  { id: 1, src: firstImg, title: "Leaf Me a Fact • Volume 1" },
-  { id: 2, src: secondImg, title: "Leaf Me a Fact • Volume 2" },
-  { id: 3, src: thirdImg, title: "Leaf Me a Fact • Volume 3" },
-  { id: 4, src: fourthImg, title: "Leaf Me a Fact • Volume 4" },
-  { id: 5, src: fifthImg, title: "Leaf Me a Fact • Volume 5" },
-  { id: 6, src: sixthImg, title: "Leaf Me a Fact • Volume 6" },
-  { id: 7, src: sevenImg, title: "Leaf Me a Fact • Volume 7" },
-  { id: 8, src: eightImg, title: "Leaf Me a Fact • Volume 8" },
-  { id: 9, src: nineImg, title: "Leaf Me a Fact • Volume 9" },
+  { id: 1, src: firstImg, title: "Leaf Me a Fact • Volume 1", fbPostUrl: SDO_FB_PAGE_URL },
+  { id: 2, src: secondImg, title: "Leaf Me a Fact • Volume 2", fbPostUrl: SDO_FB_PAGE_URL },
+  { id: 3, src: thirdImg, title: "Leaf Me a Fact • Volume 3", fbPostUrl: SDO_FB_PAGE_URL },
+  { id: 4, src: fourthImg, title: "Leaf Me a Fact • Volume 4", fbPostUrl: SDO_FB_PAGE_URL },
+  { id: 5, src: fifthImg, title: "Leaf Me a Fact • Volume 5", fbPostUrl: SDO_FB_PAGE_URL },
+  { id: 6, src: sixthImg, title: "Leaf Me a Fact • Volume 6", fbPostUrl: SDO_FB_PAGE_URL },
+  { id: 7, src: sevenImg, title: "Leaf Me a Fact • Volume 7", fbPostUrl: SDO_FB_PAGE_URL },
+  { id: 8, src: eightImg, title: "Leaf Me a Fact • Volume 8", fbPostUrl: SDO_FB_PAGE_URL },
+  { id: 9, src: nineImg, title: "Leaf Me a Fact • Volume 9", fbPostUrl: SDO_FB_PAGE_URL },
 ];
 
 function extractImageUrl(rawUrl) {
   if (!rawUrl) return null;
-  if (
-    typeof rawUrl === "string" &&
-    (rawUrl.startsWith("http://") || rawUrl.startsWith("https://"))
-  ) {
-    return rawUrl;
+  let targetUrl = rawUrl;
+  if (typeof rawUrl === "string") {
+    if (!rawUrl.startsWith("http://") && !rawUrl.startsWith("https://")) {
+      try {
+        const parsed = JSON.parse(rawUrl);
+        targetUrl = parsed?.props?.url || parsed?.url || rawUrl;
+      } catch {
+        const match = String(rawUrl).match(/https:\/\/[^"'\s\\]+/);
+        if (match) targetUrl = match[0];
+      }
+    }
   }
-  try {
-    const parsed = typeof rawUrl === "string" ? JSON.parse(rawUrl) : rawUrl;
-    if (parsed?.props?.url) return parsed.props.url;
-    if (parsed?.url) return parsed.url;
-  } catch {
-    const match = String(rawUrl).match(/https:\/\/[^"'\s\\]+/);
-    if (match) return match[0];
-  }
-  return rawUrl;
+  return targetUrl || null;
 }
 
 function cleanTitle(rawTitle, fallbackIndex) {
   if (!rawTitle) return `Leaf Me a Fact • Volume ${fallbackIndex}`;
-  let cleaned = rawTitle.replace(/[\p{Extended_Pictographic}]/gu, "").trim();
-  if (cleaned.length > 60) {
-    cleaned = cleaned.substring(0, 57) + "...";
+  let normalized = typeof rawTitle.normalize === "function" ? rawTitle.normalize("NFKD") : rawTitle;
+  let cleaned = normalized
+    .replace(/[\p{Extended_Pictographic}\p{Emoji_Presentation}]/gu, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (cleaned.length > 55) {
+    cleaned = cleaned.substring(0, 52) + "...";
   }
   return cleaned || `Leaf Me a Fact • Volume ${fallbackIndex}`;
 }
@@ -60,7 +64,7 @@ export default function About() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [touchStartX, setTouchStartX] = useState(null);
 
-  // Fetch dynamic Leaf Me a Fact posts from Supabase database (Latest posts first)
+  // Fetch dynamic Leaf Me a Fact posts from Supabase permanent storage
   useEffect(() => {
     async function fetchLeafMeFacts() {
       try {
@@ -69,15 +73,16 @@ export default function About() {
           .select("*")
           .eq("is_published", true)
           .order("published_at", { ascending: false })
-          .limit(10);
+          .limit(50);
 
         if (!error && data && data.length > 0) {
           const dbSlides = data.map((item, index) => {
             const parsedImg = extractImageUrl(item.image_url);
+            // Append cachebuster to guarantee browser fetches fresh 843x1054 HD assets
+            const hdSrc = parsedImg ? `${parsedImg}?v=hd2` : null;
             return {
               id: item.id || index + 1,
-              src:
-                parsedImg || DEFAULT_SLIDES[index % DEFAULT_SLIDES.length].src,
+              src: hdSrc || DEFAULT_SLIDES[index % DEFAULT_SLIDES.length].src,
               title: cleanTitle(
                 item.title,
                 item.volume_number || data.length - index,
@@ -214,6 +219,11 @@ export default function About() {
             <img
               src={slides[0]?.src || aboutImg}
               alt={slides[0]?.title || "SDO Alangilan Leaf Me a Fact Showcase"}
+              referrerPolicy="no-referrer"
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = DEFAULT_SLIDES[0]?.src || aboutImg;
+              }}
               className="w-full h-[320px] sm:h-[400px] md:h-[460px] lg:h-[500px] object-cover group-hover:scale-[1.02] transition-transform duration-500"
             />
 
@@ -259,17 +269,15 @@ export default function About() {
             {/* Gallery Info Pill */}
             <div className="pointer-events-auto px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-semibold tracking-wide flex items-center gap-2 shadow-lg">
               <span>Leaf Me a Fact</span>
-              {slides[currentIndex]?.fbPostUrl && (
-                <a
-                  href={slides[currentIndex].fbPostUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="ml-1 px-2 py-0.5 rounded-md bg-white/15 hover:bg-[#8BC34A] hover:text-[#041a0d] text-[10px] font-bold text-white transition-all inline-flex items-center gap-1"
-                >
-                  <span>Post</span>
-                  <span>↗</span>
-                </a>
-              )}
+              <a
+                href={slides[currentIndex]?.fbPostUrl || SDO_FB_PAGE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ml-1 px-2 py-0.5 rounded-md bg-white/15 hover:bg-[#8BC34A] hover:text-[#041a0d] text-[10px] font-bold text-white transition-all inline-flex items-center gap-1 cursor-pointer"
+              >
+                <span>Post</span>
+                <span>↗</span>
+              </a>
             </div>
 
             {/* Close 'X' Button */}
@@ -322,30 +330,39 @@ export default function About() {
 
           {/* Centered Active Image Stage */}
           <div
-            className="relative max-w-4xl max-h-[82vh] sm:max-h-[85vh] w-full flex flex-col items-center justify-center animate-in zoom-in-95 duration-200"
+            className="relative max-w-5xl max-h-[85vh] sm:max-h-[88vh] w-full flex flex-col items-center justify-center animate-in zoom-in-95 duration-200"
             onClick={(e) => e.stopPropagation()}
           >
             <img
               key={currentIndex}
-              src={slides[currentIndex].src}
-              alt={slides[currentIndex].title}
-              className="max-w-full max-h-[72vh] sm:max-h-[78vh] w-auto h-auto object-contain rounded-2xl shadow-2xl border-2 border-white/25 select-none transition-all duration-300"
+              src={slides[currentIndex]?.src || DEFAULT_SLIDES[currentIndex % DEFAULT_SLIDES.length].src}
+              alt={slides[currentIndex]?.title}
+              referrerPolicy="no-referrer"
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = DEFAULT_SLIDES[currentIndex % DEFAULT_SLIDES.length]?.src || aboutImg;
+              }}
+              className="max-w-full max-h-[75vh] sm:max-h-[80vh] w-auto h-auto object-contain rounded-2xl shadow-2xl border-2 border-white/25 select-none transition-all duration-300"
             />
 
             {/* Bottom Dots Indicator Bar */}
-            <div className="flex items-center gap-1.5 sm:gap-2 mt-3.5 sm:mt-4">
+            <div className="flex items-center gap-1 sm:gap-1.5 mt-3.5 sm:mt-4">
               {slides.map((slide, idx) => (
                 <button
                   key={slide.id}
                   type="button"
                   onClick={() => setCurrentIndex(idx)}
                   aria-label={`Go to slide ${idx + 1}`}
-                  className={`transition-all duration-300 rounded-full cursor-pointer ${
-                    idx === currentIndex
-                      ? "w-6 sm:w-8 h-2 bg-[#8BC34A] shadow-sm shadow-[#8BC34A]/50"
-                      : "w-2 h-2 bg-white/30 hover:bg-white/60"
-                  }`}
-                />
+                  className="p-1 sm:p-1.5 cursor-pointer flex items-center justify-center group focus:outline-none"
+                >
+                  <span
+                    className={`block transition-all duration-300 rounded-full ${
+                      idx === currentIndex
+                        ? "w-6 sm:w-8 h-2 bg-[#8BC34A] shadow-sm shadow-[#8BC34A]/50"
+                        : "w-2 h-2 bg-white/35 group-hover:bg-white/70"
+                    }`}
+                  />
+                </button>
               ))}
             </div>
           </div>

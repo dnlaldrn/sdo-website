@@ -64,20 +64,40 @@ function getEquispacedSDGPositions(radius) {
   return positions;
 }
 
-// Generate Realistic Earth Day Map Canvas Texture
+// Generate Realistic & Clean Earth Day Map Canvas Texture
 function createEarthDayTexture() {
   const canvas = document.createElement("canvas");
   canvas.width = 2048;
   canvas.height = 1024;
   const ctx = canvas.getContext("2d");
 
-  // 1. Deep Ocean Base
+  // 1. Deep Royal Navy Ocean Base
   const oceanGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-  oceanGrad.addColorStop(0, "#081d38");
-  oceanGrad.addColorStop(0.5, "#0d2b52");
-  oceanGrad.addColorStop(1, "#081d38");
+  oceanGrad.addColorStop(0, "#091f3d");
+  oceanGrad.addColorStop(0.3, "#0d2b52");
+  oceanGrad.addColorStop(0.5, "#103562");
+  oceanGrad.addColorStop(0.7, "#0d2b52");
+  oceanGrad.addColorStop(1, "#091f3d");
   ctx.fillStyle = oceanGrad;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Subtle clean latitude/longitude grid (faint, high-tech & neat)
+  ctx.strokeStyle = "rgba(79, 195, 247, 0.05)";
+  ctx.lineWidth = 1;
+  for (let lat = -80; lat <= 80; lat += 20) {
+    const y = ((90 - lat) / 180) * canvas.height;
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(canvas.width, y);
+    ctx.stroke();
+  }
+  for (let lon = -180; lon <= 180; lon += 30) {
+    const x = ((lon + 180) / 360) * canvas.width;
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, canvas.height);
+    ctx.stroke();
+  }
 
   // Helper to convert [lon, lat] to canvas [x, y]
   const mapPoint = (lon, lat) => [
@@ -85,9 +105,31 @@ function createEarthDayTexture() {
     ((90 - lat) / 180) * canvas.height,
   ];
 
-  // Helper to draw continent polygons with smooth styling
-  const drawLandmass = (coords, fillColor = "#2e5c30", strokeColor = "#3d7a40") => {
+  // Helper to draw continent polygons with clean lush green styling
+  const drawLandmass = (
+    coords,
+    fillColor = "#2d6a34",
+    strokeColor = "#408a48",
+    glowColor = "rgba(76, 175, 80, 0.2)"
+  ) => {
     if (!coords || coords.length === 0) return;
+
+    // Coastal Glow Outline
+    if (glowColor) {
+      ctx.beginPath();
+      const [gx, gy] = mapPoint(coords[0][0], coords[0][1]);
+      ctx.moveTo(gx, gy);
+      for (let i = 1; i < coords.length; i++) {
+        const [x, y] = mapPoint(coords[i][0], coords[i][1]);
+        ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.strokeStyle = glowColor;
+      ctx.lineWidth = 8;
+      ctx.stroke();
+    }
+
+    // Main Landmass Fill
     ctx.beginPath();
     const [startX, startY] = mapPoint(coords[0][0], coords[0][1]);
     ctx.moveTo(startX, startY);
@@ -98,24 +140,35 @@ function createEarthDayTexture() {
     ctx.closePath();
     ctx.fillStyle = fillColor;
     ctx.fill();
+
+    // Crisp Coastal Stroke
     ctx.strokeStyle = strokeColor;
-    ctx.lineWidth = 4;
+    ctx.lineWidth = 2.5;
     ctx.stroke();
   };
 
-  // Continents Geometries (Equirectangular polygons)
-  // Africa & Arabia
+  // 2. Continents Geometries (Neat, Balanced, Organic Green Palettes)
+  
+  // Africa & Arabia (Lush emerald with warm savanna accents)
   drawLandmass(
     [
       [-17, 30], [-5, 36], [10, 37], [25, 32], [32, 31], [43, 12], [51, 12],
       [40, -4], [35, -20], [28, -34], [18, -34], [12, -15], [9, 4], [0, 6],
       [-15, 12], [-17, 21], [-17, 30]
     ],
-    "#38663b",
-    "#4a854e"
+    "#347239",
+    "#4ba353",
+    "rgba(76, 175, 80, 0.22)"
   );
 
-  // Eurasia (Europe + Asia)
+  // Madagascar
+  drawLandmass(
+    [[44, -13], [50, -15], [47, -25], [43, -25], [44, -13]],
+    "#2d6a34",
+    "#408a48"
+  );
+
+  // Eurasia (Europe + Northern/Central/East Asia)
   drawLandmass(
     [
       [-9, 36], [-9, 43], [2, 51], [5, 60], [20, 70], [40, 68], [70, 73],
@@ -123,8 +176,49 @@ function createEarthDayTexture() {
       [122, 30], [108, 20], [100, 5], [90, 22], [75, 10], [68, 24],
       [50, 30], [40, 40], [28, 41], [15, 45], [0, 45], [-9, 36]
     ],
-    "#2d5e32",
-    "#3d7843"
+    "#285f2e",
+    "#3d8c44",
+    "rgba(67, 160, 71, 0.2)"
+  );
+
+  // Scandinavia & UK / Ireland
+  drawLandmass(
+    [[5, 58], [12, 56], [18, 60], [28, 70], [18, 70], [8, 62], [5, 58]],
+    "#245429",
+    "#3a7d40"
+  );
+  drawLandmass(
+    [[-5, 50], [0, 52], [1, 58], [-4, 58], [-5, 50]],
+    "#2e6e34",
+    "#439b4b"
+  );
+
+  // India & South Asia
+  drawLandmass(
+    [[68, 24], [74, 15], [78, 8], [80, 9], [86, 22], [75, 28], [68, 24]],
+    "#3b7840",
+    "#52a859"
+  );
+
+  // Southeast Asia / Indochina
+  drawLandmass(
+    [[98, 20], [108, 20], [109, 12], [104, 8], [100, 14], [98, 20]],
+    "#2c6b32",
+    "#419649"
+  );
+
+  // Indonesia & Malaysia Archipelago
+  drawLandmass(
+    [[95, 5], [105, -5], [115, -8], [125, -8], [140, -4], [135, 0], [120, 0], [105, 0], [95, 5]],
+    "#2a6830",
+    "#3e9145"
+  );
+
+  // Japan
+  drawLandmass(
+    [[130, 32], [135, 35], [141, 41], [145, 44], [141, 45], [139, 37], [130, 32]],
+    "#2b6631",
+    "#419148"
   );
 
   // North America
@@ -134,50 +228,65 @@ function createEarthDayTexture() {
       [-75, 35], [-80, 25], [-97, 20], [-105, 23], [-120, 34], [-124, 48],
       [-135, 58], [-168, 65]
     ],
-    "#336336",
-    "#447e48"
+    "#2c6632",
+    "#419448",
+    "rgba(76, 175, 80, 0.2)"
   );
 
-  // South America
+  // Central America
+  drawLandmass(
+    [[-105, 23], [-97, 20], [-90, 16], [-84, 10], [-77, 8], [-83, 10], [-92, 16], [-105, 23]],
+    "#34753b",
+    "#4ca654"
+  );
+
+  // South America (Lush Amazonian Emerald)
   drawLandmass(
     [
       [-75, 10], [-60, 10], [-50, 0], [-35, -5], [-40, -22], [-55, -38],
       [-68, -55], [-75, -45], [-72, -30], [-80, -5], [-75, 10]
     ],
-    "#28612e",
-    "#3a7f41"
+    "#225c29",
+    "#388a40",
+    "rgba(67, 160, 71, 0.22)"
   );
 
-  // Australia
+  // Australia & New Zealand
   drawLandmass(
     [
       [113, -22], [115, -34], [135, -38], [150, -37], [153, -28], [142, -11],
       [130, -13], [113, -22]
     ],
-    "#6b5832",
-    "#877042"
+    "#437739",
+    "#5da150",
+    "rgba(93, 161, 80, 0.2)"
+  );
+  drawLandmass(
+    [[166, -46], [174, -41], [178, -38], [175, -35], [172, -41], [166, -46]],
+    "#2c6b32",
+    "#429a4a"
   );
 
-  // Antarctica & Greenland
+  // Greenland (Clean Boreal Tundra Green with Soft Mint Edge, NOT harsh white)
   drawLandmass(
     [
-      [-55, 60], [-45, 60], [-20, 70], [-30, 82], [-55, 75], [-55, 60]
+      [-55, 60], [-45, 60], [-20, 70], [-25, 78], [-42, 80], [-55, 75], [-55, 60]
     ],
-    "#e0e7ed",
-    "#ffffff"
+    "#2b5f47",
+    "#42886a",
+    "rgba(66, 136, 106, 0.2)"
   );
 
-  drawLandmass(
-    [
-      [-180, -65], [180, -65], [180, -90], [-180, -90]
-    ],
-    "#d6e2eb",
-    "#ffffff"
-  );
-
-  // Highlight Philippine Archipelago (BatStateU Home Region)
+  // 3. Highlight Philippine Archipelago (BatStateU Home Region)
   const drawIsland = (lon, lat, r) => {
     const [x, y] = mapPoint(lon, lat);
+    // Outer pulse ring
+    ctx.beginPath();
+    ctx.arc(x, y, r + 4, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(139, 195, 74, 0.35)";
+    ctx.fill();
+
+    // Core Island
     ctx.beginPath();
     ctx.arc(x, y, r, 0, Math.PI * 2);
     ctx.fillStyle = "#8bc34a";
@@ -186,21 +295,26 @@ function createEarthDayTexture() {
     ctx.lineWidth = 2;
     ctx.stroke();
   };
-  drawIsland(121.07, 13.78, 9); // Luzon / Batangas
-  drawIsland(124.0, 10.5, 7); // Visayas
-  drawIsland(125.0, 7.5, 8); // Mindanao
-  drawIsland(118.5, 9.5, 5); // Palawan
+  drawIsland(121.07, 13.78, 10, "BatStateU / Luzon");
+  drawIsland(124.0, 10.5, 7.5, "Visayas");
+  drawIsland(125.0, 7.5, 8.5, "Mindanao");
+  drawIsland(118.5, 9.5, 5.5, "Palawan");
 
-  // 2. Add subtle continental shading and clouds
-  ctx.fillStyle = "rgba(255, 255, 255, 0.15)";
-  for (let i = 0; i < 40; i++) {
-    const cx = Math.random() * canvas.width;
-    const cy = Math.random() * canvas.height;
-    const cr = 30 + Math.random() * 80;
+  // 4. Clean & Subtle Eco-Sustainability Sparkle Nodes (Replaces messy random white dots)
+  const ecoNodes = [
+    [10, 52], [2, 48], [-74, 40], [-122, 37], [-46, -23], [36, -1], [77, 28],
+    [139, 35], [151, -33], [103, 1], [-99, 19], [31, 30], [28, -26]
+  ];
+  ecoNodes.forEach(([lon, lat]) => {
+    const [nx, ny] = mapPoint(lon, lat);
     ctx.beginPath();
-    ctx.arc(cx, cy, cr, 0, Math.PI * 2);
+    ctx.arc(nx, ny, 3, 0, Math.PI * 2);
+    ctx.fillStyle = "#aed581";
     ctx.fill();
-  }
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.8)";
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  });
 
   const texture = new THREE.CanvasTexture(canvas);
   texture.needsUpdate = true;
