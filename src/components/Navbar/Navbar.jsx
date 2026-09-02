@@ -57,8 +57,8 @@ export default function Navbar() {
       <nav
         className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ease-in-out ${
           isScrolled
-            ? "bg-black/80 backdrop-blur-md border-b border-white/10 shadow-lg py-2.5 max-md:translate-y-0 max-md:opacity-100"
-            : "bg-transparent py-4 sm:py-5 pb-5 max-md:-translate-y-full max-md:opacity-0 max-md:pointer-events-none"
+            ? "bg-black/85 backdrop-blur-md border-b border-white/10 shadow-lg py-2.5"
+            : "bg-gradient-to-b from-black/60 via-black/30 to-transparent py-3 sm:py-5"
         }`}
       >
         <div className="relative max-w-7xl mx-auto px-3 sm:px-6 md:px-8 flex items-center justify-between">

@@ -56,7 +56,7 @@ export default function Footer() {
                   </svg>
                 </div>
                 <div className="min-w-0 flex-1">
-                  <span className="text-[8px] sm:text-[9px] font-bold text-gray-400 uppercase tracking-wider block leading-none mb-0.5">
+                  <span className="text-[8px] sm:text-[9px] font-semibold text-gray-300 uppercase tracking-wider block leading-none mb-0.5">
                     Email
                   </span>
                   <a
@@ -80,7 +80,7 @@ export default function Footer() {
                   </svg>
                 </div>
                 <div className="min-w-0 flex-1">
-                  <span className="text-[8px] sm:text-[9px] font-bold text-gray-400 uppercase tracking-wider block leading-none mb-0.5">
+                  <span className="text-[8px] sm:text-[9px] font-semibold text-gray-300 uppercase tracking-wider block leading-none mb-0.5">
                     Official Facebook
                   </span>
                   <a
@@ -92,7 +92,7 @@ export default function Footer() {
                     <span>SDO Alangilan Chapter</span>
                     <span className="text-[10px] lg:text-xs">↗</span>
                   </a>
-                  <p className="text-gray-400 text-[9px] lg:text-[10px] font-light hidden sm:block">
+                  <p className="text-gray-300 text-[9px] lg:text-[10px] font-normal hidden sm:block">
                     Announcements, campaigns & updates
                   </p>
                 </div>
@@ -121,7 +121,7 @@ export default function Footer() {
                   </svg>
                 </div>
                 <div className="min-w-0 flex-1">
-                  <span className="text-[8px] sm:text-[9px] font-bold text-gray-400 uppercase tracking-wider block leading-none mb-0.5">
+                  <span className="text-[8px] sm:text-[9px] font-semibold text-gray-300 uppercase tracking-wider block leading-none mb-0.5">
                     Campus Location
                   </span>
                   <a
@@ -134,7 +134,7 @@ export default function Footer() {
                     <span className="hidden lg:inline">Albert Einstein Building, First Floor, Left Side</span>
                     <span className="text-[10px] lg:text-xs">↗</span>
                   </a>
-                  <p className="text-gray-400 text-[9px] lg:text-[10px] font-light hidden sm:block">
+                  <p className="text-gray-300 text-[9px] lg:text-[10px] font-normal hidden sm:block">
                     BatStateU Alangilan Campus, Batangas City
                   </p>
                 </div>
@@ -158,14 +158,14 @@ export default function Footer() {
                   </svg>
                 </div>
                 <div className="min-w-0 flex-1">
-                  <span className="text-[8px] sm:text-[9px] font-bold text-gray-400 uppercase tracking-wider block leading-none mb-0.5">
+                  <span className="text-[8px] sm:text-[9px] font-semibold text-gray-300 uppercase tracking-wider block leading-none mb-0.5">
                     Office Hours
                   </span>
                   <p className="text-[11px] sm:text-xs lg:text-sm font-semibold text-white">
                     <span className="truncate lg:hidden">Mon – Fri, 8AM – 5PM</span>
                     <span className="hidden lg:inline">Monday – Friday, 8:00 AM – 5:00 PM</span>
                   </p>
-                  <p className="text-gray-400 text-[9px] lg:text-[10px] font-light hidden sm:block">
+                  <p className="text-gray-300 text-[9px] lg:text-[10px] font-normal hidden sm:block">
                     Excluding university holidays
                   </p>
                 </div>
@@ -188,7 +188,7 @@ export default function Footer() {
         {/* Bottom Row: Navigation, Utility Links & Copyright */}
         <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
           {/* Left: Copyright */}
-          <div className="text-xs text-gray-400 font-normal text-center sm:text-left leading-relaxed">
+          <div className="text-xs text-gray-300 font-normal text-center sm:text-left leading-relaxed">
             <div>
               © {currentYear} Sustainable Development Office - Alangilan.
             </div>
@@ -200,9 +200,12 @@ export default function Footer() {
               <a
                 key={link.name}
                 href={link.href}
-                className="font-light text-gray-400 hover:text-[#8BC34A] transition-colors duration-200 text-[11px]"
+                target={link.external ? "_blank" : undefined}
+                rel={link.external ? "noopener noreferrer" : undefined}
+                className="font-normal text-gray-300 hover:text-[#8BC34A] transition-colors duration-200 text-[11px] inline-flex items-center gap-0.5"
               >
-                {link.name}
+                <span>{link.name}</span>
+                {link.external && <span className="text-[9px] opacity-70">↗</span>}
               </a>
             ))}
           </div>

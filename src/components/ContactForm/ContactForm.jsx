@@ -24,7 +24,14 @@ const ContactForm = () => {
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [lastSubmitTime, setLastSubmitTime] = useState(0);
+  const [lastSubmitTime, setLastSubmitTime] = useState(() => {
+    try {
+      const saved = sessionStorage.getItem("sdo_contact_last_submit");
+      return saved ? Number(saved) : 0;
+    } catch {
+      return 0;
+    }
+  });
   const [popupModal, setPopupModal] = useState({
     isOpen: false,
     type: 'success', // 'success' | 'limit' | 'validation' | 'error'
@@ -242,6 +249,11 @@ const ContactForm = () => {
 
     setIsSubmitting(true);
     setLastSubmitTime(now);
+    try {
+      sessionStorage.setItem("sdo_contact_last_submit", String(now));
+    } catch {
+      // ignore storage errors
+    }
 
     try {
       // 1. Insert message to Supabase database
@@ -340,7 +352,7 @@ const ContactForm = () => {
           <label className="block text-[#064e3b] text-[10px] font-bold uppercase tracking-wider mb-1.5">
             I want to:
           </label>
-          <div className="grid grid-cols-3 gap-2">
+          <div role="radiogroup" aria-label="Inquiry Purpose" className="grid grid-cols-3 gap-2">
             {[
               { 
                 id: "inquiry", 
@@ -380,6 +392,8 @@ const ContactForm = () => {
               <button
                 key={item.id}
                 type="button"
+                role="radio"
+                aria-checked={formData.purpose === item.val}
                 onClick={() => handlePurposeChange(item.val)}
                 className={`py-2 px-2 text-xs font-semibold rounded-xl border flex items-center justify-center gap-1.5 transition-all duration-200 cursor-pointer ${
                   formData.purpose === item.val

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { acts } from "../../utils/initiativesData";
+import fallbackInitiativeImg from "../assets/HomeImageBackground.jpg";
 
 export default function Initiatives() {
   const scrollContainerRef = useRef(null);
@@ -265,6 +266,10 @@ export default function Initiatives() {
                     <img
                       src={act.image}
                       alt={act.title}
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = fallbackInitiativeImg;
+                      }}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       loading="lazy"
                     />
@@ -335,6 +340,10 @@ export default function Initiatives() {
               <img
                 src={selectedInitiative.image}
                 alt={selectedInitiative.title}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = fallbackInitiativeImg;
+                }}
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
