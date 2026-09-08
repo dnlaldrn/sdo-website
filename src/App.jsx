@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Initiatives from "./pages/Initiatives";
 import SDG from "./pages/SDG";
+import Publish from "./pages/Publish";
 import "./App.css";
 
 const router = createBrowserRouter([
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
         ),
       },
     ],
+  },
+  {
+    path: "/publish",
+    element: <Publish />,
   },
 ]);
 
