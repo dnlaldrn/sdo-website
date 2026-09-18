@@ -162,7 +162,7 @@ export default function Footer() {
                     Office Hours
                   </span>
                   <p className="text-[11px] sm:text-xs lg:text-sm font-semibold text-white">
-                    <span className="hidden lg:inline">Monday – Thursday, 7:00 AM – 6:00 PM</span>
+                    <span>Mon – Thurs, 7:00 AM – 6:00 PM</span>
                   </p>
                   <p className="text-gray-300 text-[9px] lg:text-[10px] font-normal hidden sm:block">
                     Excluding university holidays
