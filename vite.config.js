@@ -40,31 +40,56 @@ function devFbExtractorPlugin() {
             // ignore redirect error
           }
 
-          // 2. Fetch mobile version with mobile user agent
-          const mobileUrl = targetUrl.replace(
-            /https?:\/\/(?:www\.|web\.)?facebook\.com/,
-            "https://m.facebook.com"
-          );
+          // 2. Fetch using Twitterbot user agent first
+          let html = "";
+          try {
+            const botRes = await fetch(targetUrl, {
+              headers: {
+                "User-Agent": "Twitterbot/1.0",
+                Accept:
+                  "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                "Accept-Language": "en-US,en;q=0.9",
+              },
+            });
+            html = await botRes.text();
+          } catch (err) {
+            console.warn("Twitterbot dev fetch error:", err.message);
+          }
 
-          const pageRes = await fetch(mobileUrl, {
-            headers: {
-              "User-Agent":
-                "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1",
-              Accept:
-                "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-              "Accept-Language": "en-US,en;q=0.9",
-            },
-          });
-
-          const html = await pageRes.text();
-
-          const imgMatch =
+          let imgMatch =
             html.match(/<meta\s+property=["']og:image["']\s+content=["']([\s\S]*?)["']/i) ||
             html.match(/<meta\s+name=["']twitter:image["']\s+content=["']([\s\S]*?)["']/i);
 
-          const descMatch =
+          let descMatch =
             html.match(/<meta\s+property=["']og:description["']\s+content=["']([\s\S]*?)["']/i) ||
             html.match(/<meta\s+name=["']description["']\s+content=["']([\s\S]*?)["']/i);
+
+          if (!imgMatch || !descMatch) {
+            try {
+              const fbRes = await fetch(targetUrl, {
+                headers: {
+                  "User-Agent":
+                    "facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)",
+                  Accept:
+                    "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                  "Accept-Language": "en-US,en;q=0.9",
+                },
+              });
+              const fbHtml = await fbRes.text();
+              if (!imgMatch) {
+                imgMatch =
+                  fbHtml.match(/<meta\s+property=["']og:image["']\s+content=["']([\s\S]*?)["']/i) ||
+                  fbHtml.match(/<meta\s+name=["']twitter:image["']\s+content=["']([\s\S]*?)["']/i);
+              }
+              if (!descMatch) {
+                descMatch =
+                  fbHtml.match(/<meta\s+property=["']og:description["']\s+content=["']([\s\S]*?)["']/i) ||
+                  fbHtml.match(/<meta\s+name=["']description["']\s+content=["']([\s\S]*?)["']/i);
+              }
+            } catch (fbErr) {
+              console.warn("facebookexternalhit dev fallback error:", fbErr.message);
+            }
+          }
 
           function decodeHtml(str) {
             return str

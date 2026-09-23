@@ -1,5 +1,4 @@
 export default async function handler(req, res) {
-  // Support both GET and POST
   const inputUrl = req.query?.url || req.body?.url;
 
   if (!inputUrl) {
@@ -29,33 +28,58 @@ export default async function handler(req, res) {
       console.warn("Redirect resolution warning:", e.message);
     }
 
-    // 2. Convert to mobile URL to access lightweight meta-rich page
-    const mobileUrl = targetUrl.replace(
-      /https?:\/\/(?:www\.|web\.)?facebook\.com/,
-      "https://m.facebook.com"
-    );
+    // 2. Fetch using Twitterbot user agent first
+    // Facebook serves direct full-resolution scontent CDN images without login walls to Twitterbot
+    let html = "";
+    try {
+      const botRes = await fetch(targetUrl, {
+        headers: {
+          "User-Agent": "Twitterbot/1.0",
+          Accept:
+            "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+          "Accept-Language": "en-US,en;q=0.9",
+        },
+      });
+      html = await botRes.text();
+    } catch (err) {
+      console.warn("Twitterbot fetch error, falling back:", err.message);
+    }
 
-    // 3. Fetch mobile page with mobile browser user agent
-    const pageRes = await fetch(mobileUrl, {
-      headers: {
-        "User-Agent":
-          "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1",
-        Accept:
-          "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "Accept-Language": "en-US,en;q=0.9",
-      },
-    });
-
-    const html = await pageRes.text();
-
-    // 4. Extract OpenGraph image and description
-    const imgMatch =
+    // 3. Fallback to facebookexternalhit if needed
+    let imgMatch =
       html.match(/<meta\s+property=["']og:image["']\s+content=["']([\s\S]*?)["']/i) ||
       html.match(/<meta\s+name=["']twitter:image["']\s+content=["']([\s\S]*?)["']/i);
 
-    const descMatch =
+    let descMatch =
       html.match(/<meta\s+property=["']og:description["']\s+content=["']([\s\S]*?)["']/i) ||
       html.match(/<meta\s+name=["']description["']\s+content=["']([\s\S]*?)["']/i);
+
+    if (!imgMatch || !descMatch) {
+      try {
+        const fbRes = await fetch(targetUrl, {
+          headers: {
+            "User-Agent":
+              "facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)",
+            Accept:
+              "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "en-US,en;q=0.9",
+          },
+        });
+        const fbHtml = await fbRes.text();
+        if (!imgMatch) {
+          imgMatch =
+            fbHtml.match(/<meta\s+property=["']og:image["']\s+content=["']([\s\S]*?)["']/i) ||
+            fbHtml.match(/<meta\s+name=["']twitter:image["']\s+content=["']([\s\S]*?)["']/i);
+        }
+        if (!descMatch) {
+          descMatch =
+            fbHtml.match(/<meta\s+property=["']og:description["']\s+content=["']([\s\S]*?)["']/i) ||
+            fbHtml.match(/<meta\s+name=["']description["']\s+content=["']([\s\S]*?)["']/i);
+        }
+      } catch (fbErr) {
+        console.warn("facebookexternalhit fallback error:", fbErr.message);
+      }
+    }
 
     function decodeHtml(str) {
       return str
@@ -76,7 +100,7 @@ export default async function handler(req, res) {
     const rawDesc = descMatch ? descMatch[1] : "";
     const caption = decodeHtml(rawDesc).trim();
 
-    // Generate clean title from caption header
+    // Generate clean title from caption
     let title = "Leaf Me a Fact";
     if (caption) {
       const cleanLines = caption
@@ -84,7 +108,6 @@ export default async function handler(req, res) {
         .map((l) => l.trim())
         .filter((l) => l.length > 0);
 
-      // Check if line 2 contains topic subtitle
       if (cleanLines.length >= 2 && cleanLines[1].length < 60) {
         title = `Leaf Me a Fact - ${cleanLines[1].replace(/^[^\w\s]+/, "").trim()}`;
       } else if (cleanLines.length >= 1) {
